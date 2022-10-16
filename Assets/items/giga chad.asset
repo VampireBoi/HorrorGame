@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a2619028fd0e0d4085a38d876ed7d5e, type: 3}
+  m_Name: giga chad
+  m_EditorClassIdentifier: 
+  id: 2
+  displayName: 'giga chad '
+  icon: {fileID: 21300000, guid: 20a57deb880dfb740ba838d6bb783c7f, type: 3}
+  prefab: {fileID: 2225351729387496268, guid: ae439339a770b9747a6e9ca736625efd, type: 3}
