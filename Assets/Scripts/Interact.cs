@@ -21,7 +21,8 @@ public class Interact : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-       if(Physics.Raycast(transform.position, transform.forward, out RaycastHit hit,5f, mask) && !isSetting && !uiManager.instance.inventoryIsOpen && !MiniGame.instance.isPlaying){
+       if(Physics.Raycast(transform.position, transform.forward, out RaycastHit hit,5f, mask) && !isSetting && !uiManager.instance.inventoryIsOpen && !MiniGame.instance.isUsingComputer)
+        {
            
             // there is an interactable object the game shows the hand icon 
             FirstPersonController.Instance.crosshairObject.gameObject.SetActive(true);                                
@@ -48,9 +49,8 @@ public class Interact : MonoBehaviour
                     hit.transform.GetComponent<ItemPickup>().pickup();         
                 }
                 if(hit.transform.tag == "computer")
-                {
-                    Debug.Log("sddssdsdsdsdsdsdsd");
-                    MiniGame.instance.playMiniGame();
+                {       
+                    MiniGame.instance.openComputer();
                 }
             }
             

@@ -31,7 +31,6 @@ public class AudioManager : MonoBehaviour
             if(sound.name == name)
             {
                 sound.source.Play();
-                Debug.Log(name);
             }
         }
     }

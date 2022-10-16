@@ -5,6 +5,7 @@ using UnityEngine;
 public class LevelManager : MonoBehaviour
 {
     public static LevelManager instance;
+    
     public GameObject miniGamePlayer;
 
     public GameObject gamePosition;
@@ -26,7 +27,7 @@ public class LevelManager : MonoBehaviour
   
     private void Awake()
     {
-        timeForSpawning = MiniGame.instance.difficulty;
+        timeForSpawning = MiniGame.instance.currentDesk.disk.difficulty;      
         timeForSpawningKey = timeForSpawning + 0.1f;     
         if(instance == null)
         {
@@ -51,7 +52,6 @@ public class LevelManager : MonoBehaviour
     }
     void spawnLevel()
     {
-    
         Instantiate(roomsTemplate, gameObject.transform);
         Instantiate(FirstRoom, gamePosition.transform.position, FirstRoom.transform.rotation);
         Instantiate(miniGamePlayer, gamePosition.transform.position + miniGamePlayer.transform.position, miniGamePlayer.transform.rotation);      
@@ -87,6 +87,9 @@ public class LevelManager : MonoBehaviour
         Destroy(RoomTemplates.Instance.transform.gameObject);
         Destroy(gameObject);
     }
+
+    
+
 
 
 }

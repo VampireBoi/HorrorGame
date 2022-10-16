@@ -47,7 +47,7 @@ public class InventoryManager : MonoBehaviour
             ItemController itemController = obj.GetComponent<ItemController>();
             itemController.Item = item;
             itemimage.sprite = item.icon;
-            itemName.text = item.name;
+            itemName.text = item.displayName;
         }
     }
 }

@@ -4,5 +4,19 @@ using UnityEngine;
 
 public class FloppyDisk : MonoBehaviour
 {
-    public float difficulty;
+    public FloppyDeskData disk;
+
+
+    private void Awake()
+    {
+        disk.isFinished = false;
+    }
+    private void Update()
+    {
+        if (disk.isFinished)
+        {
+            Destroy(gameObject);
+            InventoryManager.Instance.items.Remove(transform.GetComponent<ItemPickup>().item);
+        }
+    }
 }

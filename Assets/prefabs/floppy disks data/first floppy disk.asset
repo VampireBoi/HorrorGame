@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c90f19f63e542574588a2f73a4a89f47, type: 3}
+  m_Name: first floppy disk
+  m_EditorClassIdentifier: 
+  difficulty: 0.3
+  startScene: hello and welcome
+  exitScene: goodbye bitch
+  levelsInDesk: 5
+  isFinished: 0
+  firstInsertion: 0

@@ -43,8 +43,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d80eaaf7875f4d42a6ec27469ae2327, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  miniGameCam: {fileID: 5276342747677816426, guid: fb2793fec673c0f4484f503ebc1682f2, type: 3}
   miniGamePlayer: {fileID: 4442418133438044473, guid: 7a2f2957046593f49b59fadba9164e88, type: 3}
   gamePosition: {fileID: 757118452474080711, guid: 97c10e04d52c6fd4b90335af0887881e, type: 3}
   roomsTemplate: {fileID: 6535547104649107968, guid: 076f4e3cd155f224eb1e2760fe79a001, type: 3}
   FirstRoom: {fileID: 6633778480259084188, guid: dff83a03c1e315241bd1d1e2f19e4e85, type: 3}
+  timeForSpawningKey: 0
   timeForSpawning: 0.4
+  timer: 0
