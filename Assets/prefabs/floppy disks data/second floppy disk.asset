@@ -12,9 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c90f19f63e542574588a2f73a4a89f47, type: 3}
   m_Name: second floppy disk
   m_EditorClassIdentifier: 
+  gameTitle: 
+  gameStartScreen: {fileID: 0}
   difficulty: 1
-  startScene: im the second disk
-  exitScene: 'fuck you '
+  timeToFinichTheGame: 0
+  firstDialogue:
+  - 'oh heeyy this is the second disk '
+  - good job now play
+  LastDialogue:
+  - 
   levelsInDesk: 7
-  isFinished: 0
+  isFinished: 1
+  levelManager: {fileID: 8688614233439076073, guid: 6f580c6908439c24caaf64cf4d8dd5ed, type: 3}
   firstInsertion: 0

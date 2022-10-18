@@ -23,7 +23,7 @@ public class MiniGame : MonoBehaviour
     
     public GameObject computerView;
 
-
+    public Dialogue dialogue;
     // the desk inside the computer;
     [HideInInspector]
     public FloppyDisk currentDesk;
@@ -32,6 +32,8 @@ public class MiniGame : MonoBehaviour
     public bool thereIsFloopyDesk;
     
     public RenderTexture screen;
+
+    bool playDialogue;
 
     public Sprite loading;
     public Sprite closing;
@@ -46,7 +48,8 @@ public class MiniGame : MonoBehaviour
     public GameObject tvloadingScreen;
 
     private void Start()
-    {   
+    {
+        playDialogue = true;
         computerView.SetActive(false);
         MiniGameCam.SetActive(false);
         thereIsFloopyDesk = false;
@@ -92,7 +95,8 @@ public class MiniGame : MonoBehaviour
         if(levelCounter < currentDesk.disk.levelsInDesk)
         {
             LevelManager.instance.destroyCurrentLevel();
-            ui.transform.FindChild("score").gameObject.SetActive(false);    
+            ui.transform.FindChild("score").gameObject.SetActive(false);
+            tvloadingScreen.SetActive(true);
             Invoke("spawnLevel", TimeToLoadTheNextLevel);
         }      
         
@@ -145,6 +149,7 @@ public class MiniGame : MonoBehaviour
             {
                 //to put the player in computer mode
                 enterComputerMode();
+                dialogue.startDialogue(currentDesk.disk.firstDialogue);
             }
             else
             {
@@ -180,10 +185,8 @@ public class MiniGame : MonoBehaviour
         floppyDiskInHand.transform.parent.gameObject.SetActive(false);
         MiniGameCam.SetActive(true);
         computerView.SetActive(true);
-        tvLight.SetActive(true);
-        tvloadingScreen.SetActive(true);
-        text.GetComponent<Text>().text = currentDesk.disk.startScene;
-        tvloadingScreen.transform.FindChild("text").GetComponent<SpriteRenderer>().sprite = loading;
+        tvLight.SetActive(true);      
+        
         FirstPersonController.Instance.playerCanMove = false;
         FirstPersonController.Instance.cameraCanMove = false;
         Invoke("spawnLevel", 2f);
@@ -191,17 +194,15 @@ public class MiniGame : MonoBehaviour
 
     public void spawnLevel()
     {
-        Instantiate(miniGameManager, gameObject.transform).GetComponent<LevelManager>();
-  
+        Instantiate(currentDesk.disk.levelManager, gameObject.transform).GetComponent<LevelManager>();
         ui.transform.FindChild("score").gameObject.SetActive(true);
-
+        tvloadingScreen.SetActive(false);
     }
 
     void exitComputerMode()
     {
         thereIsFloopyDesk = false;
         closeMiniGameLevel();
-        tvloadingScreen.transform.FindChild("text").GetComponent<SpriteRenderer>().sprite = closing;
         floppyDiskInHand.transform.parent.gameObject.SetActive(true);
         Invoke("closeloading", 1f);
     }
@@ -209,12 +210,22 @@ public class MiniGame : MonoBehaviour
     
     void takeOutCurrentFloppyDisk()
     {
-        text.GetComponent<Text>().text = currentDesk.disk.exitScene;
-        currentDesk.disk.isFinished = true;
-        thereIsFloopyDesk = false;
-        currentDesk = null;
-        levelCounter = 0;
-        exitComputerMode();
+
+        if (playDialogue)
+        {
+            dialogue.startDialogue(currentDesk.disk.LastDialogue);
+            playDialogue = false;
+        }
+
+        Debug.Log("i should be loobing");
+        if (!dialogue.dialogueOn)
+        {
+            currentDesk.disk.isFinished = true;
+            playDialogue = true;
+            levelCounter = 0;
+            currentDesk = null;
+            exitComputerMode();
+        }     
     }
 
     
