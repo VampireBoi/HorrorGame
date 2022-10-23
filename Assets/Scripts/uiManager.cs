@@ -19,10 +19,11 @@ public class uiManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.I) && !Interact.isSetting)
         {
-            InventoryManager.Instance.listItems();
-            Cursor.lockState = CursorLockMode.Confined;
-            inventoryUI.SetActive(true);
             inventoryIsOpen = true;
+            InventoryManager.Instance.listItems();
+            inventoryUI.SetActive(true);
+            Cursor.lockState = CursorLockMode.Confined;
+            Cursor.visible = true;
         }
 
     }

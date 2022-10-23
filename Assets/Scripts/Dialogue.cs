@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
@@ -47,6 +46,7 @@ public class Dialogue : MonoBehaviour
     }
     IEnumerator typeLine()
     {
+        
         foreach(char c in lines[index].ToCharArray())
         {       
             inTextLine = true;
@@ -58,9 +58,10 @@ public class Dialogue : MonoBehaviour
 
     void NextLine()
     {
-       
+        
         if (!inTextLine)
         {
+
             if (index < lines.Length - 1)
             {
                 textComponent.text = string.Empty;
@@ -73,6 +74,7 @@ public class Dialogue : MonoBehaviour
                 dialogueOn = false;
                 textComponent.transform.parent.gameObject.SetActive(false);
             }
+            Debug.Log(dialogueOn);
         }
         else {
 

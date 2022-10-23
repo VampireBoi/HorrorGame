@@ -11,6 +11,7 @@ public class Interact : MonoBehaviour
     public Transform exitPosition;
     GameObject[] player;
     public static bool isSetting = false;
+    public GameObject fpsUI;
     // Start is called before the first frame update
     void Start()
     {
@@ -21,11 +22,20 @@ public class Interact : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-       if(Physics.Raycast(transform.position, transform.forward, out RaycastHit hit,5f, mask) && !isSetting && !uiManager.instance.inventoryIsOpen && !MiniGame.instance.isUsingComputer)
+        if (Physics.Raycast(transform.position, transform.forward, out RaycastHit hit, 1.5f, mask.value) && !isSetting && !uiManager.instance.inventoryIsOpen && !MiniGame.instance.isUsingComputer)
         {
-           
+
             // there is an interactable object the game shows the hand icon 
-            FirstPersonController.Instance.crosshairObject.gameObject.SetActive(true);                                
+            //FirstPersonController.Instance.crosshairObject.gameObject.SetActive(true);
+            if(hit.transform.tag == "wall")
+            {
+                fpsUI.transform.GetChild(0).gameObject.SetActive(true);
+                fpsUI.transform.GetChild(1).gameObject.SetActive(false);
+            } else
+            {
+                fpsUI.transform.GetChild(0).gameObject.SetActive(false);
+                fpsUI.transform.GetChild(1).gameObject.SetActive(true);
+            }
             
             if (Input.GetKeyDown(KeyCode.Mouse0) && !isSetting)
             {
@@ -33,31 +43,46 @@ public class Interact : MonoBehaviour
                 if (hit.transform.tag == "save area")
                 {
 
-                    AudioManager.instance.stopSound("player footsteps");
-                    player[0].transform.position = chairPosition.position;
-                    player[0].GetComponent<FirstPersonController>().playerCanMove = false;
-                    player[0].GetComponent<FirstPersonController>().enableJump = false;
-                    player[0].GetComponent<FirstPersonController>().enableCrouch = false;
-                    player[0].GetComponent<FirstPersonController>().enableHeadBob = false;
+                    //AudioManager.instance.stopSound("player footsteps");
+                    player[0].transform.position = chairPosition.position;                 
+                    TheFirstPerson.FPSController.instance.crouching = true;
+                    Invoke("settDown", (TheFirstPerson.FPSController.instance.crouchTransitionSpeed * TheFirstPerson.FPSController.instance.crouchColliderHeight) / 50f);
                     isSetting = true;
                     itemSway.instance.destroyItemInHand();
                 }
-                
+
                 // if the player is looking at an item
                 if (hit.transform.tag == "item")
                 {
-                    hit.transform.GetComponent<ItemPickup>().pickup();         
+                    hit.transform.GetComponent<ItemPickup>().pickup();
                 }
-                if(hit.transform.tag == "computer")
-                {       
-                    MiniGame.instance.openComputer();
+                if (hit.transform.tag == "computer")
+                {
+                    if (MiniGame.instance.plugedIn)
+                    {
+                        MiniGame.instance.openComputer();
+                    }
+                    else
+                    {
+                        Debug.Log("computer not pluged in");
+                    }
+                    
+                }
+
+                if (hit.transform.tag == "Plug")
+                {
+                    Debug.Log("plug the computer");
+                    MiniGame.instance.plugedIn = !MiniGame.instance.plugedIn;
                 }
             }
-            
-            
+
+
         }
         // there's no intaractable object ahed, deactivate the hand icon 
-        else { FirstPersonController.Instance.crosshairObject.gameObject.SetActive(false); }
+        else {
+            fpsUI.transform.GetChild(0).gameObject.SetActive(true);
+            fpsUI.transform.GetChild(1).gameObject.SetActive(false);
+        }//FirstPersonController.Instance.crosshairObject.gameObject.SetActive(false); }
         
         
         
@@ -66,15 +91,21 @@ public class Interact : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.Mouse2))
             {
-                player[0].GetComponent<FirstPersonController>().playerCanMove = true;
-                player[0].GetComponent<FirstPersonController>().enableJump = true;
-                player[0].GetComponent<FirstPersonController>().enableCrouch = true;
-                player[0].GetComponent<FirstPersonController>().enableHeadBob = true;
                 player[0].transform.position = exitPosition.position;
+                TheFirstPerson.FPSController.instance.movementEnabled = true;
+                TheFirstPerson.FPSController.instance.crouching = false;
+         
                 itemSway.instance.holdFirstItem();
                 isSetting = false;
             }
 
         }
+    }
+
+    void settDown()
+    {
+
+        player[0].transform.position = chairPosition.position;
+        TheFirstPerson.FPSController.instance.movementEnabled = false;
     }
 }

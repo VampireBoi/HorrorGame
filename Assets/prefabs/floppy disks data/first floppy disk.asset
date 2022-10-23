@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameTitle: escape the dungen
   gameStartScreen: {fileID: 21300000, guid: 9acbee72f7e952e49bd65e3d761e9bb8, type: 3}
-  difficulty: 0.3
-  timeToFinichTheGame: 0
+  difficulty: 0.5
+  timeToFinichTheGame: 5
   firstDialogue:
   - 'hi and welcome '
   - this is the first game
@@ -23,7 +23,7 @@ MonoBehaviour:
   LastDialogue:
   - 'that was fun '
   - 'now fuck off '
-  levelsInDesk: 5
-  isFinished: 1
+  levelsInDesk: 3
+  isFinished: 0
   levelManager: {fileID: 8688614233439076073, guid: 6f580c6908439c24caaf64cf4d8dd5ed, type: 3}
   firstInsertion: 0

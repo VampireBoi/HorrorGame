@@ -15,11 +15,35 @@ public class AudioManager : MonoBehaviour
         
         foreach (Sound sound in sounds)
         {
-            sound.source = sound.Object.AddComponent<AudioSource>();
-            sound.source.clip = sound.clip;
-            sound.source.volume = sound.volume;
-            sound.source.pitch = sound.pitch;
-        }
+            AudioSource[] source = sound.Object.GetComponents<AudioSource>();
+                    
+            if(source != null)
+            {
+                foreach (AudioSource s in source)
+                {                   
+                    if(s.clip.name == sound.clip.name)
+                    {
+                        sound.source = s;   
+                        sound.clip= s.clip;
+                        sound.volume = s.volume;
+                        sound.pitch = s.pitch;
+                        sound.loop = s.loop;
+                    }
+                }                             
+            }
+            if (sound.source == null)
+            {
+                sound.source = sound.Object.AddComponent<AudioSource>();
+                sound.source.clip = sound.clip;
+                sound.source.volume = sound.volume;
+                sound.source.pitch = sound.pitch;
+                sound.source.loop = sound.loop;
+            }
+        }     
+    }
+
+    private void Start()
+    {
         playSound("horror ambience");
     }
 

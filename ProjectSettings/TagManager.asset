@@ -10,6 +10,8 @@ TagManager:
   - Mini game Key
   - 2dPlayer
   - computer
+  - Plug
+  - wall
   layers:
   - Default
   - TransparentFX
@@ -17,8 +19,8 @@ TagManager:
   - interactable
   - Water
   - UI
-  - 
-  - 
+  - Ground
+  - walls
   - 
   - 
   - 

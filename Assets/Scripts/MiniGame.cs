@@ -42,6 +42,24 @@ public class MiniGame : MonoBehaviour
 
     [HideInInspector]public bool isUsingComputer = false;
 
+    public GameObject scoreUI;
+    public GameObject timerUI;
+
+
+    float timeToFinichTheGame;
+    float timer = 0;
+
+    public bool plugedIn = false;
+
+
+    bool countTime = false;
+    bool isLoading = false;
+
+    bool playSound;
+
+    //when the timer runs out and the computer makes the beb sound
+    [HideInInspector] public bool alertMode;
+
 
     //the light coming from the screen when the game is running "change later but works for now" 
     public GameObject tvLight;
@@ -49,6 +67,8 @@ public class MiniGame : MonoBehaviour
 
     private void Start()
     {
+        scoreUI = ui.transform.FindChild("score").gameObject;
+        timerUI = ui.transform.FindChild("Timer").gameObject;
         playDialogue = true;
         computerView.SetActive(false);
         MiniGameCam.SetActive(false);
@@ -57,6 +77,8 @@ public class MiniGame : MonoBehaviour
         tvLight.SetActive(false);
         tvloadingScreen.SetActive(false);
         ui.transform.FindChild("score").gameObject.SetActive(false);
+
+        playSound = true;
     }
 
 
@@ -76,26 +98,75 @@ public class MiniGame : MonoBehaviour
         //finishing the desk in take it out of the system;
         if(thereIsFloopyDesk && levelCounter >= currentDesk.disk.levelsInDesk)
         {
+            countTime = false;
             takeOutCurrentFloppyDisk();
         } 
 
-        if(currentDesk != null && ui.transform.FindChild("score").gameObject.activeSelf)
+        if(currentDesk != null && scoreUI.gameObject.activeSelf)
         {
-            ui.transform.FindChild("score").GetComponent<TextMeshProUGUI>().text = "level: " + (levelCounter + 1).ToString() + " out of: " + currentDesk.disk.levelsInDesk.ToString();
+            scoreUI.GetComponent<TextMeshProUGUI>().text = "level: " + (levelCounter + 1).ToString() + " out of: " + currentDesk.disk.levelsInDesk.ToString();
         }
 
+        if(currentDesk != null && timerUI.activeSelf && countTime)
+        {
+            if (timer > 0)
+            {
+                timer -= Time.deltaTime;
+                timerUI.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Time:" + (int)timer + " s";
+            }
+            else
+            {
+                //here we trigger the timeout event
+                if (playSound)
+                {
+                    AudioManager.instance.playSound("alert sound");
+                    playSound = false;
+                }
+                alertMode = true;
+                computerView.SetActive(false);
+                TheFirstPerson.FPSController.instance.movementEnabled = true;
+                floppyDiskInHand.transform.parent.gameObject.SetActive(true);
+                isUsingComputer = false;
+                Debug.Log("you falied beebb beeeb beeeb");               
+            }
+        }
+        if (dialogue.dialogueOn || isLoading)
+        {
+            turnOffGameUI();
+        }
+        else
+        {
+            turnOnGamUI();
+        }
 
-
+        if (!plugedIn)
+        {
+            if(currentDesk != null && alertMode)
+            {
+                AudioManager.instance.stopSound("alert sound");
+                playSound = true;
+                exitComputerMode();
+                alertMode = false;
+                Enemy.instanse.exexute = 0;
+            }
+            
+        }
 
     }
 
     public void advanceLevel()
     {
+
+        //for controlling the ui
+        isLoading = true;
+        countTime = false;
+        
         levelCounter++;
         if(levelCounter < currentDesk.disk.levelsInDesk)
         {
             LevelManager.instance.destroyCurrentLevel();
-            ui.transform.FindChild("score").gameObject.SetActive(false);
+            scoreUI.SetActive(false);
+            timerUI.SetActive(false);
             tvloadingScreen.SetActive(true);
             Invoke("spawnLevel", TimeToLoadTheNextLevel);
         }      
@@ -105,13 +176,9 @@ public class MiniGame : MonoBehaviour
 
     //destroy the level that you were playing when you exit 
     void closeMiniGameLevel()
-    {
-        if (isUsingComputer)
-        {
-            levelCounter = 0;
-            LevelManager.instance.destroyCurrentLevel();   
-            
-        }
+    {    
+        levelCounter = 0;
+        LevelManager.instance.destroyCurrentLevel();        
     }
 
     
@@ -145,11 +212,13 @@ public class MiniGame : MonoBehaviour
 
             thereIsFloopyDesk = true;
 
-            if (currentDesk != null)
+            if (currentDesk != null && !alertMode)
             {
+                timeToFinichTheGame = currentDesk.disk.timeToFinichTheGame;
                 //to put the player in computer mode
                 enterComputerMode();
-                dialogue.startDialogue(currentDesk.disk.firstDialogue);
+                //this if statement id for showing the first dialogue only once, the first time he puts the disk in the computer 
+               
             }
             else
             {
@@ -170,9 +239,9 @@ public class MiniGame : MonoBehaviour
         tvLight.gameObject.SetActive(false);
         computerView.SetActive(false);
         MiniGameCam.SetActive(false);
-        FirstPersonController.Instance.cameraCanMove = true;
         isUsingComputer = false;
-        FirstPersonController.Instance.playerCanMove = true;
+        TheFirstPerson.FPSController.instance.movementEnabled = true;
+
         screen.Release();
     }
 
@@ -181,26 +250,41 @@ public class MiniGame : MonoBehaviour
     // adjust the computer mode from here
     void enterComputerMode()
     {
+        isLoading = true;
+        countTime = false;
+        timer = timeToFinichTheGame;
         isUsingComputer = true;
         floppyDiskInHand.transform.parent.gameObject.SetActive(false);
         MiniGameCam.SetActive(true);
         computerView.SetActive(true);
         tvLight.SetActive(true);      
         
-        FirstPersonController.Instance.playerCanMove = false;
-        FirstPersonController.Instance.cameraCanMove = false;
+        TheFirstPerson.FPSController.instance.movementEnabled = false;
         Invoke("spawnLevel", 2f);
     }
 
     public void spawnLevel()
     {
         Instantiate(currentDesk.disk.levelManager, gameObject.transform).GetComponent<LevelManager>();
-        ui.transform.FindChild("score").gameObject.SetActive(true);
+        
+        //for controlling the ui 
+        countTime = true;
+        isLoading = false;
+
         tvloadingScreen.SetActive(false);
+
+        if (currentDesk.disk.firstInsertion)
+        {
+            dialogue.startDialogue(currentDesk.disk.firstDialogue);
+            currentDesk.disk.firstInsertion = false;
+        }
     }
 
     void exitComputerMode()
     {
+        countTime = false;
+        scoreUI.SetActive(false);
+        timerUI.SetActive(false);
         thereIsFloopyDesk = false;
         closeMiniGameLevel();
         floppyDiskInHand.transform.parent.gameObject.SetActive(true);
@@ -212,7 +296,7 @@ public class MiniGame : MonoBehaviour
     {
 
         if (playDialogue)
-        {
+        {         
             dialogue.startDialogue(currentDesk.disk.LastDialogue);
             playDialogue = false;
         }
@@ -228,6 +312,16 @@ public class MiniGame : MonoBehaviour
         }     
     }
 
+    void turnOffGameUI()
+    {
+        scoreUI.SetActive(false);
+        timerUI.SetActive(false);
+    }
+    void turnOnGamUI()
+    {
+        scoreUI.SetActive(true);
+        timerUI.SetActive(true);
+    }
     
 
     
