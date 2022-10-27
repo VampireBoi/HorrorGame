@@ -11,10 +11,13 @@ public class Enemy : MonoBehaviour
     public LayerMask wall;
     public LayerMask ground;
 
+    public LookAtPlayer head;
+    Animator animator;
+
+    public GameObject jumpScare;
 
 
     public string[] firstEventDialouge;
-    
     public string[] firstWarning;
     public string[] lastWarning;
  
@@ -36,7 +39,6 @@ public class Enemy : MonoBehaviour
 
 
     bool playSound;
-    bool playSound2;
 
     bool count;
 
@@ -64,27 +66,23 @@ public class Enemy : MonoBehaviour
     bool walkPointSet;
     public float walkPointRange;
 
-    bool reaechdDoorPoint;
 
     [HideInInspector]public int exexute;
 
 
 
-    
-    float timeBetweenRotations_;
+ 
     // Start is called before the first frame update
     private void Awake()
-    {
+    {  
         instanse = this;
-        timeBetweenRotations_ = timeBetweenRotations;
         player = GameObject.FindGameObjectWithTag("Player");
-        reaechdDoorPoint = false;
-        
+        animator = GetComponent<Animator>();
     }
 
     private void Start()
     {
-        
+        jumpScare.SetActive(false);
         resetValues();
         Agent.speed = enemyNormalSpeed;
         isPatrolling = true;
@@ -144,47 +142,6 @@ public class Enemy : MonoBehaviour
         }
 
 
-
-
-
-
-
-        
-
-        //else if (!isAttacking)
-        //{
-            //playSound = true;
-            
-            //AudioManager.instance.changePitch("enemy foot steps", 1f);
-                   
-            //Agent.speed = enemyNormalSpeed;
-            
-            //if (isChecking)
-            //{
-               
-                //if (Vector3.Distance(transform.position, DoorPoint.transform.position) <= 0.9f)
-               // {
-                   // checking();
-                    //AudioManager.instance.stopSound("enemy foot steps");
-                //}
-
-            //}
-            //else
-            //{
-                //T += Time.deltaTime;
-               // playSound2 = true;
-                //if (T > timer)
-                //{
-                    //isChecking = goToNextPoint();
-                    //T = 0f;
-                //}
-            //}
-            //if (Vector3.Distance(transform.position, PointA.transform.position) <= 1 && !isChecking)
-            //{
-                //AudioManager.instance.stopSound("enemy foot steps");
-            //}
-        //}
-        //else { attacking(); }
             
     }
 
@@ -194,6 +151,7 @@ public class Enemy : MonoBehaviour
         if (!walkPointSet) searchWalkPoint();
         if (walkPointSet)
         {
+            animator.SetBool("isMoving", true);
             Agent.SetDestination(walkPoint);
         }
 
@@ -202,6 +160,7 @@ public class Enemy : MonoBehaviour
         {
             AudioManager.instance.stopSound("enemy foot steps");
             walkPointSet = false;
+            animator.SetBool("isMoving", false);
         }
     }
 
@@ -223,80 +182,12 @@ public class Enemy : MonoBehaviour
         
         
     }
-    private bool goToNextPoint()
-    {
-        float r = Random.Range(1, 3);
-        bool a = false;
-        if (r == 1)
-        {
-            Agent.SetDestination(PointA.transform.position);
-            AudioManager.instance.playSound("enemy foot steps");
-        
-        }
-        else {
-            a = Agent.SetDestination(DoorPoint.transform.position);
-            AudioManager.instance.playSound("beep sound");
-            offset = true;
-            AudioManager.instance.playSound("enemy foot steps");
-        }
-        return a;
-    }
-
-    private void checking()
-    {
-        if (offset) {
-            transform.Rotate(0f , -180f, 0f);
-            offset = false;
-        }
-        else {
-            T += Time.deltaTime;
-            lookingAround();
-            if (Physics.Raycast(transform.position, transform.forward, out RaycastHit hitInfo, 20f))
-            {
-                if((hitInfo.transform.tag == "Player") && !Interact.isSetting || MiniGame.instance.isUsingComputer)
-                {
-                    isAttacking = true;
-                    resetValues();
-                }
-                Debug.DrawRay(transform.position, transform.forward * hitInfo.distance, Color.red);
-            }
-        } 
-        if (T > checkingTime)
-        {
-            Agent.SetDestination(PointA.transform.position);
-            if (playSound2)
-            {
-                AudioManager.instance.playSound("enemy foot steps");
-                playSound2 = false;
-            }
-            
-            resetValues();
-        }
-    } 
-
-    private void lookingAround()
-    {
-        if (changedir && timeBetweenRotations_ <= 0f)
-        {
-            transform.Rotate(0, -0.02f, 0);
-            rotcount += Time.deltaTime;
-        }
-        else if (!changedir && timeBetweenRotations_ <= 0f)
-        {
-            transform.Rotate(0, 0.02f, 0);
-            rotcount += Time.deltaTime;
-        }
-        else { timeBetweenRotations_ -= Time.deltaTime; }
-        if (rotcount >= 4)
-        {
-            changedir = !changedir;
-            rotcount = 0;
-            timeBetweenRotations_ = timeBetweenRotations;
-        }
-    }
 
     private void attacking()
     {
+        //here should be the run animaion
+        animator.SetTrigger("isAttacking");
+        head.lookAtPlayer();
         Agent.speed = enemyAttackSpeed;
         AudioManager.instance.changePitch("enemy foot steps", 1.8f);
         Agent.SetDestination(player.transform.position);       
@@ -307,16 +198,18 @@ public class Enemy : MonoBehaviour
         isCheckingNoise = false;
         offset = false;
         rotcount = 0;
-        changedir = false;
-        timeBetweenRotations_ = 0f;
+        changedir = false;    
         T = 0f;
+        head.restRotation();
     }
 
     void checkNoise()
     {  
-        if(Vector3.Distance(transform.position, DoorPoint.transform.position) < 1.5f)
+        if(Vector3.Distance(transform.position, DoorPoint.transform.position) < 1f)
         {
-            reaechdDoorPoint = true;
+            animator.SetBool("isMoving", false);
+            head.lookAtPlayer();
+           
             if (!MiniGame.instance.alertMode && Interact.isSetting && !MiniGame.instance.isUsingComputer && numberOfWarnigs > 0)
             {
                 // here is ehn the enemy hear the alert but the player manages to turn off every thing and go to bed 
@@ -348,7 +241,8 @@ public class Enemy : MonoBehaviour
                     isAttacking = false;
                     Agent.speed = enemyNormalSpeed;
                     AudioManager.instance.changePitch("enemy foot steps", 1f);
-                    playDialogue = true;
+                    playDialogue = true;             
+                    head.restRotation();
                 }
                 
 
@@ -365,10 +259,13 @@ public class Enemy : MonoBehaviour
             AudioManager.instance.changePitch("enemy foot steps", 1.6f);
             Agent.speed = enemyAttackSpeed;
             Agent.SetDestination(DoorPoint.transform.position);
-            AudioManager.instance.playSound("beep sound");
-            offset = true;
+            
+            //here it should be the run animation
+            animator.SetBool("isMoving", true);
+            
             if (playSound)
             {
+                AudioManager.instance.playSound("beep sound");
                 AudioManager.instance.playSound("enemy foot steps");
                 playSound = false;
             }
@@ -377,9 +274,11 @@ public class Enemy : MonoBehaviour
 
     void checkRoom()
     {
-        if (Vector3.Distance(transform.position, DoorPoint.transform.position) < 1.5f)
+        if (Vector3.Distance(transform.position, DoorPoint.transform.position) < 1f)
         {
-            reaechdDoorPoint = true;
+            animator.SetBool("isMoving" , false);
+            head.lookAtPlayer();
+           
             if (Interact.isSetting && !MiniGame.instance.isUsingComputer)
             {
 
@@ -390,8 +289,7 @@ public class Enemy : MonoBehaviour
                     playDialogue = false;
                 }
                 if (!dialogue.dialogueOn)
-                {
-                    Debug.Log("dsdsdsdsdsdsdsdsdsd");
+                {       
                     isPatrolling = true;
                     isCheckingNoise = false;
                     isAttacking = false;
@@ -399,6 +297,7 @@ public class Enemy : MonoBehaviour
                     AudioManager.instance.changePitch("enemy foot steps", 1f);
                     isChecking = false;
                     playDialogue = true;
+                    head.restRotation();
                 }
                     
             }
@@ -425,10 +324,11 @@ public class Enemy : MonoBehaviour
         else
         {       
             Agent.SetDestination(DoorPoint.transform.position);
-            AudioManager.instance.playSound("beep sound");
+            animator.SetBool("isMoving", true);
             offset = true;
             if (playSound)
             {
+                AudioManager.instance.playSound("beep sound");
                 AudioManager.instance.playSound("enemy foot steps");
                 playSound = false;
             }
@@ -438,7 +338,7 @@ public class Enemy : MonoBehaviour
 
 
     // call this function when you want teh enemy to check the player
-    void checkTheRoom()
+    void gocheckTheRoom()
     {
         isChecking = true;
         isPatrolling = false;
@@ -453,11 +353,30 @@ public class Enemy : MonoBehaviour
         {
             Debug.Log("Player killed");
             AudioManager.instance.stopSound("enemy foot steps");
+            JumpScare();
             isAttacking = false;
             isCheckingNoise = false;
             Agent.speed = enemyNormalSpeed;
             AudioManager.instance.changePitch("enemy foot steps", 1f);
         }
+    }
+
+
+    void JumpScare()
+    {
+        jumpScare.SetActive(true);
+        AudioManager.instance.stopAllSounds();
+        AudioManager.instance.playSound("jump scare sound");
+        //StartCoroutine(playjumpScareSound());
+    }
+
+    IEnumerator playjumpScareSound()
+    {
+        AudioManager.instance.stopAllSounds();
+        AudioManager.instance.playSound("jump scare sound");
+        yield return new WaitForSeconds(4);
+        Debug.Log("gameover");
+        Debug.Log("return to main menu");
     }
 
 

@@ -54,7 +54,10 @@ public class AudioManager : MonoBehaviour
         {
             if(sound.name == name)
             {
-                sound.source.Play();
+                if (!sound.source.isPlaying)
+                {
+                    sound.source.Play();
+                }             
             }
         }
     }
@@ -77,6 +80,14 @@ public class AudioManager : MonoBehaviour
             {
                 sound.source.pitch = pitch;
             }
+        }
+    }
+
+    public void stopAllSounds()
+    {
+        foreach (Sound sound in sounds)
+        {
+            stopSound(sound.name);
         }
     }
 }

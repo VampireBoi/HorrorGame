@@ -24,4 +24,4 @@ MonoBehaviour:
   levelsInDesk: 5
   isFinished: 0
   levelManager: {fileID: 8688614233439076073, guid: 6f580c6908439c24caaf64cf4d8dd5ed, type: 3}
-  firstInsertion: 0
+  firstInsertion: 1

@@ -14,7 +14,7 @@ public class MiniGame : MonoBehaviour
     public GameObject ui;
 
     public GameObject miniGameManager;
-
+  
     [HideInInspector]
     public GameObject floppyDiskInHand; 
     public int levelCounter;
@@ -92,7 +92,7 @@ public class MiniGame : MonoBehaviour
         //to exit the computer mode
         if (Input.GetKeyDown(KeyCode.G) && isUsingComputer)
         {           
-            exitComputerMode();
+            exitComputerMode(1f);
         }  
 
         //finishing the desk in take it out of the system;
@@ -145,7 +145,7 @@ public class MiniGame : MonoBehaviour
             {
                 AudioManager.instance.stopSound("alert sound");
                 playSound = true;
-                exitComputerMode();
+                exitComputerMode(0f);
                 alertMode = false;
                 Enemy.instanse.exexute = 0;
             }
@@ -216,6 +216,7 @@ public class MiniGame : MonoBehaviour
             {
                 timeToFinichTheGame = currentDesk.disk.timeToFinichTheGame;
                 //to put the player in computer mode
+                AudioManager.instance.playSound("computer sound");
                 enterComputerMode();
                 //this if statement id for showing the first dialogue only once, the first time he puts the disk in the computer 
                
@@ -241,7 +242,7 @@ public class MiniGame : MonoBehaviour
         MiniGameCam.SetActive(false);
         isUsingComputer = false;
         TheFirstPerson.FPSController.instance.movementEnabled = true;
-
+        AudioManager.instance.stopSound("computer sound");
         screen.Release();
     }
 
@@ -260,7 +261,7 @@ public class MiniGame : MonoBehaviour
         tvLight.SetActive(true);      
         
         TheFirstPerson.FPSController.instance.movementEnabled = false;
-        Invoke("spawnLevel", 2f);
+        Invoke("spawnLevel", 3f);
     }
 
     public void spawnLevel()
@@ -280,7 +281,7 @@ public class MiniGame : MonoBehaviour
         }
     }
 
-    void exitComputerMode()
+    void exitComputerMode(float time)
     {
         countTime = false;
         scoreUI.SetActive(false);
@@ -288,7 +289,7 @@ public class MiniGame : MonoBehaviour
         thereIsFloopyDesk = false;
         closeMiniGameLevel();
         floppyDiskInHand.transform.parent.gameObject.SetActive(true);
-        Invoke("closeloading", 1f);
+        Invoke("closeloading", time);
     }
     
     
@@ -308,7 +309,7 @@ public class MiniGame : MonoBehaviour
             playDialogue = true;
             levelCounter = 0;
             currentDesk = null;
-            exitComputerMode();
+            exitComputerMode(1f);
         }     
     }
 
