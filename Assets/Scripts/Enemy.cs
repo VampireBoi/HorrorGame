@@ -205,7 +205,7 @@ public class Enemy : MonoBehaviour
 
     void checkNoise()
     {  
-        if(Vector3.Distance(transform.position, DoorPoint.transform.position) < 1f)
+        if(Vector3.Distance(transform.position, DoorPoint.transform.position) < 1.2f)
         {
             animator.SetBool("isMoving", false);
             head.lookAtPlayer();
@@ -274,7 +274,7 @@ public class Enemy : MonoBehaviour
 
     void checkRoom()
     {
-        if (Vector3.Distance(transform.position, DoorPoint.transform.position) < 1f)
+        if (Vector3.Distance(transform.position, DoorPoint.transform.position) < 1.2f)
         {
             animator.SetBool("isMoving" , false);
             head.lookAtPlayer();

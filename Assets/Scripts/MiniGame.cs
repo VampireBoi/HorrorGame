@@ -19,6 +19,11 @@ public class MiniGame : MonoBehaviour
     public GameObject floppyDiskInHand; 
     public int levelCounter;
 
+    public GameObject titleScreen;
+
+
+    bool startgame;
+    
     public GameObject MiniGameCam;
     
     public GameObject computerView;
@@ -67,8 +72,9 @@ public class MiniGame : MonoBehaviour
 
     private void Start()
     {
-        scoreUI = ui.transform.FindChild("score").gameObject;
-        timerUI = ui.transform.FindChild("Timer").gameObject;
+        startgame = false;
+        scoreUI = ui.transform.Find("score background").gameObject;
+        //timerUI = ui.transform.Find("Timer").gameObject;
         playDialogue = true;
         computerView.SetActive(false);
         MiniGameCam.SetActive(false);
@@ -76,8 +82,6 @@ public class MiniGame : MonoBehaviour
         instance = this;
         tvLight.SetActive(false);
         tvloadingScreen.SetActive(false);
-        ui.transform.FindChild("score").gameObject.SetActive(false);
-
         playSound = true;
     }
 
@@ -91,7 +95,8 @@ public class MiniGame : MonoBehaviour
         }   
         //to exit the computer mode
         if (Input.GetKeyDown(KeyCode.G) && isUsingComputer)
-        {           
+        {
+            scoreUI.transform.parent.gameObject.SetActive(false);   
             exitComputerMode(1f);
         }  
 
@@ -100,13 +105,54 @@ public class MiniGame : MonoBehaviour
         {
             countTime = false;
             takeOutCurrentFloppyDisk();
-        } 
+        }
+
+        
+        if(!startgame && Input.anyKeyDown && isUsingComputer && titleScreen.activeSelf)
+        {
+            startgame = true;
+            Debug.Log("wait what");
+        }
+        
+        if (startgame)
+        {
+            Debug.Log("wait what");
+            StopAllCoroutines();
+            titleScreen.SetActive(false);
+            Invoke("spawnLevel", 0.2f);
+            startgame = false;
+        }
+    
 
         if(currentDesk != null && scoreUI.gameObject.activeSelf)
         {
-            scoreUI.GetComponent<TextMeshProUGUI>().text = "level: " + (levelCounter + 1).ToString() + " out of: " + currentDesk.disk.levelsInDesk.ToString();
+            scoreUI.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "level: " + (levelCounter + 1).ToString() + " out of: " + currentDesk.disk.levelsInDesk.ToString();
         }
 
+        if(currentDesk != null)
+        {           
+            // when the game is loading or in dailaogue is hides the ui and lock the player 
+            if (dialogue.dialogueOn || isLoading)
+            {
+                turnOffGameUI();
+                GameObject p = GameObject.FindGameObjectWithTag("2dPlayer");
+                if (p != null)
+                {
+                    p.GetComponent<TwoDPlayerMovement>().CanWalk = false;
+                }
+            }
+            else
+            {
+                turnOnGameUI();
+                GameObject p = GameObject.FindGameObjectWithTag("2dPlayer");
+                if (p != null)
+                {
+                    p.GetComponent<TwoDPlayerMovement>().CanWalk = true;
+                }
+            }
+        }
+        
+        
         if(currentDesk != null && timerUI.activeSelf && countTime)
         {
             if (timer > 0)
@@ -130,15 +176,7 @@ public class MiniGame : MonoBehaviour
                 Debug.Log("you falied beebb beeeb beeeb");               
             }
         }
-        if (dialogue.dialogueOn || isLoading)
-        {
-            turnOffGameUI();
-        }
-        else
-        {
-            turnOnGamUI();
-        }
-
+      
         if (!plugedIn)
         {
             if(currentDesk != null && alertMode)
@@ -216,7 +254,7 @@ public class MiniGame : MonoBehaviour
             {
                 timeToFinichTheGame = currentDesk.disk.timeToFinichTheGame;
                 //to put the player in computer mode
-                AudioManager.instance.playSound("computer sound");
+                AudioManager.instance.playSound("computer sound");            
                 enterComputerMode();
                 //this if statement id for showing the first dialogue only once, the first time he puts the disk in the computer 
                
@@ -236,9 +274,9 @@ public class MiniGame : MonoBehaviour
     //this is hard coded 
     void closeloading()
     {
-        tvloadingScreen.SetActive(false);
-        tvLight.gameObject.SetActive(false);
         computerView.SetActive(false);
+        tvloadingScreen.SetActive(false);
+        tvLight.gameObject.SetActive(false);      
         MiniGameCam.SetActive(false);
         isUsingComputer = false;
         TheFirstPerson.FPSController.instance.movementEnabled = true;
@@ -251,6 +289,7 @@ public class MiniGame : MonoBehaviour
     // adjust the computer mode from here
     void enterComputerMode()
     {
+        titleScreen.SetActive(false);
         isLoading = true;
         countTime = false;
         timer = timeToFinichTheGame;
@@ -261,7 +300,7 @@ public class MiniGame : MonoBehaviour
         tvLight.SetActive(true);      
         
         TheFirstPerson.FPSController.instance.movementEnabled = false;
-        Invoke("spawnLevel", 3f);
+        Invoke("showTitleScreen", 2f);
     }
 
     public void spawnLevel()
@@ -283,9 +322,10 @@ public class MiniGame : MonoBehaviour
 
     void exitComputerMode(float time)
     {
+
+        
         countTime = false;
-        scoreUI.SetActive(false);
-        timerUI.SetActive(false);
+        turnOffGameUI();
         thereIsFloopyDesk = false;
         closeMiniGameLevel();
         floppyDiskInHand.transform.parent.gameObject.SetActive(true);
@@ -315,13 +355,41 @@ public class MiniGame : MonoBehaviour
 
     void turnOffGameUI()
     {
+        
         scoreUI.SetActive(false);
         timerUI.SetActive(false);
     }
-    void turnOnGamUI()
+    void turnOnGameUI()
     {
+        scoreUI.transform.parent.gameObject.SetActive(true);
         scoreUI.SetActive(true);
         timerUI.SetActive(true);
+    }
+
+
+    void startTheDialogue()
+    {
+
+    }
+
+    void showTitleScreen()
+    {
+        
+        startgame = false;
+        StartCoroutine(titleAnim());
+        titleScreen.SetActive(true);
+        titleScreen.transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>().text = currentDesk.disk.gameTitle;
+
+    }
+
+    IEnumerator titleAnim()
+    {
+        while (true)
+        {
+            GameObject t = titleScreen.transform.FindChild("Text (TMP)").gameObject;
+            t.SetActive(!t.activeSelf);
+            yield return new WaitForSeconds(0.3f);
+        }
     }
     
 

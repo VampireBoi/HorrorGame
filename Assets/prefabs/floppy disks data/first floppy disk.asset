@@ -12,18 +12,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c90f19f63e542574588a2f73a4a89f47, type: 3}
   m_Name: first floppy disk
   m_EditorClassIdentifier: 
-  gameTitle: escape the dungen
+  gameTitle: ESCAPE                                                             THE
+    DUNGEN  TM
   gameStartScreen: {fileID: 21300000, guid: 9acbee72f7e952e49bd65e3d761e9bb8, type: 3}
-  difficulty: 0.5
+  difficulty: 0.6
   timeToFinichTheGame: 5
   firstDialogue:
-  - 'hi and welcome '
-  - this is the first game
-  - goodluck
+  - you're traped in here aren't you ?
+  - i can help you escape this
+  - but  you need to play my game first
+  - it's simple
+  - 'find the keys '
+  - 'in the top screen you will see the number of keys in this game '
+  - 'you need to find all the keys before the timer runs out  , '
+  - 'only then i''ll help you '
+  - good luck
   LastDialogue:
   - 'that was fun '
   - 'now fuck off '
-  levelsInDesk: 3
+  levelsInDesk: 4
   isFinished: 0
-  levelManager: {fileID: 8688614233439076073, guid: 6f580c6908439c24caaf64cf4d8dd5ed, type: 3}
-  firstInsertion: 1
+  levelManager: {fileID: 2053088589141835385, guid: 6f580c6908439c24caaf64cf4d8dd5ed, type: 3}
+  firstInsertion: 0

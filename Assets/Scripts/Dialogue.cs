@@ -73,8 +73,7 @@ public class Dialogue : MonoBehaviour
             {
                 dialogueOn = false;
                 textComponent.transform.parent.gameObject.SetActive(false);
-            }
-            Debug.Log(dialogueOn);
+            }        
         }
         else {
 

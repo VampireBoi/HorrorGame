@@ -10,30 +10,73 @@ public class TwoDPlayerMovement : MonoBehaviour
     Vector3 moveDirection;
     SpriteRenderer spriteRenderer;
 
+
+    [HideInInspector] public bool CanWalk;
+
+    public Sprite idile;
+    
+    public Sprite stare;
+
+    public Sprite[] sprites;
+    bool playAnim;
+
+    private void Awake()
+    {
+        CanWalk = true;
+    }
     private void Start()
     {
+        playAnim = false;
         rb = GetComponent<Rigidbody>();
         spriteRenderer = gameObject.transform.Find("mini game player").GetComponent<SpriteRenderer>();
     }
     private void Update()
     {
-        processInputs();
+        if (CanWalk)
+        {
+            processInputs();
+        } else
+        {
+            StopAllCoroutines();
+            spriteRenderer.sprite = stare;
+        }
+       
     }
     private void FixedUpdate()
     {
-        Move();
+        if (CanWalk)
+        {
+            Move();
+        }    
     }
 
     void processInputs()
     {
         float movex = Input.GetAxisRaw("Horizontal");
         float moveY = Input.GetAxisRaw("Vertical");
+  
+        if(movex != 0 || moveY != 0)
+        {
+            if (playAnim)
+            {
+                StartCoroutine(spriteAnimation());
+                playAnim = false;
+            }       
+        }
+        else {
+            if (!playAnim)
+            {
+                StopAllCoroutines();
+                playAnim=true;
+            }            
+            spriteRenderer.sprite = idile;
+        }
 
         if(movex > 0)
-        {
-            spriteRenderer.flipX = true;
+        {        
+            spriteRenderer.flipX = false;
         }
-        else if(movex != 0) { spriteRenderer.flipX = false; }
+        else if(movex != 0) { spriteRenderer.flipX = true; }
 
         moveDirection = new Vector3(movex, moveY, 0f).normalized;
     }
@@ -51,6 +94,17 @@ public class TwoDPlayerMovement : MonoBehaviour
             Destroy(collision.transform.gameObject);
             MiniGame.instance.advanceLevel();
             Debug.Log("level cleard");
+        }
+    }
+    IEnumerator spriteAnimation()
+    {
+        while (true)
+        {
+            foreach (Sprite sprite in sprites)
+            {
+                spriteRenderer.sprite = sprite;
+                yield return new WaitForSeconds(0.2f);
+            }
         }
     }
 
