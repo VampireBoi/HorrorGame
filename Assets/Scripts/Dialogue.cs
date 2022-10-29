@@ -9,6 +9,7 @@ public class Dialogue : MonoBehaviour
     [HideInInspector]
     string[] lines;
     public float textSpeed;
+    public bool enableGlitchEffect;
 
     private int index;
 
@@ -27,7 +28,7 @@ public class Dialogue : MonoBehaviour
 
     private void Update()
     {   
-        if (dialogueOn && textComponent.transform.parent.gameObject.activeSelf && Input.GetKeyDown(KeyCode.Mouse0)){
+        if (dialogueOn && textComponent.transform.parent.gameObject.activeSelf && (Input.GetKeyDown(KeyCode.Mouse0) || Input.GetKeyDown(KeyCode.Return))){
             NextLine();
         }
     }
@@ -36,13 +37,19 @@ public class Dialogue : MonoBehaviour
 
 
     public void startDialogue(string[] lines)
-    {      
-            textComponent.transform.parent.gameObject.SetActive(true);
-            textComponent.text = string.Empty;
-            this.lines = lines;
-            index = 0;
-            StartCoroutine(typeLine());
-            dialogueOn = true;           
+    {
+        //for the mini game dialouge, before the dialogue start the screen glitchs
+        if (enableGlitchEffect)
+        {
+            MiniGame.instance.glitchScreen(0.2f);
+        }
+
+        textComponent.transform.parent.gameObject.SetActive(true);
+        textComponent.text = string.Empty;
+        this.lines = lines;
+        index = 0;
+        StartCoroutine(typeLine());
+        dialogueOn = true;           
     }
     IEnumerator typeLine()
     {
@@ -71,6 +78,11 @@ public class Dialogue : MonoBehaviour
             }
             else
             {
+                //for the mini game dialouge, when the dialogue ends the screen glitchs
+                if (enableGlitchEffect)
+                {
+                    MiniGame.instance.glitchScreen(0.2f);
+                }
                 dialogueOn = false;
                 textComponent.transform.parent.gameObject.SetActive(false);
             }        
@@ -80,8 +92,8 @@ public class Dialogue : MonoBehaviour
             StopAllCoroutines();
             inTextLine = false;
             textComponent.text = string.Empty;
-            textComponent.text = lines[index]; 
-            
+            textComponent.text = lines[index];
+  
         }
         
     }

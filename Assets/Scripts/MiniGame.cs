@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Video;
 using UnityEngine.UI;
 using TMPro;
 
@@ -12,8 +13,6 @@ public class MiniGame : MonoBehaviour
     public float TimeToLoadTheNextLevel;
 
     public GameObject ui;
-
-    public GameObject miniGameManager;
   
     [HideInInspector]
     public GameObject floppyDiskInHand; 
@@ -21,9 +20,18 @@ public class MiniGame : MonoBehaviour
 
     public GameObject titleScreen;
 
+    public Material crtMat;
+    public Material GiltchMat;
+
+    float timerGiltchingFreq;
+
+    public GameObject computerScreen;
 
     bool startgame;
-    
+
+    bool a;
+    bool inAlertMode;
+
     public GameObject MiniGameCam;
     
     public GameObject computerView;
@@ -50,6 +58,8 @@ public class MiniGame : MonoBehaviour
     public GameObject scoreUI;
     public GameObject timerUI;
 
+    public GameObject[] bootUpScreen;
+
 
     float timeToFinichTheGame;
     float timer = 0;
@@ -72,6 +82,7 @@ public class MiniGame : MonoBehaviour
 
     private void Start()
     {
+        timerGiltchingFreq = 1000;
         startgame = false;
         scoreUI = ui.transform.Find("score background").gameObject;
         //timerUI = ui.transform.Find("Timer").gameObject;
@@ -87,16 +98,19 @@ public class MiniGame : MonoBehaviour
 
 
     private void Update()
-    {
+    {       
         if (MiniGameCam.activeSelf && GameObject.FindGameObjectWithTag("2dPlayer") != null)
         {
             MiniGameCam.transform.position = GameObject.FindGameObjectWithTag("2dPlayer").transform.position;
             MiniGameCam.transform.position = new Vector3(MiniGameCam.transform.position.x, MiniGameCam.transform.position.y, -1);
         }   
         //to exit the computer mode
-        if (Input.GetKeyDown(KeyCode.G) && isUsingComputer)
+        if (Input.GetKeyDown(KeyCode.G) && isUsingComputer && !inAlertMode)
         {
-            scoreUI.transform.parent.gameObject.SetActive(false);   
+            StopAllCoroutines();
+            timerGiltchingFreq = 1000;
+            AudioManager.instance.stopSound("mini game background music ");
+            AudioManager.instance.stopSound("timer sound");
             exitComputerMode(1f);
         }  
 
@@ -108,15 +122,14 @@ public class MiniGame : MonoBehaviour
         }
 
         
-        if(!startgame && Input.anyKeyDown && isUsingComputer && titleScreen.activeSelf)
+        if(!startgame && Input.GetKeyDown(KeyCode.Return) && isUsingComputer && titleScreen.activeSelf)
         {
-            startgame = true;
-            Debug.Log("wait what");
+            startgame = true;         
         }
         
         if (startgame)
         {
-            Debug.Log("wait what");
+            timerGiltchingFreq = 1000;
             StopAllCoroutines();
             titleScreen.SetActive(false);
             Invoke("spawnLevel", 0.2f);
@@ -130,50 +143,73 @@ public class MiniGame : MonoBehaviour
         }
 
         if(currentDesk != null)
-        {           
-            // when the game is loading or in dailaogue is hides the ui and lock the player 
-            if (dialogue.dialogueOn || isLoading)
+        {
+
+            if (isLoading)
             {
                 turnOffGameUI();
-                GameObject p = GameObject.FindGameObjectWithTag("2dPlayer");
-                if (p != null)
-                {
-                    p.GetComponent<TwoDPlayerMovement>().CanWalk = false;
-                }
             }
-            else
+            else if(!dialogue.dialogueOn)
             {
+                turnOnGameUI();
+            }
+            // when the game is loading or in dailaogue is hides the ui and lock the player 
+
+            if (a == true && !dialogue.dialogueOn)
+            {
+
+                Debug.Log("a dialouge has been ended");
                 turnOnGameUI();
                 GameObject p = GameObject.FindGameObjectWithTag("2dPlayer");
                 if (p != null)
                 {
                     p.GetComponent<TwoDPlayerMovement>().CanWalk = true;
                 }
+                if (currentDesk.disk.firstInsertion)
+                {
+                    AudioManager.instance.playSound("mini game background music ");
+                    AudioManager.instance.playSound("timer sound");
+                    StartCoroutine(timerGiltching());
+                    countTime = true;
+                    currentDesk.disk.firstInsertion = false;
+                }
+                a = false;
             }
+            if (dialogue.dialogueOn && a == false)
+            {
+                countTime = false;
+                Debug.Log("a dialouge has been started");
+                turnOffGameUI();
+                GameObject p = GameObject.FindGameObjectWithTag("2dPlayer");
+                if (p != null)
+                {
+                    p.GetComponent<TwoDPlayerMovement>().CanWalk = false;
+                }
+                a = true;
+            }
+
+            
+
+                      
         }
         
         
-        if(currentDesk != null && timerUI.activeSelf && countTime)
+        if(currentDesk != null && timerUI.activeSelf && countTime && plugedIn)
         {
             if (timer > 0)
-            {
-                timer -= Time.deltaTime;
+            {           
+                timer -= Time.deltaTime;              
                 timerUI.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Time:" + (int)timer + " s";
+                timerSound(timer);                
             }
             else
             {
                 //here we trigger the timeout event
-                if (playSound)
-                {
-                    AudioManager.instance.playSound("alert sound");
-                    playSound = false;
-                }
-                alertMode = true;
-                computerView.SetActive(false);
-                TheFirstPerson.FPSController.instance.movementEnabled = true;
-                floppyDiskInHand.transform.parent.gameObject.SetActive(true);
-                isUsingComputer = false;
-                Debug.Log("you falied beebb beeeb beeeb");               
+                AudioManager.instance.stopSound("timer sound");
+                AudioManager.instance.stopSound("mini game background music ");
+                inAlertMode = true;
+                StartCoroutine(triggerAlert());
+
             }
         }
       
@@ -186,6 +222,7 @@ public class MiniGame : MonoBehaviour
                 exitComputerMode(0f);
                 alertMode = false;
                 Enemy.instanse.exexute = 0;
+                StopAllCoroutines();
             }
             
         }
@@ -216,7 +253,12 @@ public class MiniGame : MonoBehaviour
     void closeMiniGameLevel()
     {    
         levelCounter = 0;
-        LevelManager.instance.destroyCurrentLevel();        
+
+        Object[] t = GameObject.FindObjectsOfType(typeof(LevelManager));
+        if(t.Length > 0)
+        {
+            LevelManager.instance.destroyCurrentLevel();
+        }   
     }
 
     
@@ -254,10 +296,12 @@ public class MiniGame : MonoBehaviour
             {
                 timeToFinichTheGame = currentDesk.disk.timeToFinichTheGame;
                 //to put the player in computer mode
-                AudioManager.instance.playSound("computer sound");            
+                computerScreen.GetComponent<MeshRenderer>().material = crtMat;
+                AudioManager.instance.playSound("computer sound");        
                 enterComputerMode();
+                showBootupScreen();
                 //this if statement id for showing the first dialogue only once, the first time he puts the disk in the computer 
-               
+
             }
             else
             {
@@ -274,6 +318,8 @@ public class MiniGame : MonoBehaviour
     //this is hard coded 
     void closeloading()
     {
+        StopAllCoroutines();
+        countTime = false;
         computerView.SetActive(false);
         tvloadingScreen.SetActive(false);
         tvLight.gameObject.SetActive(false);      
@@ -297,47 +343,67 @@ public class MiniGame : MonoBehaviour
         floppyDiskInHand.transform.parent.gameObject.SetActive(false);
         MiniGameCam.SetActive(true);
         computerView.SetActive(true);
-        tvLight.SetActive(true);      
-        
+        tvLight.SetActive(true);
+        inAlertMode = true;
         TheFirstPerson.FPSController.instance.movementEnabled = false;
-        Invoke("showTitleScreen", 2f);
+        Invoke("showTitleScreen", (float)bootUpScreen[1].GetComponent<VideoPlayer>().length);
     }
 
     public void spawnLevel()
     {
         Instantiate(currentDesk.disk.levelManager, gameObject.transform).GetComponent<LevelManager>();
         
-        //for controlling the ui 
-        countTime = true;
-        isLoading = false;
+        
+        //for controlling the ui       
+        countTime = false;
+        isLoading = false;      
 
         tvloadingScreen.SetActive(false);
 
         if (currentDesk.disk.firstInsertion)
         {
-            dialogue.startDialogue(currentDesk.disk.firstDialogue);
-            currentDesk.disk.firstInsertion = false;
+            dialogue.startDialogue(currentDesk.disk.firstDialogue);       
         }
+        else
+        {
+            AudioManager.instance.playSound("mini game background music ");
+            countTime = true;
+            AudioManager.instance.playSound("timer sound");
+            StartCoroutine(timerGiltching());
+        }
+    }
+
+    void showBootupScreen()
+    {
+        StartCoroutine(startboot());
+    }
+
+    IEnumerator startboot()
+    {     
+        bootUpScreen[0].gameObject.SetActive(true);
+        bootUpScreen[1].GetComponent<VideoPlayer>().Play();
+        yield return new WaitForSeconds((float)bootUpScreen[1].GetComponent<VideoPlayer>().length);
+        bootUpScreen[0].gameObject.SetActive(false);
     }
 
     void exitComputerMode(float time)
     {
-
-        
-        countTime = false;
         turnOffGameUI();
-        thereIsFloopyDesk = false;
-        closeMiniGameLevel();
+        thereIsFloopyDesk = false;    
         floppyDiskInHand.transform.parent.gameObject.SetActive(true);
-        Invoke("closeloading", time);
+        Invoke("closeloading", 0.3f);
+        Invoke("closeMiniGameLevel", time);
     }
     
     
     void takeOutCurrentFloppyDisk()
     {
-
         if (playDialogue)
-        {         
+        {
+            StopAllCoroutines();
+            timerGiltchingFreq = 1000;
+            AudioManager.instance.stopSound("timer sound");
+            AudioManager.instance.stopSound("mini game background music ");
             dialogue.startDialogue(currentDesk.disk.LastDialogue);
             playDialogue = false;
         }
@@ -345,11 +411,13 @@ public class MiniGame : MonoBehaviour
         Debug.Log("i should be loobing");
         if (!dialogue.dialogueOn)
         {
+            a = false;
             currentDesk.disk.isFinished = true;
             playDialogue = true;
             levelCounter = 0;
-            currentDesk = null;
+            currentDesk = null;          
             exitComputerMode(1f);
+
         }     
     }
 
@@ -366,12 +434,6 @@ public class MiniGame : MonoBehaviour
         timerUI.SetActive(true);
     }
 
-
-    void startTheDialogue()
-    {
-
-    }
-
     void showTitleScreen()
     {
         
@@ -379,20 +441,101 @@ public class MiniGame : MonoBehaviour
         StartCoroutine(titleAnim());
         titleScreen.SetActive(true);
         titleScreen.transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>().text = currentDesk.disk.gameTitle;
-
     }
 
     IEnumerator titleAnim()
     {
         while (true)
         {
-            GameObject t = titleScreen.transform.FindChild("Text (TMP)").gameObject;
+            GameObject t = titleScreen.transform.Find("Text (TMP)").gameObject;
             t.SetActive(!t.activeSelf);
-            yield return new WaitForSeconds(0.3f);
+            yield return new WaitForSeconds(0.35f);
         }
     }
-    
 
-    
+    public void glitchScreen(float time)
+    {
+        StartCoroutine(startGlitch(time));
+    }
 
+    IEnumerator startGlitch(float time)
+    {
+        AudioManager.instance.playSound("glitch sound");
+        computerScreen.GetComponent<MeshRenderer>().material = GiltchMat;
+        yield return new WaitForSeconds(time);
+        AudioManager.instance.stopSound("glitch sound");
+        computerScreen.GetComponent<MeshRenderer>().material = crtMat;      
+    }
+
+    IEnumerator triggerAlert()
+    {
+        turnOffGameUI();
+        GameObject T = GameObject.Find("2dplayer(Clone)");
+        if(T != null)
+        {
+            T.GetComponent<TwoDPlayerMovement>().CanWalk = false;
+        }
+        yield return new WaitForSeconds(1.5f);
+        if (playSound)
+        {
+            AudioManager.instance.playSound("alert sound");
+            playSound = false;
+        }       
+        computerScreen.GetComponent<MeshRenderer>().material = GiltchMat;
+        
+        yield return new WaitForSeconds(0.8f);
+        alertMode = true;
+        computerView.SetActive(false);
+        TheFirstPerson.FPSController.instance.movementEnabled = true;
+        floppyDiskInHand.transform.parent.gameObject.SetActive(true);
+        isUsingComputer = false;
+        Debug.Log("you falied beebb beeeb beeeb");
+    }
+
+    void timerSound(float time)
+    {
+        
+        if(time > 30)
+        {
+            timerGiltchingFreq = 20f;
+            AudioManager.instance.changePitch("timer sound", 0.65f);
+        }
+        else if(time < 30 && time > 20)
+        {
+            timerGiltchingFreq = 10f;
+            AudioManager.instance.changePitch("timer sound", 1f);
+        }
+        else if (time < 20 && time > 10)
+        {
+            timerGiltchingFreq = 5f;
+            AudioManager.instance.changePitch("timer sound", 1.5f);
+        }
+        else if (time < 10 && time > 5)
+        {
+            timerGiltchingFreq = 3f;
+            AudioManager.instance.changePitch("timer sound", 2f);
+        }
+        else if (time < 5 && time > 0)
+        {
+            timerGiltchingFreq = 1f;
+            AudioManager.instance.changePitch("timer sound", 2.5f);
+        }
+
+    }
+
+
+    IEnumerator timerGiltching()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(timerGiltchingFreq);
+            
+            int i = Random.Range(1, 2);
+            if (i == 1)
+            {
+                glitchScreen(Random.Range(0f, 0.3f));
+            }
+           
+        }    
+    }
 }

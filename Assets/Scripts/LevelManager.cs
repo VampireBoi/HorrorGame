@@ -82,9 +82,18 @@ public class LevelManager : MonoBehaviour
         }
         RoomTemplates.Instance.roomList.Clear();
         RoomTemplates.Instance.blockRooms.Clear();
-        Destroy(GameObject.Find("key(Clone)"));
-        Destroy(GameObject.Find("gamePos(Clone)"));
-        Destroy(RoomTemplates.Instance.transform.gameObject);
+
+        GameObject T = GameObject.Find("key(Clone)");
+        if(T != null)
+        {
+            Destroy(T);
+        }
+        GameObject T2 = GameObject.Find("gamePos(Clone)");
+        if (T != null)
+        {
+            Destroy(T2);
+        }
+        
         Destroy(gameObject);
     }
 

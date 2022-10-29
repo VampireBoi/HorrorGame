@@ -10,7 +10,6 @@ public class TwoDPlayerMovement : MonoBehaviour
     Vector3 moveDirection;
     SpriteRenderer spriteRenderer;
 
-
     [HideInInspector] public bool CanWalk;
 
     public Sprite idile;
@@ -22,11 +21,11 @@ public class TwoDPlayerMovement : MonoBehaviour
 
     private void Awake()
     {
-        CanWalk = true;
+        CanWalk = true;     
     }
     private void Start()
-    {
-        playAnim = false;
+    {     
+        playAnim = true;
         rb = GetComponent<Rigidbody>();
         spriteRenderer = gameObject.transform.Find("mini game player").GetComponent<SpriteRenderer>();
     }
@@ -37,28 +36,30 @@ public class TwoDPlayerMovement : MonoBehaviour
             processInputs();
         } else
         {
+            rb.velocity = Vector3.zero;
             StopAllCoroutines();
             spriteRenderer.sprite = stare;
+
         }
        
     }
     private void FixedUpdate()
     {
-        if (CanWalk)
-        {
-            Move();
-        }    
+        
+        Move();
+         
     }
 
     void processInputs()
     {
         float movex = Input.GetAxisRaw("Horizontal");
         float moveY = Input.GetAxisRaw("Vertical");
-  
-        if(movex != 0 || moveY != 0)
+
+        if (movex != 0 || moveY != 0)
         {
             if (playAnim)
             {
+                Debug.Log("should play anim");
                 StartCoroutine(spriteAnimation());
                 playAnim = false;
             }       
@@ -78,19 +79,24 @@ public class TwoDPlayerMovement : MonoBehaviour
         }
         else if(movex != 0) { spriteRenderer.flipX = true; }
 
+        
         moveDirection = new Vector3(movex, moveY, 0f).normalized;
     }
 
 
     void Move()
     {
-        rb.velocity = new Vector3(moveDirection.x * MovementSpeed *Time.deltaTime, moveDirection.y * MovementSpeed * Time.deltaTime, moveDirection.z * MovementSpeed * Time.deltaTime);
-
+        if (CanWalk)
+        {
+            rb.velocity = new Vector3(moveDirection.x * MovementSpeed * Time.deltaTime, moveDirection.y * MovementSpeed * Time.deltaTime, moveDirection.z * MovementSpeed * Time.deltaTime);
+        }
     }
     private void OnCollisionEnter(Collision collision)
     {
         if(collision.transform.CompareTag("Mini game Key"))
         {
+            AudioManager.instance.playSound("key pickup");
+           
             Destroy(collision.transform.gameObject);
             MiniGame.instance.advanceLevel();
             Debug.Log("level cleard");
@@ -107,6 +113,9 @@ public class TwoDPlayerMovement : MonoBehaviour
             }
         }
     }
+
+
+
 
    
 }
