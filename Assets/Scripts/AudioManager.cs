@@ -9,7 +9,7 @@ public class AudioManager : MonoBehaviour
     
     
     // Start is called before the first frame update
-    void Awake()
+    void Start()
     {
         instance = this;
         
@@ -40,11 +40,6 @@ public class AudioManager : MonoBehaviour
                 sound.source.loop = sound.loop;
             }
         }     
-    }
-
-    private void Start()
-    {
-        playSound("horror ambience");
     }
 
     // Update is called once per frame

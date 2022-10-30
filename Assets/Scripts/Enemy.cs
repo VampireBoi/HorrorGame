@@ -31,10 +31,7 @@ public class Enemy : MonoBehaviour
     
     public Transform Transform;
     public NavMeshAgent Agent;
-    public GameObject PointA;
-    public GameObject DoorPoint;
-
-    public GameObject savePoint;
+    public GameObject DoorPoint;    
 
 
 
@@ -56,12 +53,6 @@ public class Enemy : MonoBehaviour
     bool isPatrolling = false;
 
     bool playDialogue = false;
-
-    float rotcount;
-    bool changedir = false;
-    bool offset = false;
-    float T;
-
     public Vector3 walkPoint;
     bool walkPointSet;
     public float walkPointRange;
@@ -195,11 +186,7 @@ public class Enemy : MonoBehaviour
 
     private void resetValues()
     {
-        isCheckingNoise = false;
-        offset = false;
-        rotcount = 0;
-        changedir = false;    
-        T = 0f;
+        isCheckingNoise = false;   
         head.restRotation();
     }
 
@@ -295,6 +282,7 @@ public class Enemy : MonoBehaviour
                     isAttacking = false;
                     Agent.speed = enemyNormalSpeed;
                     AudioManager.instance.changePitch("enemy foot steps", 1f);
+                    AudioManager.instance.playSound("enemy foot steps");
                     isChecking = false;
                     playDialogue = true;
                     head.restRotation();
@@ -324,8 +312,7 @@ public class Enemy : MonoBehaviour
         else
         {       
             Agent.SetDestination(DoorPoint.transform.position);
-            animator.SetBool("isMoving", true);
-            offset = true;
+            animator.SetBool("isMoving", true);    
             if (playSound)
             {
                 AudioManager.instance.playSound("beep sound");
@@ -377,6 +364,17 @@ public class Enemy : MonoBehaviour
         yield return new WaitForSeconds(4);
         Debug.Log("gameover");
         Debug.Log("return to main menu");
+    }
+
+
+    public void attackThePlayer()
+    {
+        playDialogue = true;
+        //if the player is standing in the room and the enemy reaches the door point 
+        isChecking = false;
+        isPatrolling = false;
+        isCheckingNoise = false;
+        isAttacking = true;
     }
 
 

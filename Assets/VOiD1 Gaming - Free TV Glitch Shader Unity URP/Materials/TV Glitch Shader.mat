@@ -36,11 +36,11 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
-    - Vector1_3941F91A: 2
-    - Vector1_51FF2C5F: 0.8
-    - Vector1_7207C8FC: 200
-    - Vector1_B234DBDD: 300
-    - Vector1_E9FEB5BB: 200
+    - Vector1_3941F91A: 1.05
+    - Vector1_51FF2C5F: 100
+    - Vector1_7207C8FC: 5
+    - Vector1_B234DBDD: 10
+    - Vector1_E9FEB5BB: 1000
     m_Colors:
     - Color_2FDD5EBD: {r: 0, g: 0, b: 0, a: 0.83137256}
   m_BuildTextureStacks: []

@@ -12,6 +12,7 @@ TagManager:
   - computer
   - Plug
   - wall
+  - Enemy
   layers:
   - Default
   - TransparentFX

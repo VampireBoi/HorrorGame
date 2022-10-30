@@ -82,7 +82,7 @@ public class MiniGame : MonoBehaviour
 
     private void Start()
     {
-        timerGiltchingFreq = 1000;
+        timerGiltchingFreq = 500;
         startgame = false;
         scoreUI = ui.transform.Find("score background").gameObject;
         //timerUI = ui.transform.Find("Timer").gameObject;
@@ -98,7 +98,11 @@ public class MiniGame : MonoBehaviour
 
 
     private void Update()
-    {       
+    {
+
+
+        Debug.Log("is using the coumputer: " + isUsingComputer);
+        Debug.Log("in alert mode: " + inAlertMode);
         if (MiniGameCam.activeSelf && GameObject.FindGameObjectWithTag("2dPlayer") != null)
         {
             MiniGameCam.transform.position = GameObject.FindGameObjectWithTag("2dPlayer").transform.position;
@@ -107,11 +111,7 @@ public class MiniGame : MonoBehaviour
         //to exit the computer mode
         if (Input.GetKeyDown(KeyCode.G) && isUsingComputer && !inAlertMode)
         {
-            StopAllCoroutines();
-            timerGiltchingFreq = 1000;
-            AudioManager.instance.stopSound("mini game background music ");
-            AudioManager.instance.stopSound("timer sound");
-            exitComputerMode(1f);
+            turnOffComputer();
         }  
 
         //finishing the desk in take it out of the system;
@@ -129,7 +129,7 @@ public class MiniGame : MonoBehaviour
         
         if (startgame)
         {
-            timerGiltchingFreq = 1000;
+            timerGiltchingFreq = 500;
             StopAllCoroutines();
             titleScreen.SetActive(false);
             Invoke("spawnLevel", 0.2f);
@@ -215,14 +215,15 @@ public class MiniGame : MonoBehaviour
       
         if (!plugedIn)
         {
+            
             if(currentDesk != null && alertMode)
             {
                 AudioManager.instance.stopSound("alert sound");
                 playSound = true;
-                exitComputerMode(0f);
-                alertMode = false;
+                exitComputerMode(0f);               
                 Enemy.instanse.exexute = 0;
                 StopAllCoroutines();
+                
             }
             
         }
@@ -344,7 +345,7 @@ public class MiniGame : MonoBehaviour
         MiniGameCam.SetActive(true);
         computerView.SetActive(true);
         tvLight.SetActive(true);
-        inAlertMode = true;
+        tvLight.GetComponent<Light>().color = Color.white;
         TheFirstPerson.FPSController.instance.movementEnabled = false;
         Invoke("showTitleScreen", (float)bootUpScreen[1].GetComponent<VideoPlayer>().length);
     }
@@ -360,6 +361,9 @@ public class MiniGame : MonoBehaviour
 
         tvloadingScreen.SetActive(false);
 
+        tvLight.GetComponent<Light>().color = currentDesk.disk.screenLightColor;
+
+
         if (currentDesk.disk.firstInsertion)
         {
             dialogue.startDialogue(currentDesk.disk.firstDialogue);       
@@ -371,6 +375,7 @@ public class MiniGame : MonoBehaviour
             AudioManager.instance.playSound("timer sound");
             StartCoroutine(timerGiltching());
         }
+
     }
 
     void showBootupScreen()
@@ -389,6 +394,8 @@ public class MiniGame : MonoBehaviour
     void exitComputerMode(float time)
     {
         turnOffGameUI();
+        inAlertMode = false;
+        alertMode = false;
         thereIsFloopyDesk = false;    
         floppyDiskInHand.transform.parent.gameObject.SetActive(true);
         Invoke("closeloading", 0.3f);
@@ -436,11 +443,13 @@ public class MiniGame : MonoBehaviour
 
     void showTitleScreen()
     {
-        
+
+        tvLight.GetComponent<Light>().color = currentDesk.disk.gameTitleScreenColor;
         startgame = false;
         StartCoroutine(titleAnim());
         titleScreen.SetActive(true);
         titleScreen.transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>().text = currentDesk.disk.gameTitle;
+        titleScreen.transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>().color = currentDesk.disk.gameTitleScreenColor;
     }
 
     IEnumerator titleAnim()
@@ -537,5 +546,15 @@ public class MiniGame : MonoBehaviour
             }
            
         }    
+    }
+
+
+    public void turnOffComputer()
+    {
+        StopAllCoroutines();
+        timerGiltchingFreq = 1000;
+        AudioManager.instance.stopSound("mini game background music ");
+        AudioManager.instance.stopSound("timer sound");
+        exitComputerMode(1f);
     }
 }

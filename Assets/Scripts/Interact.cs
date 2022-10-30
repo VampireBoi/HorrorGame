@@ -5,6 +5,8 @@ using UnityEngine;
 public class Interact : MonoBehaviour
 {
 
+    public Dialogue dialogue;
+
     public static Interact Instance;
     public Transform chairPosition;
     public LayerMask mask;
@@ -26,8 +28,16 @@ public class Interact : MonoBehaviour
         {
 
             // there is an interactable object the game shows the hand icon 
+
             //FirstPersonController.Instance.crosshairObject.gameObject.SetActive(true);
-            if(hit.transform.tag == "wall")
+
+            if (MiniGame.instance.isUsingComputer)
+            {
+                fpsUI.transform.GetChild(0).gameObject.SetActive(false);
+                fpsUI.transform.GetChild(1).gameObject.SetActive(false);
+            }
+
+            else if(hit.transform.tag == "wall")
             {
                 fpsUI.transform.GetChild(0).gameObject.SetActive(true);
                 fpsUI.transform.GetChild(1).gameObject.SetActive(false);
@@ -44,11 +54,7 @@ public class Interact : MonoBehaviour
                 {
 
                     //AudioManager.instance.stopSound("player footsteps");
-                    player[0].transform.position = chairPosition.position;                 
-                    TheFirstPerson.FPSController.instance.crouching = true;
-                    Invoke("settDown", (TheFirstPerson.FPSController.instance.crouchTransitionSpeed * TheFirstPerson.FPSController.instance.crouchColliderHeight) / 50f);
-                    isSetting = true;
-                    itemSway.instance.destroyItemInHand();
+                    enterSaveArea();
                 }
 
                 // if the player is looking at an item
@@ -60,7 +66,7 @@ public class Interact : MonoBehaviour
                 {
                     if (MiniGame.instance.plugedIn)
                     {
-                        MiniGame.instance.openComputer();
+                        MiniGame.instance.openComputer();                
                     }
                     else
                     {
@@ -80,8 +86,17 @@ public class Interact : MonoBehaviour
         }
         // there's no intaractable object ahed, deactivate the hand icon 
         else {
-            fpsUI.transform.GetChild(0).gameObject.SetActive(true);
-            fpsUI.transform.GetChild(1).gameObject.SetActive(false);
+            if (MiniGame.instance.isUsingComputer)
+            {
+                fpsUI.transform.GetChild(0).gameObject.SetActive(false);
+                fpsUI.transform.GetChild(1).gameObject.SetActive(false);
+            }
+            else
+            {
+                fpsUI.transform.GetChild(0).gameObject.SetActive(true);
+                fpsUI.transform.GetChild(1).gameObject.SetActive(false);
+            }
+            
         }//FirstPersonController.Instance.crosshairObject.gameObject.SetActive(false); }
         
         
@@ -89,7 +104,7 @@ public class Interact : MonoBehaviour
        // to get out of bed 
         if (isSetting)
         {
-            if (Input.GetKeyDown(KeyCode.Mouse2))
+            if (Input.GetKeyDown(KeyCode.Mouse2) && !dialogue.dialogueOn)
             {
                 player[0].transform.position = exitPosition.position;
                 TheFirstPerson.FPSController.instance.movementEnabled = true;
@@ -102,6 +117,16 @@ public class Interact : MonoBehaviour
         }
     }
 
+    
+    public void enterSaveArea()
+    {
+        player[0].transform.position = chairPosition.position;
+        TheFirstPerson.FPSController.instance.crouching = true;
+        Invoke("settDown", (TheFirstPerson.FPSController.instance.crouchTransitionSpeed * TheFirstPerson.FPSController.instance.crouchColliderHeight) / 50f);
+        isSetting = true;
+        itemSway.instance.destroyItemInHand();
+    }
+    
     void settDown()
     {
 

@@ -6,8 +6,12 @@ using UnityEngine;
 public class FloppyDeskData : ScriptableObject
 {
     public string gameTitle;
-    public Sprite gameStartScreen;
+    [Header("the game title color")]
+    public Color gameTitleScreenColor;
     
+    [Header("the color of the screen light")]
+    public Color screenLightColor;
+
     [Range(0.3f, 2f)] public float difficulty; 
     public float timeToFinichTheGame;
     
