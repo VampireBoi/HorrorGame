@@ -8,16 +8,10 @@ public class Computer : MonoBehaviour
 {
     public static Computer instance;
 
-    public GameObject miniGame;
-
-    [Header("the time to load the next level \"in secends\"")]
-    public float TimeToLoadTheNextLevel;
-
     public GameObject ui;
 
     [HideInInspector]
     public GameObject floppyDiskInHand;
-    public int levelCounter;
 
     public GameObject titleScreen;
 
@@ -29,11 +23,7 @@ public class Computer : MonoBehaviour
     public GameObject computerScreen;
 
     bool startgame;
-
-    bool a;
-  
-    
-
+   
     public GameObject MiniGameCam;
 
     public GameObject computerView;
@@ -61,12 +51,10 @@ public class Computer : MonoBehaviour
 
 
     float timeToFinichTheGame;
-    float timer = 0;
 
     public bool plugedIn = false;
 
 
-    bool countTime = false;
     bool isLoading = false;
 
     bool playSound;
@@ -195,7 +183,6 @@ public class Computer : MonoBehaviour
 
             if (currentDesk != null && !alertMode)
             {
-                timeToFinichTheGame = currentDesk.disk.timeToFinichTheGame;
                 //to put the player in computer mode
                 computerScreen.GetComponent<MeshRenderer>().material = crtMat;
                 AudioManager.instance.playSound("computer sound");
@@ -218,8 +205,7 @@ public class Computer : MonoBehaviour
     //this is hard coded 
     void closeloading()
     {
-        StopAllCoroutines();
-        countTime = false;
+        StopAllCoroutines();      
         computerView.SetActive(false);
         tvloadingScreen.SetActive(false);
         tvLight.gameObject.SetActive(false);
@@ -236,9 +222,7 @@ public class Computer : MonoBehaviour
     void enterComputerMode()
     {
         titleScreen.SetActive(false);
-        isLoading = true;
-        countTime = false;
-        timer = timeToFinichTheGame;
+        isLoading = true;      
         isUsingComputer = true;
 
         floppyDiskInHand.transform.parent.gameObject.SetActive(false);

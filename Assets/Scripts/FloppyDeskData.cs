@@ -11,13 +11,9 @@ public class FloppyDeskData : ScriptableObject
     
     [Header("the color of the screen light")]
     public Color screenLightColor;
-
-    [Range(0.3f, 2f)] public float difficulty; 
-    public float timeToFinichTheGame;
-    
+ 
     public string[] firstDialogue;
     public string[] LastDialogue;
-    public int levelsInDesk;  
     
     [HideInInspector] public bool isFinished;
 

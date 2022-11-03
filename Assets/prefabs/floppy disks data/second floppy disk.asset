@@ -15,8 +15,6 @@ MonoBehaviour:
   gameTitle: FOR                  YOUSIF    TM
   gameTitleScreenColor: {r: 0.25943398, g: 1, b: 0.26208174, a: 1}
   screenLightColor: {r: 0.49019608, g: 0.27450982, b: 0.49019608, a: 1}
-  difficulty: 1
-  timeToFinichTheGame: 10
   firstDialogue:
   - 'good you found the the game '
   - 'it''s the same rules '
@@ -28,7 +26,6 @@ MonoBehaviour:
   - look
   - 'under '
   - 'the counter '
-  levelsInDesk: 5
   isFinished: 0
   miniGame: {fileID: 6814572721301530243, guid: 1f9d84ea46c7e3e469abb2519cfe43cb, type: 3}
   firstInsertion: 0

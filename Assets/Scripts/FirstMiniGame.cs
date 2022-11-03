@@ -9,35 +9,37 @@ public class FirstMiniGame : MonoBehaviour
 {
     public static FirstMiniGame instance;
 
-    public bool gameIsFinished;
+    
+    [HideInInspector] public bool gameIsFinished;
 
     [Header("the time to load the next level \"in secends\"")]
     public float TimeToLoadTheNextLevel;
 
     public GameObject levelManager;
 
-    int levelsInDisk;
+    [Range(0.3f, 2f)] public float difficulty;
+    public float timeToFinichTheGame;
+    public int levelsInDisk;
 
     //[HideInInspector]
     //public GameObject floppyDiskInHand;
     
-    public int levelCounter;
+    int levelCounter;
 
     //public GameObject titleScreen;
 
     Material crtMat;
     Material GiltchMat;
 
-    public GameObject computerScreen;
+    GameObject computerScreen;
 
     float timerGiltchingFreq;
 
     //bool startgame;
     bool a;
-    public GameObject MiniGameCam;
-
-
-    public Dialogue dialogue;
+    
+    GameObject MiniGameCam;
+    Dialogue dialogue;
     // the desk inside the computer;
     //[HideInInspector]
     //public FloppyDisk currentDesk;
@@ -60,7 +62,6 @@ public class FirstMiniGame : MonoBehaviour
 
 
 
-    float timeToFinichTheGame;
     float timer = 0;
 
 
@@ -75,6 +76,7 @@ public class FirstMiniGame : MonoBehaviour
 
 
     //the light coming from the screen when the game is running "change later but works for now" 
+    
     GameObject tvLight;
     GameObject tvloadingScreen;
 
@@ -83,7 +85,6 @@ public class FirstMiniGame : MonoBehaviour
 
         gameIsFinished = false;
         
-        timeToFinichTheGame = Computer.instance.currentDesk.disk.timeToFinichTheGame;
         scoreUI = Computer.instance.scoreUI;
         timerUI = Computer.instance.timerUI;
 
@@ -104,8 +105,6 @@ public class FirstMiniGame : MonoBehaviour
         instance = this;
         playSound = true;
 
-
-        levelsInDisk = Computer.instance.currentDesk.disk.levelsInDesk;
         isLoading = true;
         countTime = true;
         timer = timeToFinichTheGame;
@@ -116,7 +115,7 @@ public class FirstMiniGame : MonoBehaviour
     {
         
 
-        if (Computer.instance.thereIsFloopyDesk && levelCounter >= Computer.instance.currentDesk.disk.levelsInDesk)
+        if (Computer.instance.thereIsFloopyDesk && levelCounter >= levelsInDisk)
         {
             countTime = false;
             winTheGame();

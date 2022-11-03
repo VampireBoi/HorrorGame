@@ -46,14 +46,6 @@ MonoBehaviour:
   gameIsFinished: 0
   TimeToLoadTheNextLevel: 1
   levelManager: {fileID: 2053088589141835385, guid: 6f580c6908439c24caaf64cf4d8dd5ed, type: 3}
-  levelCounter: 0
-  crtMat: {fileID: 2100000, guid: f06e170bbf8bc4f499c591494e5ea41c, type: 2}
-  GiltchMat: {fileID: 2100000, guid: 7e9e1fdec0dfe514988f454d55a05c54, type: 2}
-  computerScreen: {fileID: 0}
-  MiniGameCam: {fileID: 0}
-  dialogue: {fileID: 0}
-  scoreUI: {fileID: 0}
-  timerUI: {fileID: 0}
-  plugedIn: 0
-  tvLight: {fileID: 0}
-  tvloadingScreen: {fileID: 0}
+  difficulty: 0.5
+  timeToFinichTheGame: 50
+  levelsInDisk: 5

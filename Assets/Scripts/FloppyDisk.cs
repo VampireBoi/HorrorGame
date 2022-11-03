@@ -13,7 +13,7 @@ public class FloppyDisk : MonoBehaviour
     }
     private void Update()
     {
-        if (disk.isFinished)
+        if (disk.isFinished && Computer.instance.currentDesk == null)
         {
             Destroy(gameObject);
             InventoryManager.Instance.items.Remove(transform.GetComponent<ItemPickup>().item);

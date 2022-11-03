@@ -15,8 +15,6 @@ MonoBehaviour:
   gameTitle: ESCAPE                       THE DUNGEN  TM
   gameTitleScreenColor: {r: 1, g: 0, b: 0, a: 1}
   screenLightColor: {r: 0.49019608, g: 0.27450982, b: 0.49019608, a: 1}
-  difficulty: 0.7
-  timeToFinichTheGame: 10
   firstDialogue:
   - you're traped in here aren't you ?
   - i can help you escape this
@@ -30,7 +28,6 @@ MonoBehaviour:
   LastDialogue:
   - that was totally fun and not stressful right ?
   - now go to the other room behind you
-  levelsInDesk: 2
   isFinished: 0
   miniGame: {fileID: 6814572721301530243, guid: 1f9d84ea46c7e3e469abb2519cfe43cb, type: 3}
-  firstInsertion: 0
+  firstInsertion: 1

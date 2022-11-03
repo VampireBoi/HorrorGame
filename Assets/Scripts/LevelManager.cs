@@ -27,7 +27,7 @@ public class LevelManager : MonoBehaviour
   
     private void Awake()
     {
-        timeForSpawning = Computer.instance.currentDesk.disk.difficulty;      
+        timeForSpawning = FirstMiniGame.instance.difficulty;      
         timeForSpawningKey = timeForSpawning + 0.1f;     
         if(instance == null)
         {

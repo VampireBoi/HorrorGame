@@ -5,7 +5,7 @@ using UnityEngine.Video;
 using UnityEngine.UI;
 using TMPro;
 
-public class MiniGame : MonoBehaviour
+/*public class MiniGame : MonoBehaviour
 {
     public static MiniGame instance;
     
@@ -561,3 +561,4 @@ public class MiniGame : MonoBehaviour
 
    
 }
+*/
