@@ -48,4 +48,4 @@ MonoBehaviour:
   levelManager: {fileID: 2053088589141835385, guid: 6f580c6908439c24caaf64cf4d8dd5ed, type: 3}
   difficulty: 0.5
   timeToFinichTheGame: 50
-  levelsInDisk: 5
+  levelsInDisk: 1

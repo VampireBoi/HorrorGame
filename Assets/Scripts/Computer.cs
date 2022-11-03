@@ -33,6 +33,8 @@ public class Computer : MonoBehaviour
     [HideInInspector]
     public FloppyDisk currentDesk;
 
+    public GameObject currentGame;
+
     //to check 
     public bool thereIsFloopyDesk;
 
@@ -91,15 +93,23 @@ public class Computer : MonoBehaviour
         //Debug.Log("is using the coumputer: " + isUsingComputer);
         //Debug.Log("in alert mode: " + inAlertMode);
         
+
+
         if (Input.GetKeyDown(KeyCode.G) && isUsingComputer && !inAlertMode)
         {
             turnOffComputer();
         }
 
-       
-        if (FirstMiniGame.instance != null && FirstMiniGame.instance.gameIsFinished)
+        // here we chick if the game that we're currenlty playing is finished 
+        if (currentGame != null)
         {
-            takeOutCurrentFloppyDisk();
+            // here we chick for each game 
+            if(currentGame.GetComponent<FirstMiniGame>().gameIsFinished && currentDesk != null)
+            {
+                takeOutCurrentFloppyDisk();
+            }
+
+            //if(currentGame.GetComponent<secondMiniGame>().gameIsFinished) ....
         }
 
         if (!startgame && Input.GetKeyDown(KeyCode.Return) && isUsingComputer && titleScreen.activeSelf)
@@ -112,7 +122,7 @@ public class Computer : MonoBehaviour
             timerGiltchingFreq = 500;
             StopAllCoroutines();
             titleScreen.SetActive(false);
-            Invoke("spawnLevel", 0.2f);
+            Invoke("spawnGame", 0.2f);
             startgame = false;
         }
 
@@ -145,7 +155,7 @@ public class Computer : MonoBehaviour
             }
         }
 
-        Debug.Log(currentDesk);
+        
 
     }
  
@@ -204,7 +214,7 @@ public class Computer : MonoBehaviour
 
     //this is hard coded 
     void closeloading()
-    {
+    {       
         StopAllCoroutines();      
         computerView.SetActive(false);
         tvloadingScreen.SetActive(false);
@@ -235,11 +245,11 @@ public class Computer : MonoBehaviour
         Invoke("showTitleScreen", (float)bootUpScreen[1].GetComponent<VideoPlayer>().length);
     }
 
-    public void spawnLevel()
+    public void spawnGame()
     {
         //Instantiate(currentDesk.disk.levelManager, gameObject.transform).GetComponent<LevelManager>();
 
-        Instantiate(currentDesk.disk.miniGame, gameObject.transform);
+        currentGame = Instantiate(currentDesk.disk.miniGame, gameObject.transform);
         //miniGame.SetActive(true);
         //for controlling the ui       
         //countTime = false;
@@ -248,7 +258,6 @@ public class Computer : MonoBehaviour
         //tvloadingScreen.SetActive(false);
 
         tvLight.GetComponent<Light>().color = currentDesk.disk.screenLightColor;
-
 
         //if (currentDesk.disk.firstInsertion)
         //{
@@ -269,25 +278,27 @@ public class Computer : MonoBehaviour
         StartCoroutine(startboot());
     }
 
-    IEnumerator startboot()
-    {
-        bootUpScreen[0].gameObject.SetActive(true);
-        bootUpScreen[1].GetComponent<VideoPlayer>().Play();
-        yield return new WaitForSeconds((float)bootUpScreen[1].GetComponent<VideoPlayer>().length);
-        bootUpScreen[0].gameObject.SetActive(false);
-    }
+    
 
     void exitComputerMode(float time)
-    {
-        
-        if(FirstMiniGame.instance != null)
+    {    
+        // to destroy a mini game if there's any 
+        if(currentGame != null)
         {
-            FirstMiniGame.instance.closeMiniGame();
+            // here we chick for each game 
+            if(FirstMiniGame.instance != null)
+            {
+                FirstMiniGame.instance.closeMiniGame();
+            }
+
+            //if(SecondMiniGame != null) ...
         }       
         turnOffGameUI();
         inAlertMode = false;
         alertMode = false;
         thereIsFloopyDesk = false;
+        
+        currentGame = null;
         floppyDiskInHand.transform.parent.gameObject.SetActive(true);
         Invoke("closeloading", 0.3f);    
     }
@@ -295,14 +306,14 @@ public class Computer : MonoBehaviour
 
     public void takeOutCurrentFloppyDisk()
     {
+        Debug.Log(currentDesk);
         currentDesk.disk.isFinished = true;
-        currentDesk = null;
+        currentDesk = null;    
         exitComputerMode(1f);
     }
 
     void turnOffGameUI()
     {
-
         scoreUI.SetActive(false);
         timerUI.SetActive(false);
     }
@@ -314,7 +325,6 @@ public class Computer : MonoBehaviour
 
     void showTitleScreen()
     {
-
         tvLight.GetComponent<Light>().color = currentDesk.disk.gameTitleScreenColor;
         startgame = false;
         StartCoroutine(titleAnim());
@@ -331,6 +341,13 @@ public class Computer : MonoBehaviour
             t.SetActive(!t.activeSelf);
             yield return new WaitForSeconds(0.35f);
         }
+    }
+    IEnumerator startboot()
+    {
+        bootUpScreen[0].gameObject.SetActive(true);
+        bootUpScreen[1].GetComponent<VideoPlayer>().Play();
+        yield return new WaitForSeconds((float)bootUpScreen[1].GetComponent<VideoPlayer>().length);
+        bootUpScreen[0].gameObject.SetActive(false);
     }
 
     public void glitchScreen(float time)
