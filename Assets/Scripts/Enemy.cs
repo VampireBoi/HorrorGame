@@ -104,7 +104,7 @@ public class Enemy : MonoBehaviour
             timer = 30f;
         }
         
-        if (MiniGame.instance.alertMode && exexute == 0)
+        if (Computer.instance.alertMode && exexute == 0)
         {
             exexute = 1;
             isCheckingNoise = true;
@@ -197,7 +197,7 @@ public class Enemy : MonoBehaviour
             animator.SetBool("isMoving", false);
             head.lookAtPlayer();
            
-            if (!MiniGame.instance.alertMode && Interact.isSetting && !MiniGame.instance.isUsingComputer && numberOfWarnigs > 0)
+            if (!Computer.instance.alertMode && Interact.isSetting && !Computer.instance.isUsingComputer && numberOfWarnigs > 0)
             {
                 // here is ehn the enemy hear the alert but the player manages to turn off every thing and go to bed 
                 // here you can put the warnings, and the checking method,  
@@ -266,7 +266,7 @@ public class Enemy : MonoBehaviour
             animator.SetBool("isMoving" , false);
             head.lookAtPlayer();
            
-            if (Interact.isSetting && !MiniGame.instance.isUsingComputer)
+            if (Interact.isSetting && !Computer.instance.isUsingComputer)
             {
 
                 if (playDialogue)
@@ -289,7 +289,7 @@ public class Enemy : MonoBehaviour
                 }
                     
             }
-            else if (MiniGame.instance.isUsingComputer)
+            else if (Computer.instance.isUsingComputer)
             {
 
                 playDialogue = true;

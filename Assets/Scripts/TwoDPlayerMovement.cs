@@ -59,7 +59,7 @@ public class TwoDPlayerMovement : MonoBehaviour
         {
             if (playAnim)
             {
-                Debug.Log("should play anim");
+                
                 StartCoroutine(spriteAnimation());
                 playAnim = false;
             }       
@@ -98,8 +98,8 @@ public class TwoDPlayerMovement : MonoBehaviour
             AudioManager.instance.playSound("key pickup");
            
             Destroy(collision.transform.gameObject);
-            MiniGame.instance.advanceLevel();
-            Debug.Log("level cleard");
+            FirstMiniGame.instance.advanceLevel();
+            
         }
     }
     IEnumerator spriteAnimation()

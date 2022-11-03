@@ -30,8 +30,7 @@ MonoBehaviour:
   LastDialogue:
   - that was totally fun and not stressful right ?
   - now go to the other room behind you
-  - fuck off
   levelsInDesk: 2
   isFinished: 0
   levelManager: {fileID: 2053088589141835385, guid: 6f580c6908439c24caaf64cf4d8dd5ed, type: 3}
-  firstInsertion: 1
+  firstInsertion: 0

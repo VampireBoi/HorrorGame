@@ -34,6 +34,7 @@ public class GameManager : MonoBehaviour
         if (!gameDialogues[0].dialogueOn && !gameDialogues[1].dialogueOn)
         {
 
+            timerUI.gameObject.SetActive(true);
             if (timer > 60f)
             {
                 float t = timer / 60f;
@@ -52,9 +53,9 @@ public class GameManager : MonoBehaviour
                 if (!gameOver)
                 {
 
-                    if (MiniGame.instance.isUsingComputer)
+                    if (Computer.instance.isUsingComputer)
                     {
-                        MiniGame.instance.turnOffComputer();
+                        Computer.instance.turnOffComputer();
                     }
                     foreach (GameObject go in gameObjects)
                     {
@@ -75,6 +76,12 @@ public class GameManager : MonoBehaviour
                 timer -= Time.deltaTime;
 
             }
+        }
+        else
+        {
+            timerUI.gameObject.SetActive(false);
+            
+
         }
 
 

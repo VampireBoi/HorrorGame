@@ -21,7 +21,7 @@ public class FloppyDeskData : ScriptableObject
     
     [HideInInspector] public bool isFinished;
 
-    public GameObject levelManager;
+    public GameObject miniGame;
 
     public bool firstInsertion = true;
 }

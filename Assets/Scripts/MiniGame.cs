@@ -30,7 +30,8 @@ public class MiniGame : MonoBehaviour
     bool startgame;
 
     bool a;
-    bool inAlertMode;
+    [HideInInspector]
+    public bool inAlertMode;
 
     public GameObject MiniGameCam;
     
@@ -352,7 +353,7 @@ public class MiniGame : MonoBehaviour
 
     public void spawnLevel()
     {
-        Instantiate(currentDesk.disk.levelManager, gameObject.transform).GetComponent<LevelManager>();
+        Instantiate(currentDesk.disk.miniGame, gameObject.transform).GetComponent<LevelManager>();
         
         
         //for controlling the ui       
@@ -557,4 +558,6 @@ public class MiniGame : MonoBehaviour
         AudioManager.instance.stopSound("timer sound");
         exitComputerMode(1f);
     }
+
+   
 }

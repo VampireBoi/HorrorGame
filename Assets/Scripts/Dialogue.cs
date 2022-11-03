@@ -41,7 +41,7 @@ public class Dialogue : MonoBehaviour
         //for the mini game dialouge, before the dialogue start the screen glitchs
         if (enableGlitchEffect)
         {
-            MiniGame.instance.glitchScreen(0.2f);
+            Computer.instance.glitchScreen(0.2f);
         }
 
         textComponent.transform.parent.gameObject.SetActive(true);
@@ -81,7 +81,7 @@ public class Dialogue : MonoBehaviour
                 //for the mini game dialouge, when the dialogue ends the screen glitchs
                 if (enableGlitchEffect)
                 {
-                    MiniGame.instance.glitchScreen(0.2f);
+                    Computer.instance.glitchScreen(0.2f);
                 }
                 dialogueOn = false;
                 textComponent.transform.parent.gameObject.SetActive(false);

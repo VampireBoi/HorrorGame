@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c90f19f63e542574588a2f73a4a89f47, type: 3}
   m_Name: second floppy disk
   m_EditorClassIdentifier: 
-  gameTitle: FOR                          AMMAR  TM
+  gameTitle: FOR                  YOUSIF    TM
   gameTitleScreenColor: {r: 0.25943398, g: 1, b: 0.26208174, a: 1}
   screenLightColor: {r: 0.49019608, g: 0.27450982, b: 0.49019608, a: 1}
   difficulty: 1
@@ -22,7 +22,7 @@ MonoBehaviour:
   - 'it''s the same rules '
   - 'becarful you can hear her footsteps if she''s coming to chick on you '
   - oh and yeah
-  - 'if you''re ammar '
+  - if you're yousif
   - 'then homsi told me to tell you that you have a big head '
   LastDialogue:
   - look
@@ -31,4 +31,4 @@ MonoBehaviour:
   levelsInDesk: 5
   isFinished: 0
   levelManager: {fileID: 2053088589141835385, guid: 6f580c6908439c24caaf64cf4d8dd5ed, type: 3}
-  firstInsertion: 1
+  firstInsertion: 0

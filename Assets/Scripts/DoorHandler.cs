@@ -25,8 +25,7 @@ public class DoorHandler : MonoBehaviour
     private void OnTriggerExit(Collider other)
     {
         if(other.transform.tag == "Enemy")
-        {
-            Debug.Log("left");
+        {        
             if (isOpen)
             {
                 AudioManager.instance.playSound("close door");

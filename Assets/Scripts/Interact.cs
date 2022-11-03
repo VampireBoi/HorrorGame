@@ -24,14 +24,14 @@ public class Interact : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Physics.Raycast(transform.position, transform.forward, out RaycastHit hit, 1.5f, mask.value) && !isSetting && !uiManager.instance.inventoryIsOpen && !MiniGame.instance.isUsingComputer)
+        if (Physics.Raycast(transform.position, transform.forward, out RaycastHit hit, 1.5f, mask.value) && !isSetting && !uiManager.instance.inventoryIsOpen && !Computer.instance.isUsingComputer)
         {
 
             // there is an interactable object the game shows the hand icon 
 
             //FirstPersonController.Instance.crosshairObject.gameObject.SetActive(true);
 
-            if (MiniGame.instance.isUsingComputer)
+            if (Computer.instance.isUsingComputer)
             {
                 fpsUI.transform.GetChild(0).gameObject.SetActive(false);
                 fpsUI.transform.GetChild(1).gameObject.SetActive(false);
@@ -64,9 +64,9 @@ public class Interact : MonoBehaviour
                 }
                 if (hit.transform.tag == "computer")
                 {
-                    if (MiniGame.instance.plugedIn)
+                    if (Computer.instance.plugedIn)
                     {
-                        MiniGame.instance.openComputer();                
+                        Computer.instance.openComputer();                
                     }
                     else
                     {
@@ -77,8 +77,8 @@ public class Interact : MonoBehaviour
 
                 if (hit.transform.tag == "Plug")
                 {
-                    Debug.Log("plug the computer");
-                    MiniGame.instance.plugedIn = !MiniGame.instance.plugedIn;
+                    //Debug.Log("plug the computer");
+                    Computer.instance.plugedIn = !Computer.instance.plugedIn;
                 }
             }
 
@@ -86,7 +86,7 @@ public class Interact : MonoBehaviour
         }
         // there's no intaractable object ahed, deactivate the hand icon 
         else {
-            if (MiniGame.instance.isUsingComputer)
+            if (Computer.instance.isUsingComputer)
             {
                 fpsUI.transform.GetChild(0).gameObject.SetActive(false);
                 fpsUI.transform.GetChild(1).gameObject.SetActive(false);
