@@ -204,7 +204,6 @@ public class FirstMiniGame : MonoBehaviour
                 //here we trigger the timeout event
                 AudioManager.instance.stopSound("timer sound");
                 AudioManager.instance.stopSound("mini game background music ");
-                Computer.instance.inAlertMode = true;
                 StartCoroutine(triggerAlert());
 
             }
@@ -320,7 +319,6 @@ public class FirstMiniGame : MonoBehaviour
         AudioManager.instance.stopSound("mini game background music ");
         AudioManager.instance.stopSound("timer sound");
         AudioManager.instance.stopSound("glitch sound");
-        Computer.instance.inAlertMode = false;
         Invoke("closeMiniGameLevel", 0.3f);
         Invoke("destoryMinigame", 0.5f);     
     }

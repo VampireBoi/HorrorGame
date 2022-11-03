@@ -16,7 +16,7 @@ MonoBehaviour:
   gameTitleScreenColor: {r: 1, g: 0, b: 0, a: 1}
   screenLightColor: {r: 0.49019608, g: 0.27450982, b: 0.49019608, a: 1}
   difficulty: 0.7
-  timeToFinichTheGame: 30
+  timeToFinichTheGame: 10
   firstDialogue:
   - you're traped in here aren't you ?
   - i can help you escape this
@@ -32,5 +32,5 @@ MonoBehaviour:
   - now go to the other room behind you
   levelsInDesk: 2
   isFinished: 0
-  levelManager: {fileID: 2053088589141835385, guid: 6f580c6908439c24caaf64cf4d8dd5ed, type: 3}
+  miniGame: {fileID: 6814572721301530243, guid: 1f9d84ea46c7e3e469abb2519cfe43cb, type: 3}
   firstInsertion: 0
