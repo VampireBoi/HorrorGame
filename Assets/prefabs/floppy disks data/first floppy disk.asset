@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: first floppy disk
   m_EditorClassIdentifier: 
   gameTitle: ESCAPE                       THE DUNGEN  TM
-  gameTitleScreenColor: {r: 1, g: 0, b: 0, a: 1}
+  gameTitleScreenColor: {r: 0.5471698, g: 0.31746173, b: 0.5471698, a: 1}
   screenLightColor: {r: 0.49019608, g: 0.27450982, b: 0.49019608, a: 1}
   firstDialogue:
   - you're traped in here aren't you ?
@@ -22,7 +22,7 @@ MonoBehaviour:
   - it's simple
   - 'find the keys '
   - 'in the top screen you will see the number of keys in this game '
-  - 'you need to find all the keys before the timer runs out  , '
+  - 'you need to find all the keys before the timer runs out '
   - 'only then i''ll help you '
   - good luck
   LastDialogue:

@@ -73,10 +73,10 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Floats:
     - _Binary: 0
-    - _Bleed: 0.546
+    - _Bleed: 0.38
     - _BumpScale: 1
     - _ColorBleed: 1
-    - _Composite: 1.85
+    - _Composite: -1.73
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
     - _Display: 0
@@ -84,8 +84,8 @@ Material:
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
-    - _Height: 50
-    - _Intensity: 0.8
+    - _Height: 70
+    - _Intensity: 0.7
     - _Lcd: 0
     - _Metallic: 0
     - _Mode: 0
@@ -104,7 +104,7 @@ Material:
     - _SrcBlend: 1
     - _UVSec: 0
     - _VariableRes: 0
-    - _Width: 200
+    - _Width: 120
     - _ZWrite: 1
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}

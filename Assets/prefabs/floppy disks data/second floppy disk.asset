@@ -12,20 +12,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c90f19f63e542574588a2f73a4a89f47, type: 3}
   m_Name: second floppy disk
   m_EditorClassIdentifier: 
-  gameTitle: FOR                  YOUSIF    TM
-  gameTitleScreenColor: {r: 0.25943398, g: 1, b: 0.26208174, a: 1}
-  screenLightColor: {r: 0.49019608, g: 0.27450982, b: 0.49019608, a: 1}
+  gameTitle: DONT                  TRUST HER    TM
+  gameTitleScreenColor: {r: 0.070354216, g: 0.4811321, b: 0.17989497, a: 0.6745098}
+  screenLightColor: {r: 0.056069765, g: 0.33962262, b: 0.13168386, a: 1}
   firstDialogue:
   - 'good you found the the game '
-  - 'it''s the same rules '
-  - 'becarful you can hear her footsteps if she''s coming to chick on you '
-  - oh and yeah
-  - if you're yousif
-  - 'then homsi told me to tell you that you have a big head '
+  - 'this game is really simple '
+  - all you gotta do is block the fireballs
+  - 'don'' t let me burn or i''ll scream '
+  - 'goodluck '
   LastDialogue:
   - look
   - 'under '
   - 'the counter '
   isFinished: 0
-  miniGame: {fileID: 6814572721301530243, guid: 1f9d84ea46c7e3e469abb2519cfe43cb, type: 3}
+  miniGame: {fileID: 6485754523395704912, guid: dac2029b4eea4e845a48b87f8ca3c9af, type: 3}
   firstInsertion: 0

@@ -63,7 +63,7 @@ public class Computer : MonoBehaviour
 
     //when the timer runs out and the computer makes the beb sound
     [HideInInspector] public bool alertMode;
-    bool inAlertMode;
+    [HideInInspector] public bool inAlertMode;
 
 
     //the light coming from the screen when the game is running "change later but works for now" 
@@ -104,10 +104,22 @@ public class Computer : MonoBehaviour
         if (currentGame != null)
         {
             // here we chick for each game 
-            if(currentGame.GetComponent<FirstMiniGame>().gameIsFinished && currentDesk != null)
+
+            //insted of getting the component let's chick for the instance value
+            if(FirstMiniGame.instance != null)
             {
-                takeOutCurrentFloppyDisk();
+                if (FirstMiniGame.instance.gameIsFinished && currentDesk != null)
+                {
+                    takeOutCurrentFloppyDisk();
+                }
+            } else if(SecondMiniGame.instance != null)
+            {
+                if (SecondMiniGame.instance.gameIsFinished && currentDesk != null)
+                {
+                    takeOutCurrentFloppyDisk();
+                }
             }
+            
 
             //if(currentGame.GetComponent<secondMiniGame>().gameIsFinished) ....
         }
@@ -289,6 +301,10 @@ public class Computer : MonoBehaviour
             if(FirstMiniGame.instance != null)
             {
                 FirstMiniGame.instance.closeMiniGame();
+            }
+            else if(SecondMiniGame.instance != null)
+            {
+                SecondMiniGame.instance.closeMiniGame();
             }
 
             //if(SecondMiniGame != null) ...

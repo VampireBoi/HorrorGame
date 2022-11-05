@@ -49,7 +49,11 @@ public class AudioManager : MonoBehaviour
         {
             if(sound.name == name)
             {
-                if (!sound.source.isPlaying)
+                if (sound.allowOverlaping)
+                {
+                    sound.source.Play();
+                }
+                else if (!sound.source.isPlaying)
                 {
                     sound.source.Play();
                 }             
@@ -83,6 +87,17 @@ public class AudioManager : MonoBehaviour
         foreach (Sound sound in sounds)
         {
             stopSound(sound.name);
+        }
+    }
+
+    public void speedSound(string name ,float a)
+    {
+        foreach (Sound sound in sounds)
+        {
+            if (sound.name == name)
+            {
+                sound.source.pitch += a;
+            }
         }
     }
 }

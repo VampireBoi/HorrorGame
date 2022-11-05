@@ -129,7 +129,7 @@ public class FirstMiniGame : MonoBehaviour
             MiniGameCam.transform.position = new Vector3(MiniGameCam.transform.position.x, MiniGameCam.transform.position.y, -1);
         }
 
-        //to exit the computer mode
+
     
         scoreUI.gameObject.SetActive(true);
         if (scoreUI.activeSelf)
@@ -203,7 +203,7 @@ public class FirstMiniGame : MonoBehaviour
                 //here we trigger the timeout event
                 AudioManager.instance.stopSound("timer sound");
                 AudioManager.instance.stopSound("mini game background music ");
-                StartCoroutine(triggerAlert());
+                GameOver();
 
             }
         }
@@ -374,9 +374,17 @@ public class FirstMiniGame : MonoBehaviour
     }
 
 
+    void GameOver()
+    {
+        StartCoroutine(triggerAlert());
+    }
     IEnumerator triggerAlert()
     {
+        Computer.instance.inAlertMode = true;
         turnOffGameUI();
+        AudioManager.instance.stopSound("mini game background music ");
+
+
         GameObject T = GameObject.Find("2dplayer(Clone)");
         if (T != null)
         {
@@ -393,6 +401,7 @@ public class FirstMiniGame : MonoBehaviour
         yield return new WaitForSeconds(0.8f);
         
         Computer.instance.alertMode = true;
+        
 
         TheFirstPerson.FPSController.instance.movementEnabled = true;
 
