@@ -1878,7 +1878,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-681452
+  m_Name: pb_Mesh-1378
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -9142,12 +9142,20 @@ PrefabInstance:
       value: 0.015
       objectReference: {fileID: 0}
     - target: {fileID: 4744611245860568231, guid: 5ae5ccd8d1c0b59459a598c6f18817a4, type: 3}
+      propertyPath: bobRotSpeed
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4744611245860568231, guid: 5ae5ccd8d1c0b59459a598c6f18817a4, type: 3}
       propertyPath: jumpEnabled
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4744611245860568231, guid: 5ae5ccd8d1c0b59459a598c6f18817a4, type: 3}
       propertyPath: sensitivity
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4744611245860568231, guid: 5ae5ccd8d1c0b59459a598c6f18817a4, type: 3}
+      propertyPath: bobAngleSpeed
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 4744611245860568231, guid: 5ae5ccd8d1c0b59459a598c6f18817a4, type: 3}
       propertyPath: crouchEnabled
@@ -9187,7 +9195,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4744611245860568231, guid: 5ae5ccd8d1c0b59459a598c6f18817a4, type: 3}
       propertyPath: rotationAmount.z
-      value: 0
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: 4744611245860568231, guid: 5ae5ccd8d1c0b59459a598c6f18817a4, type: 3}
       propertyPath: crouchToggleStyle
@@ -12031,7 +12039,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-673152
+  m_Name: pb_Mesh-1190
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2

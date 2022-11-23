@@ -268,13 +268,13 @@ namespace TheFirstPerson
         public bool enableHeadBob = true;
         public Transform joint;
         public float bobSpeed = 10f;
+        public float bobAngleSpeed = 15f;
         public Vector3 bobAmount = new Vector3(.15f, .05f, 0f);
         public Vector3 rotationAmount = new Vector3(.15f, .05f, 0f);
 
         // Internal Variables
         private Vector3 jointOriginalPos;
-        private float timer = 0;
-        private float timer2 = 0;
+        private float timer = 0;       
 
         void Start()
         {
@@ -869,7 +869,8 @@ namespace TheFirstPerson
 
         private void HeadBob()
         {
-       
+            Debug.Log("angle: " + joint.localEulerAngles.z);
+            Debug.Log("amount: " + joint.localEulerAngles.z);
             if (grounded &&  (xIn != 0 || yIn != 0))
             {
 
@@ -878,13 +879,47 @@ namespace TheFirstPerson
                 // Applies HeadBob movement
                 joint.localPosition = new Vector3(jointOriginalPos.x + Mathf.Sin(timer) * bobAmount.x, jointOriginalPos.y + Mathf.Sin(timer) * bobAmount.y, jointOriginalPos.z + Mathf.Sin(timer) * bobAmount.z);
                 if(xIn > 0)
-                {               
-                    joint.localEulerAngles = new Vector3(0, 0, Mathf.Lerp(joint.localRotation.z, xIn, timer));
+                {
+                    if (joint.localEulerAngles.z < 180)
+                    {
+                        if ((rotationAmount.z * -1) < (joint.localEulerAngles.z))
+                        {
+
+                            joint.localEulerAngles = new Vector3(0, 0, joint.localEulerAngles.z - (Time.deltaTime * bobAngleSpeed));
+                        }
+                        
+                    }
+                    else
+                    {
+                        
+                        if ((rotationAmount.z * -1 + 360) < (joint.localEulerAngles.z))
+                        {
+
+                            joint.localEulerAngles = new Vector3(0, 0, joint.localEulerAngles.z - (Time.deltaTime * bobAngleSpeed));
+                        }
+                    }
                     
+
                 } 
                 else if (xIn < 0)
-                {       
-                    joint.localEulerAngles = new Vector3(0, 0, Mathf.Lerp(joint.localEulerAngles.z, -1 * xIn, timer));
+                {
+                    if (joint.localEulerAngles.z < 180)
+                    {
+                        if (rotationAmount.z > joint.localEulerAngles.z)
+                        {
+                            joint.localEulerAngles = new Vector3(0, 0, joint.localEulerAngles.z + Time.deltaTime * bobAngleSpeed);
+                        }
+
+                    }
+                    else
+                    {
+
+                        if (rotationAmount.z + 360 > joint.localEulerAngles.z)
+                        {
+                            joint.localEulerAngles = new Vector3(0, 0, joint.localEulerAngles.z + Time.deltaTime * bobAngleSpeed);
+                        }
+                    }
+                   
                 }
 
                 
@@ -896,7 +931,16 @@ namespace TheFirstPerson
                 timer = 0;
                 joint.localPosition = new Vector3(Mathf.Lerp(joint.localPosition.x, jointOriginalPos.x, Time.deltaTime * bobSpeed), Mathf.Lerp(joint.localPosition.y, jointOriginalPos.y, Time.deltaTime * bobSpeed), Mathf.Lerp(joint.localPosition.z, jointOriginalPos.z, Time.deltaTime * bobSpeed));
                 
-                joint.localEulerAngles = new Vector3(0, 0, Mathf.Lerp(joint.localEulerAngles.z, 0f, bobSpeed * Time.deltaTime));
+                if(joint.localEulerAngles.z < 180)
+                {
+                    joint.localEulerAngles = new Vector3(0, 0, Mathf.Lerp(joint.localEulerAngles.z, 0f, bobSpeed * Time.deltaTime));
+
+                }
+                else
+                {
+                    joint.localEulerAngles = new Vector3(0, 0, Mathf.Lerp(joint.localEulerAngles.z, 360f, bobSpeed * Time.deltaTime));
+
+                }
 
 
             }
