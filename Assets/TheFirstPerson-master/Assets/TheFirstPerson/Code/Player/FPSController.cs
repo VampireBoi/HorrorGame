@@ -868,9 +868,7 @@ namespace TheFirstPerson
         }
 
         private void HeadBob()
-        {
-            Debug.Log("angle: " + joint.localEulerAngles.z);
-            Debug.Log("amount: " + joint.localEulerAngles.z);
+        {      
             if (grounded &&  (xIn != 0 || yIn != 0))
             {
 

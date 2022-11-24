@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5a2619028fd0e0d4085a38d876ed7d5e, type: 3}
-  m_Name: new item
+  m_Name: third floppy disk
   m_EditorClassIdentifier: 
-  id: 343
-  displayName: Floppy Disk 2
-  icon: {fileID: 21300000, guid: 80be839cc346d5a4a97c36ed07206522, type: 3}
-  prefab: {fileID: 8056043769411737203, guid: edc2cbfafe699fb4b95466d38f71107a, type: 3}
+  id: 45
+  displayName: 'floppy disk '
+  icon: {fileID: 21300000, guid: d72bf866092477f4f8f305fda3639c9b, type: 3}
+  prefab: {fileID: 7442412945016487202, guid: aed5db357a249d04caf4e83da77d2b6e, type: 3}

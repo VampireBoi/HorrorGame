@@ -306,6 +306,11 @@ public class Computer : MonoBehaviour
             {
                 SecondMiniGame.instance.closeMiniGame();
             }
+            else if(ThirdMiniGame.instance != null)
+            {
+                ThirdMiniGame.instance.closeMiniGame();
+
+            }
 
             //if(SecondMiniGame != null) ...
         }       

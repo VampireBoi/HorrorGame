@@ -13,6 +13,7 @@ TagManager:
   - Plug
   - wall
   - Enemy
+  - third mini game door
   layers:
   - Default
   - TransparentFX
