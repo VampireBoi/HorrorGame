@@ -6,27 +6,33 @@ public class ThirdMiniGamePlayer : MonoBehaviour
 {
     SpriteRenderer spriteRenderer;
     public float speed;
+    public bool canMove;
     // Start is called before the first frame update
     void Start()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
+       
     }
 
     // Update is called once per frame
     void Update()
     {
         float movex = Input.GetAxisRaw("Horizontal");
-        
-        if(movex < 0)
+
+        if (canMove)
         {
-            if (ThirdMiniGameEnemy.Instance.checking)
+            if (movex < 0)
             {
-                ThirdMiniGame.instance.GameOver();
+                if (ThirdMiniGameEnemy.Instance.checking)
+                {
+                    ThirdMiniGame.instance.GameOver();
+                }
+                transform.Translate(-transform.right * speed * Time.deltaTime);
+                spriteRenderer.flipX = false;
             }
-            transform.Translate(-transform.right * speed * Time.deltaTime);
-            spriteRenderer.flipX = true;
+            else { spriteRenderer.flipX = true; }
         }
-        else { spriteRenderer.flipX = false; }
+        
     }
 
 

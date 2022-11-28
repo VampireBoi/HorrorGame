@@ -26,7 +26,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3619655005762654689}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 104.71, y: -1.02, z: -0.5}
+  m_LocalPosition: {x: 105.45, y: -1.68, z: -0.5}
   m_LocalScale: {x: 10, y: 10, z: 10}
   m_Children: []
   m_Father: {fileID: 0}
@@ -72,12 +72,12 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 5527fe059a4d9964fad0a608a66dece1, type: 3}
+  m_Sprite: {fileID: 21300000, guid: e1118f4782bdee64ea713db9e8887b82, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 0.2, y: 0.2}
+  m_Size: {x: 0.32, y: 0.5}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -95,6 +95,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7553c7e98a93aeb4baca562d6211d1e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  checkingSprite: {fileID: 21300000, guid: 314cb94a4d074424681d1af2fba33954, type: 3}
+  idleSprites:
+  - {fileID: 21300000, guid: e1118f4782bdee64ea713db9e8887b82, type: 3}
+  - {fileID: 21300000, guid: eab384e2d4cfd1340af89057d5273ce1, type: 3}
   checking: 0
-  timeToChick: 2
-  checkingTime: 2

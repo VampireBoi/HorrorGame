@@ -71,6 +71,29 @@ public class AudioManager : MonoBehaviour
         }
     }
 
+    public void pauseSound(string name)
+    {
+        foreach (Sound sound in sounds)
+        {
+            if (sound.name == name)
+            {
+                sound.source.Pause();
+                
+            }
+        }
+    }
+    public void unPauseSound(string name)
+    {
+        
+        foreach (Sound sound in sounds)
+        {
+            if (sound.name == name)
+            {
+                sound.source.UnPause();
+            }
+        }
+    }
+
     public void changePitch(string name, float pitch)
     {
         foreach (Sound sound in sounds)

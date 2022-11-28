@@ -17,9 +17,13 @@ public class ThirdMiniGame : MonoBehaviour
 
     [HideInInspector] public bool gameIsFinished;
 
+
+    [Header("difficulty values")]
     // for the game -------------------------------------------
     public float timeToChick;
     public float checkingTime;
+    public float coolDownTime;
+    public float timeToFinishTheGame;
 
 
     [HideInInspector] public bool gameIsActive;
@@ -28,7 +32,8 @@ public class ThirdMiniGame : MonoBehaviour
 
 
     public int levelCounter;
-    public float timeToFinishTheGame;
+     
+    
     float timer;
 
     //public GameObject titleScreen;
@@ -100,6 +105,52 @@ public class ThirdMiniGame : MonoBehaviour
     {
 
 
+        if (a == true && !dialogue.dialogueOn)
+        {
+
+            Debug.Log("a dialouge has been ended");
+            //turnOnGameUI();
+            AudioManager.instance.playSound("third game music");
+
+            GameObject p = GameObject.FindGameObjectWithTag("2dPlayer");
+            if (p != null)
+            {
+                p.GetComponent<ThirdMiniGamePlayer>().canMove = true;
+            }
+
+
+            if (Computer.instance.currentDesk.disk.firstInsertion)
+            {
+                //AudioManager.instance.playSound("mini game background music ");
+                //AudioManager.instance.playSound("timer sound");
+                //StartCoroutine(timerGiltching());
+                //countTime = true;
+                Computer.instance.currentDesk.disk.firstInsertion = false;
+            }
+
+            turnOnGameUI();
+            gameIsActive = true;
+            a = false;
+        }
+        if (dialogue.dialogueOn && a == false)
+        {
+            Debug.Log("a dialouge has been started");
+            AudioManager.instance.stopSound("third game music");
+
+
+            GameObject p = GameObject.FindGameObjectWithTag("2dPlayer");
+            if (p != null)
+            {
+                p.GetComponent<ThirdMiniGamePlayer>().canMove = false;
+            }
+
+            turnOffGameUI();
+            gameIsActive = false;
+            a = true;
+        }
+
+    
+        
         if (gameIsActive)
         {
             if(timer <= 0)
@@ -110,7 +161,8 @@ public class ThirdMiniGame : MonoBehaviour
 
             if (timeUI.activeSelf)
             {
-                timeUI.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Time: " + timer;
+                timeUI.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Time: " + (int)timer;
+                timeUI.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "level: " + levelCounter;
             }
         }
     }
@@ -138,15 +190,20 @@ public class ThirdMiniGame : MonoBehaviour
         if (Computer.instance.currentDesk.disk.firstInsertion)
         {
             Invoke("startFirstDialouge", 2f);
+            m.GetComponent<ThirdMiniGamePlayer>().canMove = false;
+
         }
         else
         {
             //StartCoroutine(timerGiltching());  
+            m.GetComponent<ThirdMiniGamePlayer>().canMove=true;
             gameIsActive = true;
 
         }
         //AudioManager.instance.playSound("second game background music");
         //AudioManager.instance.changePitch("second game background music", 1f);
+        AudioManager.instance.playSound("third game music");
+
         Invoke("turnOnGameUI", 0.3f);
 
     }
@@ -155,7 +212,9 @@ public class ThirdMiniGame : MonoBehaviour
     IEnumerator progressRound()
     {
         levelCounter++;
-        gameIsActive = false;      
+        timer += 10f;
+        gameIsActive = false;
+        increaseDifficulty(0.4f,0.6f);
         turnOffGameUI();
         //AudioManager.instance.stopSound("second game background music");
         Destroy(i);
@@ -172,6 +231,7 @@ public class ThirdMiniGame : MonoBehaviour
     public void progress()
     {
         StartCoroutine(progressRound());
+
     }
 
 
@@ -234,7 +294,7 @@ public class ThirdMiniGame : MonoBehaviour
         {
             StopAllCoroutines();
             timerGiltchingFreq = 1000;
-            AudioManager.instance.stopSound("second game background music");
+            AudioManager.instance.stopSound("third game music");
             dialogue.startDialogue(Computer.instance.currentDesk.disk.LastDialogue);
             playDialogue = false;
         }
@@ -253,10 +313,15 @@ public class ThirdMiniGame : MonoBehaviour
     }
     IEnumerator triggerAlert()
     {
+        GameObject p = GameObject.FindGameObjectWithTag("2dPlayer");
+        if (p != null)
+        {
+            p.GetComponent<ThirdMiniGamePlayer>().canMove = false;
+        }
         Computer.instance.inAlertMode = true;
         turnOffGameUI();
         gameIsActive = false;
-        AudioManager.instance.stopSound("second game background music");
+        AudioManager.instance.stopSound("third game music");
 
 
         
@@ -274,6 +339,14 @@ public class ThirdMiniGame : MonoBehaviour
         TheFirstPerson.FPSController.instance.movementEnabled = true;
 
         Debug.Log("you falied beebb beeeb beeeb");
+    }
+
+
+
+    public void increaseDifficulty(float decreaseCoolDown, float decreaseTimeToChick)
+    {
+        coolDownTime -= decreaseCoolDown;
+        timeToChick -= decreaseTimeToChick;
     }
 
 }

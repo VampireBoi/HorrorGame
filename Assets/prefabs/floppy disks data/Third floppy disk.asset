@@ -12,11 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c90f19f63e542574588a2f73a4a89f47, type: 3}
   m_Name: Third floppy disk
   m_EditorClassIdentifier: 
-  gameTitle: green light
-  gameTitleScreenColor: {r: 0.86727047, g: 1, b: 0, a: 1}
-  screenLightColor: {r: 0.8238727, g: 0.9056604, b: 0.55108577, a: 0.62352943}
-  firstDialogue: []
-  LastDialogue: []
+  gameTitle: the killed                         my poor john td
+  gameTitleScreenColor: {r: 1, g: 0.38321838, b: 0.3443396, a: 1}
+  screenLightColor: {r: 0.108757555, g: 0.12921159, b: 0.49056602, a: 1}
+  firstDialogue:
+  - 'this is the final game '
+  - 'its green ligth red light '
+  - 'try and reach the door before the timer runs out '
+  - 'don''t move unless you sure she is not looking '
+  LastDialogue:
+  - 'goodjob you won '
   isFinished: 0
   miniGame: {fileID: 4887269028537810328, guid: 81236bd7274303d4c97434910376e6a0, type: 3}
   firstInsertion: 0

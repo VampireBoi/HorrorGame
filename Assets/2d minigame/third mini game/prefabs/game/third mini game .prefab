@@ -47,8 +47,9 @@ MonoBehaviour:
   miniGamePlayer: {fileID: 7178035727226726172, guid: 110a788532d2b09449b9a9a44e8735be, type: 3}
   enemy: {fileID: 3619655005762654689, guid: e9aa1664cfd340e4d8119c57e8559e12, type: 3}
   gameIsFinished: 0
-  timeToChick: 4
+  timeToChick: 1
   checkingTime: 2
+  coolDownTime: 4
+  timeToFinishTheGame: 30
   gameIsActive: 0
   levelCounter: 0
-  timeToFinishTheGame: 10
