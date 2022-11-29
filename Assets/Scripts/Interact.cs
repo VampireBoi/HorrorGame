@@ -78,6 +78,14 @@ public class Interact : MonoBehaviour
                 if (hit.transform.tag == "Plug")
                 {
                     //Debug.Log("plug the computer");
+                    if (Computer.instance.plugedIn)
+                    {
+                        AudioManager.instance.playSound("power on");
+                    }
+                    else
+                    {
+                        AudioManager.instance.playSound("power off");
+                    }
                     Computer.instance.plugedIn = !Computer.instance.plugedIn;
                 }
             }

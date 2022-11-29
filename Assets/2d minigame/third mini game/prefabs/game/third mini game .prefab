@@ -53,3 +53,4 @@ MonoBehaviour:
   timeToFinishTheGame: 30
   gameIsActive: 0
   levelCounter: 0
+  levelsToWin: 5

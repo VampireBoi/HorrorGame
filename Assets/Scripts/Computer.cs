@@ -95,7 +95,7 @@ public class Computer : MonoBehaviour
         
 
 
-        if (Input.GetKeyDown(KeyCode.G) && isUsingComputer && !inAlertMode)
+        if (Input.GetKeyDown(KeyCode.G) && isUsingComputer && !inAlertMode && !dialogue.dialogueOn)
         {
             turnOffComputer();
         }
@@ -119,7 +119,14 @@ public class Computer : MonoBehaviour
                     takeOutCurrentFloppyDisk();
                 }
             }
-            
+            else if (ThirdMiniGame.instance != null)
+            {
+                if (ThirdMiniGame.instance.gameIsFinished && currentDesk != null)
+                {
+                    takeOutCurrentFloppyDisk();
+                }
+            }
+
 
             //if(currentGame.GetComponent<secondMiniGame>().gameIsFinished) ....
         }

@@ -32,6 +32,8 @@ public class ThirdMiniGame : MonoBehaviour
 
 
     public int levelCounter;
+    public int levelsToWin;
+
      
     
     float timer;
@@ -51,6 +53,8 @@ public class ThirdMiniGame : MonoBehaviour
     GameObject timerUI;
 
     bool a;
+
+    bool wintheGame = false;
 
 
 
@@ -153,7 +157,11 @@ public class ThirdMiniGame : MonoBehaviour
         
         if (gameIsActive)
         {
-            if(timer <= 0)
+            if(wintheGame)
+            {
+                winTheGame();
+            }
+            if (timer <= 0)
             {
                 GameOver();
             }
@@ -211,20 +219,26 @@ public class ThirdMiniGame : MonoBehaviour
 
     IEnumerator progressRound()
     {
-        levelCounter++;
-        timer += 10f;
-        gameIsActive = false;
-        increaseDifficulty(0.4f,0.6f);
-        turnOffGameUI();
-        //AudioManager.instance.stopSound("second game background music");
-        Destroy(i);
-        Destroy(m);
-        Destroy(e);
-        yield return new WaitForSeconds(1f);
+        if (levelCounter < levelsToWin)
+        {
+            levelCounter++;
+            timer += 10f;
+            gameIsActive = false;
+            increaseDifficulty(0.4f, 0.6f, 0.5f);
+            turnOffGameUI();
+            //AudioManager.instance.stopSound("second game background music");
+            Destroy(i);
+            Destroy(m);
+            Destroy(e);
+            yield return new WaitForSeconds(1f);
 
 
-        spawnLevel();
-        gameIsActive = true;
+            spawnLevel();
+            gameIsActive = true;
+        }
+        else { wintheGame = true; }
+       
+        
 
     }
 
@@ -261,7 +275,7 @@ public class ThirdMiniGame : MonoBehaviour
     {
         StopAllCoroutines();
         turnOffGameUI();
-        //AudioManager.instance.stopSound("second game background music");
+        AudioManager.instance.stopSound("third game music");
         Destroy(i);
         Destroy(m);
         Destroy(e);
@@ -343,10 +357,11 @@ public class ThirdMiniGame : MonoBehaviour
 
 
 
-    public void increaseDifficulty(float decreaseCoolDown, float decreaseTimeToChick)
+    public void increaseDifficulty(float decreaseCoolDown, float decreaseTimeToChick, float increaseChickingTime)
     {
         coolDownTime -= decreaseCoolDown;
         timeToChick -= decreaseTimeToChick;
+        checkingTime -= increaseChickingTime;
     }
 
 }

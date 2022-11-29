@@ -13735,6 +13735,22 @@ MonoBehaviour:
     source: {fileID: 0}
     loop: 0
     allowOverlaping: 0
+  - name: power on
+    clip: {fileID: 8300000, guid: 55dc84f22229b49409f47940287e64d0, type: 3}
+    volume: 1
+    pitch: 1
+    Object: {fileID: 1364830650}
+    source: {fileID: 0}
+    loop: 0
+    allowOverlaping: 0
+  - name: power off
+    clip: {fileID: 8300000, guid: 97a9ff65770411f40bf952d1b562a7c4, type: 3}
+    volume: 1
+    pitch: 1
+    Object: {fileID: 1364830650}
+    source: {fileID: 0}
+    loop: 0
+    allowOverlaping: 0
 --- !u!4 &1702247852
 Transform:
   m_ObjectHideFlags: 0

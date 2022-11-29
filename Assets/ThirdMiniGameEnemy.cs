@@ -40,7 +40,7 @@ public class ThirdMiniGameEnemy : MonoBehaviour
     {
         coolDownTime = Mathf.Clamp(coolDownTime, 0.2f, 5f);
         timeToChick = Mathf.Clamp(timeToChick, 0.3f, 10f);
-        
+        checkingTime = Mathf.Clamp(checkingTime, 1f, 6f);
         if (ThirdMiniGame.instance.gameIsActive)
         {
             if (playanim)
@@ -89,7 +89,7 @@ public class ThirdMiniGameEnemy : MonoBehaviour
         spriteRenderer.flipX = true;
         yield return new WaitForSeconds(0.3f);
         checking = true;
-        yield return new WaitForSeconds(checkingTime);
+        yield return new WaitForSeconds(Random.Range(1.5f, checkingTime));
         checking = false;
         spriteRenderer.flipX = false;
         playanim = true;
