@@ -5,8 +5,14 @@ using TMPro;
 
 public class GameManager : MonoBehaviour
 {
+
+    public static GameManager Instance { get; private set; }
     
     public TextMeshProUGUI timerUI;
+
+
+    public int level;
+
 
     bool gameOver;
     [Header("all the items that are going to be disabeld when the timer runs out")]
@@ -22,6 +28,7 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        Instance = this;
         gameOver = false;
         timer = time;
         Invoke("startClockSound", 0.1f);      

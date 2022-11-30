@@ -123,4 +123,17 @@ public class AudioManager : MonoBehaviour
             }
         }
     }
+
+    public bool isSoundPlaying(string name)
+    {
+        foreach (Sound sound in sounds)
+        {
+            if (sound.name == name)
+            {
+                return sound.source.isPlaying;
+            }
+        }
+        Debug.Log("sound not found");
+        return false;
+    }
 }

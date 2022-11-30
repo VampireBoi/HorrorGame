@@ -98,6 +98,12 @@ public class Computer : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.G) && isUsingComputer && !inAlertMode && !dialogue.dialogueOn)
         {
             turnOffComputer();
+            int r = Random.Range(0, 2);
+            Debug.Log(r);
+            if(r == 1)
+            {
+                Enemy.instanse.chickOnThePlayer();
+            }
         }
 
         // here we chick if the game that we're currenlty playing is finished 
@@ -158,7 +164,6 @@ public class Computer : MonoBehaviour
                 exitComputerMode(0f);
                 Enemy.instanse.exexute = 0;
                 StopAllCoroutines();
-
             }
 
         }
@@ -336,7 +341,8 @@ public class Computer : MonoBehaviour
     {
         Debug.Log(currentDesk);
         currentDesk.disk.isFinished = true;
-        currentDesk = null;    
+        currentDesk = null;
+        GameManager.Instance.level++;
         exitComputerMode(1f);
     }
 

@@ -30,4 +30,4 @@ MonoBehaviour:
   - now go to the other room behind you
   isFinished: 0
   miniGame: {fileID: 6814572721301530243, guid: 1f9d84ea46c7e3e469abb2519cfe43cb, type: 3}
-  firstInsertion: 1
+  firstInsertion: 0

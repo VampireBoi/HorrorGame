@@ -51,7 +51,12 @@ public class Enemy : MonoBehaviour
     bool isChecking = false;
     bool isAttacking = false;
     bool isPatrolling = false;
+    bool isDistracted = false;
 
+    [HideInInspector]public bool cantGetDistracted;
+
+
+    public Vector3 DistractionPoint;
     bool playDialogue = false;
     public Vector3 walkPoint;
     bool walkPointSet;
@@ -91,15 +96,12 @@ public class Enemy : MonoBehaviour
         
         if(count == true)
         {
-            timer -= Time.deltaTime;
-            
+            timer -= Time.deltaTime;      
         }
 
         if(timer <= 0)
         {
-            isChecking = true;
-            isCheckingNoise = false;
-            isPatrolling = false;
+            chickOnThePlayer();
             count = false;
             timer = 30f;
         }
@@ -112,28 +114,43 @@ public class Enemy : MonoBehaviour
             isChecking = false;
         }
 
-        if (isCheckingNoise)
+        if (!Computer.instance.dialogue.dialogueOn && !isDistracted)
         {
-            checkNoise();
-        }
+            if (isCheckingNoise)
+            {
+                checkNoise();
+            }
 
-        if (isChecking)
+            if (isChecking)
+            {
+                checkRoom();
+            }
+
+            if (isPatrolling)
+            {
+                Patrolling();
+            }
+
+            if (isAttacking)
+            {
+                attacking();
+            }
+        } else if (isDistracted)
         {
-            checkRoom();
+            Vector3 DistanceToWalkPoint = transform.position - DistractionPoint;
+            if (DistanceToWalkPoint.magnitude < 1f)
+            {
+                AudioManager.instance.stopSound("enemy foot steps");
+
+                bool f = AudioManager.instance.isSoundPlaying("tv sound");
+                if (!f)
+                {
+                    isDistracted = false;
+                    isPatrolling = true;
+                }
+            }
         }
         
-        if(isPatrolling)
-        {
-            Patrolling();
-        }
-
-        if (isAttacking)
-        {
-            attacking();
-        }
-
-
-            
     }
 
     void Patrolling()
@@ -378,8 +395,62 @@ public class Enemy : MonoBehaviour
     }
 
 
+    public void chickOnThePlayer()
+    {
+        isChecking = true;
+        isPatrolling = false;
+        isCheckingNoise = false;
+        isAttacking = false;
+    }
+
+    public void CreateDistraction()
+    {
+        StartCoroutine(Distraction());
+
+    }
+
+    public void stopDistraction()
+    {
+        StopAllCoroutines();
+        AudioManager.instance.playSound("remote sound turn off");
+        AudioManager.instance.stopSound("tv sound");
+
+        Agent.isStopped = false;
+        isDistracted = false;
+        isChecking = false;
+        isPatrolling = true;
+        isCheckingNoise = false;
+        isAttacking = false;
+        isAttacking = false;
+    }
 
 
+
+    IEnumerator Distraction()
+    {
+        yield return new WaitForSeconds(0.3f);
+        AudioManager.instance.playSound("tv sound");
+        yield return new WaitForSeconds(0.4f);
+        if (!cantGetDistracted)
+        {
+            isDistracted = true;
+            isChecking = false;
+            isPatrolling = false;
+            isCheckingNoise = false;
+            isAttacking = false;
+            AudioManager.instance.stopSound("enemy foot steps");
+            Agent.isStopped = true;
+
+            yield return new WaitForSeconds(5f);
+            AudioManager.instance.playSound("enemy foot steps");
+            Agent.isStopped = false;
+            Agent.SetDestination(DistractionPoint);
+
+
+        }
+
+
+    }
 
 
 }
