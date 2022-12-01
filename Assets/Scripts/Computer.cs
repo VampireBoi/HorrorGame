@@ -12,6 +12,12 @@ public class Computer : MonoBehaviour
 
     [HideInInspector]
     public GameObject floppyDiskInHand;
+    [HideInInspector]
+    public ItemData itemInHand;
+
+    [HideInInspector]
+    public GameObject itemHolder;
+
 
     public GameObject titleScreen;
 
@@ -31,7 +37,7 @@ public class Computer : MonoBehaviour
     public Dialogue dialogue;
     // the desk inside the computer;
     [HideInInspector]
-    public FloppyDisk currentDesk;
+    public FloppyDeskData currentDesk;
 
     public GameObject currentGame;
 
@@ -41,6 +47,8 @@ public class Computer : MonoBehaviour
     public RenderTexture screen;
 
     bool playDialogue;
+
+    [HideInInspector] public bool computerOn;
 
     public GameObject text;
 
@@ -92,12 +100,17 @@ public class Computer : MonoBehaviour
     {
         //Debug.Log("is using the coumputer: " + isUsingComputer);
         //Debug.Log("in alert mode: " + inAlertMode);
-        
 
-
+        Debug.Log(currentDesk);
         if (Input.GetKeyDown(KeyCode.G) && isUsingComputer && !inAlertMode && !dialogue.dialogueOn)
         {
-            turnOffComputer();
+            leaveComputer();
+        }
+
+
+        if (Input.GetKeyDown(KeyCode.R) && isUsingComputer && !inAlertMode && !dialogue.dialogueOn)
+        {
+            reloadTheComputer();
             int r = Random.Range(0, 2);
             Debug.Log(r);
             if(r == 1)
@@ -153,18 +166,25 @@ public class Computer : MonoBehaviour
 
 
         if (!plugedIn)
-        {
-
-            if (currentDesk != null && alertMode)
+        {           
+            if (alertMode)
             {
+            
                 AudioManager.instance.stopSound("alert sound");
-                inAlertMode = false;
-                alertMode = false;
+                inAlertMode = false;        
                 playSound = true;
+                alertMode = false;
+                
+
+            }
+            if (computerOn)
+            {
                 exitComputerMode(0f);
                 Enemy.instanse.exexute = 0;
                 StopAllCoroutines();
+                computerOn = false;
             }
+            
 
         }
         else
@@ -174,7 +194,7 @@ public class Computer : MonoBehaviour
                 alertMode = true;
                 computerView.SetActive(false);
                 TheFirstPerson.FPSController.instance.movementEnabled = true;
-                floppyDiskInHand.transform.parent.gameObject.SetActive(true);
+                itemHolder.gameObject.SetActive(true);
                 isUsingComputer = false;
             }
         }
@@ -187,51 +207,63 @@ public class Computer : MonoBehaviour
     //this code is hard coded , adjust it later 
     public void openComputer()
     {
-        FloppyDisk d;
-        //to check wether the player is holding in item or not 
-        if (GameObject.Find("item holder").transform.childCount == 0)
+        if (!computerOn)
         {
-            Debug.Log("no item in hand ? ");
-            return;
-        }
-        else
-        {
-            floppyDiskInHand = GameObject.Find("item holder").transform.GetChild(0).gameObject;
-            d = floppyDiskInHand.GetComponent<FloppyDisk>();
-        }
-
-
-        // to check if the item that the player is holding is a floppy desk 
-
-
-        if (d != null && !d.disk.isFinished)
-        {
-
-            //to get the floopy desk information;
-            if (currentDesk == null)
+            FloppyDeskData d;
+            //to check wether the player is holding in item or not 
+            if (GameObject.Find("item holder").transform.childCount == 0)
             {
-                currentDesk = d;
-            }
-
-            thereIsFloopyDesk = true;
-
-            if (currentDesk != null && !alertMode)
-            {
-                //to put the player in computer mode
-                computerScreen.GetComponent<MeshRenderer>().material = crtMat;
-                AudioManager.instance.playSound("computer sound");
-                enterComputerMode();
-                showBootupScreen();
-                //this if statement id for showing the first dialogue only once, the first time he puts the disk in the computer 
-
+                Debug.Log("no item in hand ? ");
+                return;
             }
             else
             {
-                Debug.Log("cant find the floopy disk");
-                return;
+                itemHolder = GameObject.Find("item holder").gameObject;
+                floppyDiskInHand = itemHolder.transform.GetChild(0).gameObject;
+                
+                d = floppyDiskInHand.GetComponent<FloppyDisk>().disk;
+
+               
             }
 
+
+            // to check if the item that the player is holding is a floppy desk 
+
+
+            if (d != null && !d.isFinished)
+            {
+
+                //to get the floopy desk information;
+                if (currentDesk == null)
+                {
+                    currentDesk = d;
+                }
+
+                thereIsFloopyDesk = true;
+
+                if (currentDesk != null && !alertMode)
+                {
+                    //to put the player in computer mode
+                    itemInHand = floppyDiskInHand.gameObject.GetComponent<ItemPickup>().item;
+                    InventoryManager.Instance.removeItem(itemInHand);
+                    itemSway.instance.destroyItemInHand();
+
+                    computerScreen.GetComponent<MeshRenderer>().material = crtMat;
+                    AudioManager.instance.playSound("computer sound");
+                    enterComputerMode();
+                    
+                    //this if statement id for showing the first dialogue only once, the first time he puts the disk in the computer 
+
+                }
+                else
+                {
+                    Debug.Log("cant find the floopy disk");
+                    return;
+                }
+
+            }
         }
+        else { enterComputerMode(); }
 
     }
 
@@ -248,6 +280,35 @@ public class Computer : MonoBehaviour
         TheFirstPerson.FPSController.instance.movementEnabled = true;
         AudioManager.instance.stopSound("computer sound");
         screen.Release();
+        if (!itemInHand.prefab.GetComponent<FloppyDisk>().disk.isFinished)
+        {
+            InventoryManager.Instance.addItem(itemInHand);
+        }    
+        itemHolder.gameObject.SetActive(true);
+        computerOn = false;
+        
+    }
+
+    void closeloading2()
+    {
+        StopAllCoroutines();
+        //computerView.SetActive(false);
+        tvloadingScreen.SetActive(false);
+        tvLight.gameObject.SetActive(false);
+        MiniGameCam.SetActive(false);
+        //isUsingComputer = false;
+        //TheFirstPerson.FPSController.instance.movementEnabled = true;
+        AudioManager.instance.stopSound("computer sound");
+        screen.Release();
+        computerOn = false;
+        Invoke("restart", 0.5f);
+    }
+
+    void restart()
+    {
+        computerScreen.GetComponent<MeshRenderer>().material = crtMat;
+        AudioManager.instance.playSound("computer sound");
+        enterComputerMode();
     }
 
 
@@ -255,25 +316,32 @@ public class Computer : MonoBehaviour
     // adjust the computer mode from here
     void enterComputerMode()
     {
-        titleScreen.SetActive(false);
-        isLoading = true;      
-        isUsingComputer = true;
 
-        floppyDiskInHand.transform.parent.gameObject.SetActive(false);
+        isUsingComputer = true;
+        isLoading = true;             
         MiniGameCam.SetActive(true);
         computerView.SetActive(true); 
-        tvLight.SetActive(true);
-        tvLight.GetComponent<Light>().color = Color.white;
-        
+        tvLight.SetActive(true);          
         TheFirstPerson.FPSController.instance.movementEnabled = false;
-        Invoke("showTitleScreen", (float)bootUpScreen[1].GetComponent<VideoPlayer>().length);
+        itemHolder.gameObject.SetActive(false);
+
+        if (!computerOn)
+        {
+            thereIsFloopyDesk = true;
+            titleScreen.SetActive(false);
+            showBootupScreen();
+            computerOn = true;
+
+        }
+   
+        
     }
 
     public void spawnGame()
     {
         //Instantiate(currentDesk.disk.levelManager, gameObject.transform).GetComponent<LevelManager>();
 
-        currentGame = Instantiate(currentDesk.disk.miniGame, gameObject.transform);
+        currentGame = Instantiate(currentDesk.miniGame, gameObject.transform);
         //miniGame.SetActive(true);
         //for controlling the ui       
         //countTime = false;
@@ -281,7 +349,7 @@ public class Computer : MonoBehaviour
 
         //tvloadingScreen.SetActive(false);
 
-        tvLight.GetComponent<Light>().color = currentDesk.disk.screenLightColor;
+        tvLight.GetComponent<Light>().color = currentDesk.screenLightColor;
 
         //if (currentDesk.disk.firstInsertion)
         //{
@@ -302,8 +370,7 @@ public class Computer : MonoBehaviour
         StartCoroutine(startboot());
     }
 
-    
-
+ 
     void exitComputerMode(float time)
     {    
         // to destroy a mini game if there's any 
@@ -321,7 +388,6 @@ public class Computer : MonoBehaviour
             else if(ThirdMiniGame.instance != null)
             {
                 ThirdMiniGame.instance.closeMiniGame();
-
             }
 
             //if(SecondMiniGame != null) ...
@@ -332,18 +398,56 @@ public class Computer : MonoBehaviour
         thereIsFloopyDesk = false;
         
         currentGame = null;
-        floppyDiskInHand.transform.parent.gameObject.SetActive(true);
-        Invoke("closeloading", 0.3f);    
+        //floppyDiskInHand.transform.parent.gameObject.SetActive(true);
+
+        
+        Invoke("closeloading", time);
+        //Invoke("closeloading", 0.3f);    
     }
+
+
+
+    void reloadComputer(float time)
+    {
+        // to destroy a mini game if there's any 
+        if (currentGame != null)
+        {
+            // here we chick for each game 
+            if (FirstMiniGame.instance != null)
+            {
+                FirstMiniGame.instance.closeMiniGame();
+            }
+            else if (SecondMiniGame.instance != null)
+            {
+                SecondMiniGame.instance.closeMiniGame();
+            }
+            else if (ThirdMiniGame.instance != null)
+            {
+                ThirdMiniGame.instance.closeMiniGame();
+
+            }
+
+            //if(SecondMiniGame != null) ...
+        }
+        turnOffGameUI();
+        inAlertMode = false;
+        alertMode = false;
+        thereIsFloopyDesk = false;
+
+        currentGame = null;       
+        Invoke("closeloading2", 0.3f);
+        //Invoke("closeloading", 0.3f);    
+    }
+
 
 
     public void takeOutCurrentFloppyDisk()
     {
         Debug.Log(currentDesk);
-        currentDesk.disk.isFinished = true;
+        currentDesk.isFinished = true;
         currentDesk = null;
         GameManager.Instance.level++;
-        exitComputerMode(1f);
+        exitComputerMode(0.3f);
     }
 
     void turnOffGameUI()
@@ -359,12 +463,12 @@ public class Computer : MonoBehaviour
 
     void showTitleScreen()
     {
-        tvLight.GetComponent<Light>().color = currentDesk.disk.gameTitleScreenColor;
+        tvLight.GetComponent<Light>().color = currentDesk.gameTitleScreenColor;
         startgame = false;
         StartCoroutine(titleAnim());
         titleScreen.SetActive(true);
-        titleScreen.transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>().text = currentDesk.disk.gameTitle;
-        titleScreen.transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>().color = currentDesk.disk.gameTitleScreenColor;
+        titleScreen.transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>().text = currentDesk.gameTitle;
+        titleScreen.transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>().color = currentDesk.gameTitleScreenColor;
     }
 
     IEnumerator titleAnim()
@@ -378,10 +482,12 @@ public class Computer : MonoBehaviour
     }
     IEnumerator startboot()
     {
+        tvLight.GetComponent<Light>().color = Color.white;
         bootUpScreen[0].gameObject.SetActive(true);
         bootUpScreen[1].GetComponent<VideoPlayer>().Play();
         yield return new WaitForSeconds((float)bootUpScreen[1].GetComponent<VideoPlayer>().length);
         bootUpScreen[0].gameObject.SetActive(false);
+        showTitleScreen();
     }
 
     public void glitchScreen(float time)
@@ -401,6 +507,15 @@ public class Computer : MonoBehaviour
 
 
 
+    public void reloadTheComputer()
+    {
+        StopAllCoroutines();
+        timerGiltchingFreq = 1000;
+        AudioManager.instance.stopSound("mini game background music ");
+        AudioManager.instance.stopSound("timer sound");
+        reloadComputer(0.5f);
+    }
+
     public void turnOffComputer()
     {
         StopAllCoroutines();
@@ -408,6 +523,18 @@ public class Computer : MonoBehaviour
         AudioManager.instance.stopSound("mini game background music ");
         AudioManager.instance.stopSound("timer sound");
         exitComputerMode(1f);
+    }
+
+    public void leaveComputer()
+    {      
+        computerView.SetActive(false);
+        isUsingComputer = false;
+        TheFirstPerson.FPSController.instance.movementEnabled = true;
+        itemHolder.gameObject.SetActive(true);
+
+        //GameObject.Find("item holder").gameObject.SetActive(true);
+
+
     }
 
 

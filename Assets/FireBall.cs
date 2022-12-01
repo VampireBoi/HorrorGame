@@ -18,7 +18,7 @@ public class FireBall : MonoBehaviour
 
     private void Update()
     {
-        if (!SecondMiniGame.instance.gameIsActive || !Computer.instance.isUsingComputer)
+        if (!SecondMiniGame.instance.gameIsActive)
         {
             Destroy(gameObject);
         }

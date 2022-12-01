@@ -133,8 +133,7 @@ public class FirstMiniGame : MonoBehaviour
     
         scoreUI.gameObject.SetActive(true);
         if (scoreUI.activeSelf)
-        {
-            Debug.Log("update score");
+        {         
             scoreUI.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "level: " + (levelCounter + 1).ToString() + " out of: " + levelsInDisk.ToString();
         }
 
@@ -163,13 +162,13 @@ public class FirstMiniGame : MonoBehaviour
                 }
                 
                 
-                if (Computer.instance.currentDesk.disk.firstInsertion)
+                if (Computer.instance.currentDesk.firstInsertion)
                 {
                     AudioManager.instance.playSound("mini game background music ");
                     AudioManager.instance.playSound("timer sound");
                     StartCoroutine(timerGiltching());
                     countTime = true;
-                    Computer.instance.currentDesk.disk.firstInsertion = false;
+                    Computer.instance.currentDesk.firstInsertion = false;
                 }
 
                 a = false;
@@ -190,7 +189,7 @@ public class FirstMiniGame : MonoBehaviour
         }
 
 
-        if (Computer.instance.currentDesk != null && timerUI.activeSelf && countTime && Computer.instance.plugedIn)
+        if (timerUI.activeSelf && countTime && Computer.instance.plugedIn)
         {
             if (timer > 0)
             {
@@ -242,7 +241,7 @@ public class FirstMiniGame : MonoBehaviour
 
         //tvLight.GetComponent<Light>().color = Computer.instance.currentDesk.disk.screenLightColor;
 
-        if (Computer.instance.currentDesk.disk.firstInsertion)
+        if (Computer.instance.currentDesk.firstInsertion)
         {
             AudioManager.instance.playSound("mini game background music ");
             Invoke("startFirstDialouge", 2f);
@@ -296,7 +295,9 @@ public class FirstMiniGame : MonoBehaviour
 
         countTime = false;
         tvloadingScreen.SetActive(false);
+        AudioManager.instance.stopSound("glitch sound");
         Destroy(gameObject);
+
 
     }
 
@@ -333,7 +334,7 @@ public class FirstMiniGame : MonoBehaviour
             timerGiltchingFreq = 1000;
             AudioManager.instance.stopSound("timer sound");
             AudioManager.instance.stopSound("mini game background music ");
-            dialogue.startDialogue(Computer.instance.currentDesk.disk.LastDialogue);
+            dialogue.startDialogue(Computer.instance.currentDesk.LastDialogue);
             playDialogue = false;
         }
 
@@ -351,7 +352,7 @@ public class FirstMiniGame : MonoBehaviour
         turnOffGameUI();
         AudioManager.instance.stopSound("mini game background music ");
 
-        dialogue.startDialogue(Computer.instance.currentDesk.disk.firstDialogue);
+        dialogue.startDialogue(Computer.instance.currentDesk.firstDialogue);
     }
 
 

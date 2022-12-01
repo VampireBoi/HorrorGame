@@ -123,13 +123,13 @@ public class ThirdMiniGame : MonoBehaviour
             }
 
 
-            if (Computer.instance.currentDesk.disk.firstInsertion)
+            if (Computer.instance.currentDesk.firstInsertion)
             {
                 //AudioManager.instance.playSound("mini game background music ");
                 //AudioManager.instance.playSound("timer sound");
                 //StartCoroutine(timerGiltching());
                 //countTime = true;
-                Computer.instance.currentDesk.disk.firstInsertion = false;
+                Computer.instance.currentDesk.firstInsertion = false;
             }
 
             turnOnGameUI();
@@ -195,7 +195,7 @@ public class ThirdMiniGame : MonoBehaviour
 
         //tvLight.GetComponent<Light>().color = Computer.instance.currentDesk.disk.screenLightColor;
 
-        if (Computer.instance.currentDesk.disk.firstInsertion)
+        if (Computer.instance.currentDesk.firstInsertion)
         {
             Invoke("startFirstDialouge", 2f);
             m.GetComponent<ThirdMiniGamePlayer>().canMove = false;
@@ -266,7 +266,7 @@ public class ThirdMiniGame : MonoBehaviour
     {
         turnOffGameUI();
         AudioManager.instance.stopSound("mini game background music ");
-        dialogue.startDialogue(Computer.instance.currentDesk.disk.firstDialogue);
+        dialogue.startDialogue(Computer.instance.currentDesk.firstDialogue);
     }
 
 
@@ -309,7 +309,7 @@ public class ThirdMiniGame : MonoBehaviour
             StopAllCoroutines();
             timerGiltchingFreq = 1000;
             AudioManager.instance.stopSound("third game music");
-            dialogue.startDialogue(Computer.instance.currentDesk.disk.LastDialogue);
+            dialogue.startDialogue(Computer.instance.currentDesk.LastDialogue);
             playDialogue = false;
         }
 

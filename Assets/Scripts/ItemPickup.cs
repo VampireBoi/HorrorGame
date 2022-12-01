@@ -7,9 +7,8 @@ public class ItemPickup : MonoBehaviour
     public ItemData item;
 
     public void pickup()
-    {
-        
-        InventoryManager.Instance.items.Add(item);
+    {  
+        InventoryManager.Instance.addItem(item);
         itemSway.instance.holdFirstItem();
         Destroy(gameObject);
     }

@@ -122,68 +122,61 @@ public class SecondMiniGame : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Computer.instance.currentDesk != null)
+        //ui display
+        if (roundUI.activeSelf)
         {
-
-
-            //ui display
-            if (roundUI.activeSelf)
-            {
-                roundUI.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "ROUND: " + roundCounter;
-            }
-            
-            
-            
-            
-            // when the game is loading or in dailaogue is hides the ui and lock the player 
-
-            if (a == true && !dialogue.dialogueOn)
-            {
-
-                Debug.Log("a dialouge has been ended");
-                //turnOnGameUI();
-                AudioManager.instance.playSound("second game background music");
-
-                GameObject p = GameObject.FindGameObjectWithTag("2dPlayer");
-                if (p != null)
-                {
-                    p.GetComponent<SecondMiniGamePlayer>().canMove = true;
-                }
-
-
-                if (Computer.instance.currentDesk.disk.firstInsertion)
-                {
-                    //AudioManager.instance.playSound("mini game background music ");
-                    //AudioManager.instance.playSound("timer sound");
-                    //StartCoroutine(timerGiltching());
-                    //countTime = true;
-                    Computer.instance.currentDesk.disk.firstInsertion = false;
-                }
-
-                turnOnGameUI();
-                gameIsActive = true;
-                a = false;
-            }
-            if (dialogue.dialogueOn && a == false)
-            {       
-                Debug.Log("a dialouge has been started");
-                AudioManager.instance.stopSound("second game background music");
-
-                
-                GameObject p = GameObject.FindGameObjectWithTag("2dPlayer");
-                if (p != null)
-                {
-                    p.GetComponent<SecondMiniGamePlayer>().canMove = false;
-                }
-                
-                turnOffGameUI();
-                gameIsActive = false;
-                a = true;
-            }
-
+            roundUI.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "ROUND: " + roundCounter;
         }
 
 
+
+
+        // when the game is loading or in dailaogue is hides the ui and lock the player 
+
+        if (a == true && !dialogue.dialogueOn)
+        {
+
+            Debug.Log("a dialouge has been ended");
+            //turnOnGameUI();
+            AudioManager.instance.playSound("second game background music");
+
+            GameObject p = GameObject.FindGameObjectWithTag("2dPlayer");
+            if (p != null)
+            {
+                p.GetComponent<SecondMiniGamePlayer>().canMove = true;
+            }
+
+
+            if (Computer.instance.currentDesk.firstInsertion)
+            {
+                //AudioManager.instance.playSound("mini game background music ");
+                //AudioManager.instance.playSound("timer sound");
+                //StartCoroutine(timerGiltching());
+                //countTime = true;
+                Computer.instance.currentDesk.firstInsertion = false;
+            }
+
+            turnOnGameUI();
+            gameIsActive = true;
+            a = false;
+        }
+        if (dialogue.dialogueOn && a == false)
+        {
+            Debug.Log("a dialouge has been started");
+            AudioManager.instance.stopSound("second game background music");
+
+
+            GameObject p = GameObject.FindGameObjectWithTag("2dPlayer");
+            if (p != null)
+            {
+                p.GetComponent<SecondMiniGamePlayer>().canMove = false;
+            }
+
+            turnOffGameUI();
+            gameIsActive = false;
+            a = true;
+        }
+      
 
         if (gameIsActive)
         {
@@ -270,7 +263,7 @@ public class SecondMiniGame : MonoBehaviour
 
         //tvLight.GetComponent<Light>().color = Computer.instance.currentDesk.disk.screenLightColor;
 
-        if (Computer.instance.currentDesk.disk.firstInsertion)
+        if (Computer.instance.currentDesk.firstInsertion)
         {
             Invoke("startFirstDialouge", 2f);
         }
@@ -373,7 +366,7 @@ public class SecondMiniGame : MonoBehaviour
     {
         turnOffGameUI();
         AudioManager.instance.stopSound("mini game background music ");
-        dialogue.startDialogue(Computer.instance.currentDesk.disk.firstDialogue);
+        dialogue.startDialogue(Computer.instance.currentDesk.firstDialogue);
     }
 
 
@@ -415,7 +408,7 @@ public class SecondMiniGame : MonoBehaviour
             StopAllCoroutines();
             timerGiltchingFreq = 1000;       
             AudioManager.instance.stopSound("second game background music");
-            dialogue.startDialogue(Computer.instance.currentDesk.disk.LastDialogue);
+            dialogue.startDialogue(Computer.instance.currentDesk.LastDialogue);
             playDialogue = false;
         }
 

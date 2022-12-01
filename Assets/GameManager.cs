@@ -21,23 +21,29 @@ public class GameManager : MonoBehaviour
     public Dialogue[] gameDialogues;
     [Header("timer in seconds")]
     public float time;
-
-
     float timer;
+
+
+
+    [Header("level two checking")]
+    bool canChickOnPlayer;
 
     // Start is called before the first frame update
     void Start()
     {
+        
+        level = 1;
         Instance = this;
         gameOver = false;
         timer = time;
-        Invoke("startClockSound", 0.1f);      
+        Invoke("startClockSound", 0.1f);   
+        canChickOnPlayer = true;
     }
 
     // Update is called once per frame
     void Update()
     {
-
+        Debug.Log("game level: " + level);
         if (!gameDialogues[0].dialogueOn && !gameDialogues[1].dialogueOn)
         {
 
@@ -56,7 +62,7 @@ public class GameManager : MonoBehaviour
             {
                 // the timer is finished, kill the player
                 // play scary sounds and turn off lights;
-
+                
                 if (!gameOver)
                 {
 
@@ -92,6 +98,23 @@ public class GameManager : MonoBehaviour
         }
 
 
+        if(level == 2)
+        {
+            if (Computer.instance.isUsingComputer)
+            {
+                if (canChickOnPlayer)
+                {
+                    Enemy.instanse.chickOnThePlayer();
+                    canChickOnPlayer = false;
+                }
+            }
+        }
+
+
+
+        
+
+
         
     }
 
@@ -104,5 +127,16 @@ public class GameManager : MonoBehaviour
     void killThePlayer()
     {
         Enemy.instanse.attackThePlayer();
+    }
+
+
+    public void resetChecking()
+    {
+        StartCoroutine(resetCheck());
+    }
+    IEnumerator resetCheck()
+    {
+        yield return new WaitForSeconds(15f);
+        canChickOnPlayer = true;
     }
 }

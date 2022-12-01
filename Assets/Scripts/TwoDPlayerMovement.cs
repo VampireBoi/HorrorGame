@@ -33,13 +33,21 @@ public class TwoDPlayerMovement : MonoBehaviour
     {
         if (CanWalk)
         {
-            processInputs();
+            if (Computer.instance.isUsingComputer)
+            {
+                processInputs();
+            }
+            else
+            {
+                rb.velocity = Vector3.zero;
+                moveDirection = Vector3.zero;
+                StopAllCoroutines();
+            }
         } else
         {
             rb.velocity = Vector3.zero;
             StopAllCoroutines();
             spriteRenderer.sprite = stare;
-
         }
        
     }

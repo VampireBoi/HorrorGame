@@ -214,7 +214,7 @@ public class Enemy : MonoBehaviour
             animator.SetBool("isMoving", false);
             head.lookAtPlayer();
            
-            if (!Computer.instance.alertMode && Interact.isSetting && !Computer.instance.isUsingComputer && numberOfWarnigs > 0)
+            if (!Computer.instance.alertMode && Interact.isSetting && !Computer.instance.computerOn && numberOfWarnigs > 0)
             {
                 // here is ehn the enemy hear the alert but the player manages to turn off every thing and go to bed 
                 // here you can put the warnings, and the checking method,  
@@ -283,7 +283,7 @@ public class Enemy : MonoBehaviour
             animator.SetBool("isMoving" , false);
             head.lookAtPlayer();
            
-            if (Interact.isSetting && !Computer.instance.isUsingComputer)
+            if (Interact.isSetting && !Computer.instance.computerOn)
             {
 
                 if (playDialogue)
@@ -303,6 +303,10 @@ public class Enemy : MonoBehaviour
                     isChecking = false;
                     playDialogue = true;
                     head.restRotation();
+                    if(GameManager.Instance.level == 2)
+                    {
+                        GameManager.Instance.resetChecking();
+                    }
                 }
                     
             }
@@ -311,7 +315,7 @@ public class Enemy : MonoBehaviour
 
                 playDialogue = true;
                 isChecking = false;
-
+                isAttacking = true;
                 // this statment happens when the player is using the computer and the enemy reach the door and see her 
                 Debug.Log("the computer jumpscare");
             }
@@ -332,7 +336,7 @@ public class Enemy : MonoBehaviour
             animator.SetBool("isMoving", true);    
             if (playSound)
             {
-                AudioManager.instance.playSound("beep sound");
+                //AudioManager.instance.playSound("beep sound");
                 AudioManager.instance.playSound("enemy foot steps");
                 playSound = false;
             }

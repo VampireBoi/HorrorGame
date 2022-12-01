@@ -62,7 +62,7 @@ public class Interact : MonoBehaviour
                 {
                     hit.transform.GetComponent<ItemPickup>().pickup();
                 }
-                if (hit.transform.tag == "computer")
+                if (hit.transform.tag == "computer" && !Computer.instance.alertMode)
                 {
                     if (Computer.instance.plugedIn)
                     {

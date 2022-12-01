@@ -29,27 +29,37 @@ public class ThirdMiniGamePlayer : MonoBehaviour
 
         if (canMove)
         {
-            if (movex < 0)
+            if (Computer.instance.isUsingComputer)
             {
-                if (playanim)
+                if (movex < 0)
                 {
-                    StartCoroutine(spriteAnimation());
-                    playanim = false;
+                    if (playanim)
+                    {
+                        StartCoroutine(spriteAnimation());
+                        playanim = false;
+                    }
+                    if (ThirdMiniGameEnemy.Instance.checking)
+                    {
+                        ThirdMiniGame.instance.GameOver();
+                    }
+                    transform.Translate(-transform.right * speed * Time.deltaTime);
+                    spriteRenderer.flipX = false;
                 }
-                if (ThirdMiniGameEnemy.Instance.checking)
+                else
                 {
-                    ThirdMiniGame.instance.GameOver();
+                    spriteRenderer.flipX = true;
+                    playanim = true;
+                    StopAllCoroutines();
+                    spriteRenderer.sprite = sprites[0];
+
                 }
-                transform.Translate(-transform.right * speed * Time.deltaTime);
-                spriteRenderer.flipX = false;
             }
-            else 
-            {   
+            else
+            {
                 spriteRenderer.flipX = true;
                 playanim = true;
                 StopAllCoroutines();
                 spriteRenderer.sprite = sprites[0];
-
             }
         }
         else
@@ -67,7 +77,7 @@ public class ThirdMiniGamePlayer : MonoBehaviour
             foreach (Sprite sprite in sprites)
             {
                 spriteRenderer.sprite = sprite;
-                yield return new WaitForSeconds(0.06f);
+                yield return new WaitForSeconds(0.07f);
             }
         }
     }
