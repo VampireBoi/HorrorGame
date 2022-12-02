@@ -350,7 +350,7 @@ namespace TheFirstPerson
 
             HeadBob();
 
-            if (uiManager.instance.inventoryIsOpen)
+            if (uiManager.instance.inventoryIsOpen || KeyPadPuzzle.instance.inKeyPadMode)
             {
                 mouseLocked = false;           
             }

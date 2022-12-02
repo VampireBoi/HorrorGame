@@ -31,7 +31,7 @@ public class Interact : MonoBehaviour
 
             //FirstPersonController.Instance.crosshairObject.gameObject.SetActive(true);
 
-            if (Computer.instance.isUsingComputer)
+            if (!TheFirstPerson.FPSController.instance.movementEnabled)
             {
                 fpsUI.transform.GetChild(0).gameObject.SetActive(false);
                 fpsUI.transform.GetChild(1).gameObject.SetActive(false);
@@ -88,6 +88,24 @@ public class Interact : MonoBehaviour
                     }
                     Computer.instance.plugedIn = !Computer.instance.plugedIn;
                 }
+
+                if(hit.transform.tag == "KeyPad")
+                {
+                    if (!KeyPadPuzzle.instance.inKeyPadMode)
+                    {
+                        KeyPadPuzzle.instance.enterkeyPadMode();
+
+                    }
+                }
+
+                if(hit.transform.tag == "Door")
+                {
+                    if (!KeyPadPuzzle.instance.inKeyPadMode)
+                    {
+                        hit.transform.GetComponent<Door>().tryOpenTheDoor();
+                    }
+                }
+
             }
 
 

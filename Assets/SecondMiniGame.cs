@@ -408,6 +408,7 @@ public class SecondMiniGame : MonoBehaviour
             StopAllCoroutines();
             timerGiltchingFreq = 1000;       
             AudioManager.instance.stopSound("second game background music");
+            
             dialogue.startDialogue(Computer.instance.currentDesk.LastDialogue);
             playDialogue = false;
         }

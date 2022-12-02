@@ -101,7 +101,7 @@ public class Computer : MonoBehaviour
         //Debug.Log("is using the coumputer: " + isUsingComputer);
         //Debug.Log("in alert mode: " + inAlertMode);
 
-        Debug.Log(currentDesk);
+        
         if (Input.GetKeyDown(KeyCode.G) && isUsingComputer && !inAlertMode && !dialogue.dialogueOn)
         {
             leaveComputer();
@@ -237,6 +237,13 @@ public class Computer : MonoBehaviour
                 if (currentDesk == null)
                 {
                     currentDesk = d;
+                    
+                    // for the first puzzle
+                    if (GameManager.Instance.level == 1)
+                    {
+                        currentDesk.LastDialogue[currentDesk.LastDialogue.Length - 1] = KeyPadPuzzle.instance.password;
+                    }
+                    else { currentDesk.LastDialogue[currentDesk.LastDialogue.Length - 1] = ""; }
                 }
 
                 thereIsFloopyDesk = true;
@@ -446,7 +453,7 @@ public class Computer : MonoBehaviour
         Debug.Log(currentDesk);
         currentDesk.isFinished = true;
         currentDesk = null;
-        GameManager.Instance.level++;
+        //GameManager.Instance.level++;
         exitComputerMode(0.3f);
     }
 

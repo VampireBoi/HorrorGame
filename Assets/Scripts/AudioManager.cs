@@ -105,6 +105,17 @@ public class AudioManager : MonoBehaviour
         }
     }
 
+    public void changeVolume(string name, float Volume)
+    {
+        foreach (Sound sound in sounds)
+        {
+            if (sound.name == name)
+            {
+                sound.source.volume = Volume;
+            }
+        }
+    }
+
     public void stopAllSounds()
     {
         foreach (Sound sound in sounds)

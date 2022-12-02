@@ -11,7 +11,7 @@ public class DoorHandler : MonoBehaviour
     {
         if (other.transform.tag == "Enemy")
         {
-            Debug.Log("enterd");
+            //Debug.Log("enterd");
             if (!isOpen)
             {
                 AudioManager.instance.playSound("open door");

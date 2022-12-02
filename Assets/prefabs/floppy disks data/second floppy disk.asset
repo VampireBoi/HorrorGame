@@ -25,6 +25,7 @@ MonoBehaviour:
   - look
   - 'under '
   - 'the counter '
+  - 
   isFinished: 0
   miniGame: {fileID: 6485754523395704912, guid: dac2029b4eea4e845a48b87f8ca3c9af, type: 3}
-  firstInsertion: 1
+  firstInsertion: 0

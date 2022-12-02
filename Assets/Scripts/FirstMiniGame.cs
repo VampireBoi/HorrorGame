@@ -333,8 +333,9 @@ public class FirstMiniGame : MonoBehaviour
             StopAllCoroutines();
             timerGiltchingFreq = 1000;
             AudioManager.instance.stopSound("timer sound");
-            AudioManager.instance.stopSound("mini game background music ");
+            AudioManager.instance.stopSound("mini game background music ");         
             dialogue.startDialogue(Computer.instance.currentDesk.LastDialogue);
+
             playDialogue = false;
         }
 
