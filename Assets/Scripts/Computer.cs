@@ -115,7 +115,7 @@ public class Computer : MonoBehaviour
             Debug.Log(r);
             if(r == 1)
             {
-                Enemy.instanse.chickOnThePlayer();
+                Enemy.instanse.gocheckTheRoom();
             }
         }
 
@@ -207,6 +207,11 @@ public class Computer : MonoBehaviour
     //this code is hard coded , adjust it later 
     public void openComputer()
     {
+
+        StartCoroutine(Open());
+    }
+    IEnumerator Open()
+    {
         if (!computerOn)
         {
             FloppyDeskData d;
@@ -214,16 +219,15 @@ public class Computer : MonoBehaviour
             if (GameObject.Find("item holder").transform.childCount == 0)
             {
                 Debug.Log("no item in hand ? ");
-                return;
+                yield break;
             }
             else
             {
                 itemHolder = GameObject.Find("item holder").gameObject;
                 floppyDiskInHand = itemHolder.transform.GetChild(0).gameObject;
-                
+
                 d = floppyDiskInHand.GetComponent<FloppyDisk>().disk;
 
-               
             }
 
 
@@ -237,7 +241,7 @@ public class Computer : MonoBehaviour
                 if (currentDesk == null)
                 {
                     currentDesk = d;
-                    
+
                     // for the first puzzle
                     if (GameManager.Instance.level == 1)
                     {
@@ -250,27 +254,35 @@ public class Computer : MonoBehaviour
 
                 if (currentDesk != null && !alertMode)
                 {
+                    fadeAnim.instance.startFadeAnim();
+                    yield return new WaitForSeconds(fadeAnim.instance.TimeBetweenFades / 2);
+
                     //to put the player in computer mode
                     itemInHand = floppyDiskInHand.gameObject.GetComponent<ItemPickup>().item;
                     InventoryManager.Instance.removeItem(itemInHand);
-                    itemSway.instance.destroyItemInHand();
+                    ItemHolder.instance.destroyItemInHand();
 
                     computerScreen.GetComponent<MeshRenderer>().material = crtMat;
                     AudioManager.instance.playSound("computer sound");
                     enterComputerMode();
-                    
+
                     //this if statement id for showing the first dialogue only once, the first time he puts the disk in the computer 
 
                 }
                 else
                 {
                     Debug.Log("cant find the floopy disk");
-                    return;
+                    yield break;
                 }
 
             }
         }
-        else { enterComputerMode(); }
+        else {
+            fadeAnim.instance.startFadeAnim();
+            yield return new WaitForSeconds(fadeAnim.instance.TimeBetweenFades / 2);
+
+            enterComputerMode(); 
+        }
 
     }
 
@@ -533,15 +545,20 @@ public class Computer : MonoBehaviour
     }
 
     public void leaveComputer()
-    {      
+    {
+        StartCoroutine(leave());
+    }
+
+    IEnumerator leave()
+    {
+        fadeAnim.instance.startFadeAnim();
+        yield return new WaitForSeconds(fadeAnim.instance.TimeBetweenFades / 2);
+
         computerView.SetActive(false);
         isUsingComputer = false;
         TheFirstPerson.FPSController.instance.movementEnabled = true;
         itemHolder.gameObject.SetActive(true);
-
         //GameObject.Find("item holder").gameObject.SetActive(true);
-
-
     }
 
 

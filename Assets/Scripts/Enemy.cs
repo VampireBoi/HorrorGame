@@ -26,6 +26,9 @@ public class Enemy : MonoBehaviour
 
     public float enemyNormalSpeed; 
     public float enemyAttackSpeed;
+    public float enemyChickSpeed;
+    public float enemyChickForEventSpeed;
+
 
     public float numberOfWarnigs;
     
@@ -48,6 +51,7 @@ public class Enemy : MonoBehaviour
     #endregion
     
     bool isCheckingNoise = false;
+    bool isCheckingForEvent = false;
     bool isChecking = false;
     bool isAttacking = false;
     bool isPatrolling = false;
@@ -61,6 +65,8 @@ public class Enemy : MonoBehaviour
     public Vector3 walkPoint;
     bool walkPointSet;
     public float walkPointRange;
+
+    bool canLook = true;
 
 
     [HideInInspector]public int exexute;
@@ -101,7 +107,7 @@ public class Enemy : MonoBehaviour
 
         if(timer <= 0)
         {
-            chickOnThePlayer();
+            chickForEvent();
             count = false;
             timer = 30f;
         }
@@ -119,6 +125,11 @@ public class Enemy : MonoBehaviour
             if (isCheckingNoise)
             {
                 checkNoise();
+            }
+
+            if (isCheckingForEvent)
+            {
+                checkRoomForEvent();
             }
 
             if (isChecking)
@@ -276,7 +287,7 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    void checkRoom()
+    void checkRoomForEvent()
     {
         if (Vector3.Distance(transform.position, DoorPoint.transform.position) < 1.2f)
         {
@@ -300,7 +311,7 @@ public class Enemy : MonoBehaviour
                     Agent.speed = enemyNormalSpeed;
                     AudioManager.instance.changePitch("enemy foot steps", 1f);
                     AudioManager.instance.playSound("enemy foot steps");
-                    isChecking = false;
+                    isCheckingForEvent = false;
                     playDialogue = true;
                     head.restRotation();
                     if(GameManager.Instance.level == 2)
@@ -336,6 +347,7 @@ public class Enemy : MonoBehaviour
             animator.SetBool("isMoving", true);    
             if (playSound)
             {
+                Agent.speed = enemyChickForEventSpeed;
                 //AudioManager.instance.playSound("beep sound");
                 AudioManager.instance.playSound("enemy foot steps");
                 playSound = false;
@@ -344,11 +356,89 @@ public class Enemy : MonoBehaviour
 
     }
 
+    void checkRoom()
+    {
+        if (Vector3.Distance(transform.position, DoorPoint.transform.position) < 1.2f)
+        {
+            animator.SetBool("isMoving", false);
+            //head.lookAtPlayer();
+
+            if (Interact.isSetting && !Computer.instance.computerOn)
+            {
+
+                if (canLook)
+                {
+                    StartCoroutine(Look());
+                    canLook = false;
+                }
+                
+
+            }
+            else if (Computer.instance.isUsingComputer)
+            {
+                playDialogue = true;
+                isChecking = false;
+                isAttacking = true;
+                // this statment happens when the player is using the computer and the enemy reach the door and see her 
+                Debug.Log("the computer jumpscare");
+            }
+            else
+            {
+                playDialogue = true;
+                //if the player is standing in the room and the enemy reaches the door point 
+                isChecking = false;
+                isPatrolling = false;
+                isCheckingNoise = false;
+                isAttacking = true;
+            }
+
+        }
+        else
+        {
+            Agent.SetDestination(DoorPoint.transform.position);
+            animator.SetBool("isMoving", true);
+            if (playSound)
+            {
+                Agent.speed = enemyChickSpeed;
+                //AudioManager.instance.playSound("beep sound");
+                AudioManager.instance.changePitch("enemy foot steps", 1.2f);
+                AudioManager.instance.playSound("enemy foot steps");
+                playSound = false;
+            }
+        }
+
+    }
+
+    IEnumerator Look()
+    {
+        AudioManager.instance.stopSound("enemy foot steps");
+        head.lookAtPlayer();
+        yield return new WaitForSeconds(1f);
+        head.LookAtTheRoom();
+
+        yield return new WaitForSeconds(10f);      
+
+        isPatrolling = true;
+        isCheckingNoise = false;
+        isAttacking = false;
+        Agent.speed = enemyNormalSpeed;
+        AudioManager.instance.changePitch("enemy foot steps", 1f);
+        AudioManager.instance.playSound("enemy foot steps");
+        isChecking = false;
+        playDialogue = true;
+        head.restRotation();
+        if (GameManager.Instance.level == 2)
+        {
+            GameManager.Instance.resetChecking();
+        }
+        canLook = true;
+    }
 
     // call this function when you want teh enemy to check the player
-    void gocheckTheRoom()
+    public void gocheckTheRoom()
     {
         isChecking = true;
+        isCheckingForEvent = false;
         isPatrolling = false;
         isCheckingNoise = false;
     }
@@ -399,9 +489,10 @@ public class Enemy : MonoBehaviour
     }
 
 
-    public void chickOnThePlayer()
+    public void chickForEvent()
     {
-        isChecking = true;
+        isCheckingForEvent = true;
+        isChecking = false;
         isPatrolling = false;
         isCheckingNoise = false;
         isAttacking = false;

@@ -5,32 +5,53 @@ using UnityEngine;
 public class LookAtPlayer : MonoBehaviour
 {
     
-    bool look;
-    GameObject player;  
+    bool lookatPlayer;
+    bool LookatTheRoom;
+    GameObject player;
+    public GameObject lookPoint;
+
     // Start is called before the first frame update
     void Start()
     {
-        look = false;
+        lookatPlayer = false;
+        LookatTheRoom = false;
         player = GameObject.Find("FootstepsPlayer");
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (look)
+        Debug.Log("lookatPlayer: " + lookatPlayer);
+        Debug.Log("lookatTheRoom: " + LookatTheRoom);
+
+        if (lookatPlayer)
         {
             transform.LookAt(player.transform, Vector3.up);
+        }
+
+        if (LookatTheRoom)
+        {
+            transform.LookAt(lookPoint.transform, Vector3.up);
         }
     }
 
 
     public void restRotation()
     {
-        look = false;
+        lookatPlayer = false;
+        LookatTheRoom = false;
         transform.localEulerAngles = new Vector3(0, 0, 0);
     }
     public void lookAtPlayer()
     {
-        look = true;
+        LookatTheRoom = false;
+        lookatPlayer = true;
+    }
+
+    public void LookAtTheRoom()
+    {
+        LookatTheRoom = true;
+        lookatPlayer = false;
+        lookPoint.GetComponent<Animator>().SetTrigger("chick");
     }
 }

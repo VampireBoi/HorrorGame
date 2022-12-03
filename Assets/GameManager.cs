@@ -43,7 +43,7 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.Log("game level: " + level);
+        //Debug.Log("game level: " + level);
         if (!gameDialogues[0].dialogueOn && !gameDialogues[1].dialogueOn)
         {
 
@@ -104,7 +104,7 @@ public class GameManager : MonoBehaviour
             {
                 if (canChickOnPlayer)
                 {
-                    Enemy.instanse.chickOnThePlayer();
+                    Enemy.instanse.gocheckTheRoom();
                     canChickOnPlayer = false;
                 }
             }

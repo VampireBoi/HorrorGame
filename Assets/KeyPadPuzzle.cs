@@ -6,7 +6,9 @@ public class KeyPadPuzzle : MonoBehaviour
 {
     public static KeyPadPuzzle instance;
     public bool canIntract;
-
+    bool puzzlesolved;
+    
+    public Camera camera;
     public Door door;
     [HideInInspector]public bool inKeyPadMode;
     [HideInInspector] public int[] numberCombination = new int[5];
@@ -48,7 +50,7 @@ public class KeyPadPuzzle : MonoBehaviour
 
         if (inKeyPadMode)
         {
-            ray = transform.GetChild(0).gameObject.GetComponent<Camera>().ScreenPointToRay(Input.mousePosition);
+            ray = camera.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(ray, out hit))
             {
                 if(hit.transform.tag == "keypad Buttons")
@@ -68,22 +70,42 @@ public class KeyPadPuzzle : MonoBehaviour
 
     public void enterkeyPadMode()
     {
+        StartCoroutine(enterKeyPad());
+    }
+
+    IEnumerator enterKeyPad()
+    {
+        fadeAnim.instance.startFadeAnim();
+        yield return new WaitForSeconds(fadeAnim.instance.TimeBetweenFades / 2);
+        //WaitForSeconds 0.125f 
         inKeyPadMode = true;
-        transform.GetChild(0).gameObject.SetActive(true);
+        camera.gameObject.SetActive(true);
         TheFirstPerson.FPSController.instance.movementEnabled = false;
         transform.GetComponent<BoxCollider>().enabled = false;
         Cursor.lockState = CursorLockMode.Confined;
         Cursor.visible = true;
-
     }
 
+    
     public void ExitkeyPadMode()
     {
-        transform.GetChild(0).gameObject.SetActive(false);
+        StartCoroutine (exitKeyPad());
+    }
+    IEnumerator exitKeyPad()
+    {
+        fadeAnim.instance.startFadeAnim();
+        yield return new WaitForSeconds(fadeAnim.instance.TimeBetweenFades / 2);
+
+        camera.gameObject.SetActive(false);
         TheFirstPerson.FPSController.instance.movementEnabled = true;
         transform.GetComponent<BoxCollider>().enabled = true;
         Cursor.lockState = CursorLockMode.Locked;
         inKeyPadMode = false;
+
+        if (puzzlesolved)
+        {
+            Destroy(gameObject);
+        }
     }
 
 
@@ -104,6 +126,7 @@ public class KeyPadPuzzle : MonoBehaviour
     }
     IEnumerator openTheDoor()
     {
+
         
         canIntract = false;
         yield return new WaitForSeconds(0.2f);
@@ -116,10 +139,13 @@ public class KeyPadPuzzle : MonoBehaviour
         door.isLocked = false;
         door.tryOpenTheDoor();       
         yield return new WaitForSeconds(1.5f);
-        ExitkeyPadMode();
+        
         GameManager.Instance.level++;
         canIntract = true;
-        Destroy(gameObject);
+        Enemy.instanse.chickForEvent();
+        puzzlesolved = true;
+        ExitkeyPadMode();
+        
     }
 
     IEnumerator wrongPassword()

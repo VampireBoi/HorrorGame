@@ -9,7 +9,7 @@ public class ItemPickup : MonoBehaviour
     public void pickup()
     {  
         InventoryManager.Instance.addItem(item);
-        itemSway.instance.holdFirstItem();
+        ItemHolder.instance.holdFirstItem();
         Destroy(gameObject);
     }
 }

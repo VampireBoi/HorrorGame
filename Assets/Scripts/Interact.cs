@@ -132,12 +132,7 @@ public class Interact : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.Mouse2) && !dialogue.dialogueOn)
             {
-                player[0].transform.position = exitPosition.position;
-                TheFirstPerson.FPSController.instance.movementEnabled = true;
-                TheFirstPerson.FPSController.instance.crouching = false;
-         
-                itemSway.instance.holdFirstItem();
-                isSetting = false;
+                StartCoroutine(ExitSave());
             }
 
         }
@@ -146,17 +141,38 @@ public class Interact : MonoBehaviour
     
     public void enterSaveArea()
     {
+        StartCoroutine(EnterSave());
+    }
+    IEnumerator EnterSave()
+    {
+        fadeAnim.instance.startFadeAnim();
+        yield return new WaitForSeconds(fadeAnim.instance.TimeBetweenFades / 2);
+
         player[0].transform.position = chairPosition.position;
         TheFirstPerson.FPSController.instance.crouching = true;
         Invoke("settDown", (TheFirstPerson.FPSController.instance.crouchTransitionSpeed * TheFirstPerson.FPSController.instance.crouchColliderHeight) / 50f);
         isSetting = true;
-        itemSway.instance.destroyItemInHand();
+        ItemHolder.instance.destroyItemInHand();
     }
-    
     void settDown()
     {
 
         player[0].transform.position = chairPosition.position;
         TheFirstPerson.FPSController.instance.movementEnabled = false;
+    }
+
+
+    IEnumerator ExitSave()
+    {
+        fadeAnim.instance.startFadeAnim();
+        yield return new WaitForSeconds(fadeAnim.instance.TimeBetweenFades / 2);
+
+        player[0].transform.position = exitPosition.position;
+        TheFirstPerson.FPSController.instance.movementEnabled = true;
+        TheFirstPerson.FPSController.instance.crouching = false;
+
+        ItemHolder.instance.holdFirstItem();
+        isSetting = false;
+
     }
 }

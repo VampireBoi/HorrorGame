@@ -12,7 +12,7 @@ public class ItemController : MonoBehaviour
 
     public void pick()
     {
-        itemSway.instance.holdItem(Item);
+        ItemHolder.instance.holdItem(Item);
         uiManager.instance.closeUI();
     }
 }
