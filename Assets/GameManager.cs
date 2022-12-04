@@ -102,10 +102,9 @@ public class GameManager : MonoBehaviour
         {
             if (Computer.instance.isUsingComputer)
             {
-                if (canChickOnPlayer)
+                if (Enemy.instanse.canChick)
                 {
-                    Enemy.instanse.gocheckTheRoom();
-                    canChickOnPlayer = false;
+                    Enemy.instanse.gocheckTheRoom();                   
                 }
             }
         }

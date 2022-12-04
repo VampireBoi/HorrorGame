@@ -44,7 +44,7 @@ public class KeyPadPuzzle : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(inKeyPadMode && Input.GetKeyDown(KeyCode.G)){
+        if(inKeyPadMode && Input.GetKeyDown(KeyCode.G) && canIntract){
             ExitkeyPadMode();
         }
 
@@ -131,17 +131,18 @@ public class KeyPadPuzzle : MonoBehaviour
         canIntract = false;
         yield return new WaitForSeconds(0.2f);
         KeyPad.instance.LedGreen();
-
-        yield return new WaitForSeconds(1.35f);       
+        yield return new WaitForSeconds(1.35f);      
         AudioManager.instance.playSound("door is opened");
+        yield return new WaitForSeconds(0.2f);
+        AudioManager.instance.playSound("enemy heard somthing");
         yield return new WaitForSeconds(1.2f);
-        
+
         door.isLocked = false;
         door.tryOpenTheDoor();       
         yield return new WaitForSeconds(1.5f);
         
         GameManager.Instance.level++;
-        canIntract = true;
+        
         Enemy.instanse.chickForEvent();
         puzzlesolved = true;
         ExitkeyPadMode();

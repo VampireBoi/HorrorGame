@@ -22,7 +22,7 @@ MonoBehaviour:
   - 'don''t move unless you sure she is not looking '
   LastDialogue:
   - 'goodjob you won '
-  - '2 3 3 1 1 '
-  isFinished: 1
+  - 
+  isFinished: 0
   miniGame: {fileID: 4887269028537810328, guid: 81236bd7274303d4c97434910376e6a0, type: 3}
   firstInsertion: 0

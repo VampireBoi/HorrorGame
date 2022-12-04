@@ -150,6 +150,7 @@ public class FirstMiniGame : MonoBehaviour
             }
             // when the game is loading or in dailaogue is hides the ui and lock the player 
 
+
             if (a == true && !dialogue.dialogueOn)
             {
 
@@ -169,6 +170,7 @@ public class FirstMiniGame : MonoBehaviour
                     StartCoroutine(timerGiltching());
                     countTime = true;
                     Computer.instance.currentDesk.firstInsertion = false;
+                    Enemy.instanse.canChick = true;
                 }
 
                 a = false;
@@ -244,7 +246,10 @@ public class FirstMiniGame : MonoBehaviour
         if (Computer.instance.currentDesk.firstInsertion)
         {
             AudioManager.instance.playSound("mini game background music ");
+           
+
             Invoke("startFirstDialouge", 2f);
+
         }
         else
         {

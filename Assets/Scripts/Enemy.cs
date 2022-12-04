@@ -34,8 +34,9 @@ public class Enemy : MonoBehaviour
     
     public Transform Transform;
     public NavMeshAgent Agent;
-    public GameObject DoorPoint;    
+    public GameObject DoorPoint;
 
+    [HideInInspector] public bool canChick;
 
 
     bool playSound;
@@ -92,6 +93,7 @@ public class Enemy : MonoBehaviour
         playDialogue = true;
         timer = checkingTime;
         count = true;
+        canChick = true;
     }
 
     // Update is called once per frame
@@ -161,6 +163,7 @@ public class Enemy : MonoBehaviour
                 }
             }
         }
+
         
     }
 
@@ -429,7 +432,7 @@ public class Enemy : MonoBehaviour
         head.restRotation();
         if (GameManager.Instance.level == 2)
         {
-            GameManager.Instance.resetChecking();
+            StartCoroutine(resetCheck());
         }
         canLook = true;
     }
@@ -437,13 +440,23 @@ public class Enemy : MonoBehaviour
     // call this function when you want teh enemy to check the player
     public void gocheckTheRoom()
     {
-        isChecking = true;
-        isCheckingForEvent = false;
-        isPatrolling = false;
-        isCheckingNoise = false;
+        if (canChick)
+        {
+            isChecking = true;
+            isCheckingForEvent = false;
+            isPatrolling = false;
+            isCheckingNoise = false;
+
+            canChick = false;
+        }       
     }
-    
-    
+    IEnumerator resetCheck()
+    {
+        yield return new WaitForSeconds(15f);
+        canChick = true;
+    }
+
+
     private void OnTriggerEnter(Collider collision)
     {
         
@@ -503,6 +516,56 @@ public class Enemy : MonoBehaviour
         StartCoroutine(Distraction());
 
     }
+    IEnumerator Distraction()
+    {
+        yield return new WaitForSeconds(0.3f);
+        
+        if(GameManager.Instance.level > 2)
+        {
+            OldTv.instance.CanCloseTv = false;
+            AudioManager.instance.playSound("tv sound last");
+            yield return new WaitForSeconds(0.4f);
+            if (!cantGetDistracted)
+            {
+                isDistracted = true;
+                isChecking = false;
+                isPatrolling = false;
+                isCheckingNoise = false;
+                isAttacking = false;
+                AudioManager.instance.stopSound("enemy foot steps");
+                Agent.isStopped = true;
+
+                yield return new WaitForSeconds(5f);
+                AudioManager.instance.playSound("enemy foot steps");
+                Agent.isStopped = false;
+                Agent.SetDestination(DistractionPoint);
+                OldTv.instance.CanOpenTv = false;
+            }
+        }
+        else
+        {
+            AudioManager.instance.playSound("tv sound");
+            yield return new WaitForSeconds(0.4f);
+            if (!cantGetDistracted)
+            {
+                isDistracted = true;
+                isChecking = false;
+                isPatrolling = false;
+                isCheckingNoise = false;
+                isAttacking = false;
+                AudioManager.instance.stopSound("enemy foot steps");
+                Agent.isStopped = true;
+
+                yield return new WaitForSeconds(5f);
+                AudioManager.instance.playSound("enemy foot steps");
+                Agent.isStopped = false;
+                Agent.SetDestination(DistractionPoint);
+            }
+        }
+        
+
+
+    }
 
     public void stopDistraction()
     {
@@ -520,32 +583,8 @@ public class Enemy : MonoBehaviour
     }
 
 
+    
 
-    IEnumerator Distraction()
-    {
-        yield return new WaitForSeconds(0.3f);
-        AudioManager.instance.playSound("tv sound");
-        yield return new WaitForSeconds(0.4f);
-        if (!cantGetDistracted)
-        {
-            isDistracted = true;
-            isChecking = false;
-            isPatrolling = false;
-            isCheckingNoise = false;
-            isAttacking = false;
-            AudioManager.instance.stopSound("enemy foot steps");
-            Agent.isStopped = true;
-
-            yield return new WaitForSeconds(5f);
-            AudioManager.instance.playSound("enemy foot steps");
-            Agent.isStopped = false;
-            Agent.SetDestination(DistractionPoint);
-
-
-        }
-
-
-    }
 
 
 }

@@ -5,7 +5,7 @@ using UnityEngine;
 public class RemoteControl : MonoBehaviour
 {
     Animator anim;
-    bool tvOn;
+    
 
 
     private void Start()
@@ -23,19 +23,19 @@ public class RemoteControl : MonoBehaviour
                 RemoteControl r = GameObject.Find("item holder").transform.GetChild(0).gameObject.GetComponent<RemoteControl>();
                 if (r != null)
                 {
-                    if (!tvOn)
+                    if (!OldTv.instance.TvOn)
                     {
                         anim.SetTrigger("click");
                         AudioManager.instance.playSound("remote sound turn on");
                         OldTv.instance.openTv();
-                        tvOn = true;
+                        OldTv.instance.TvOn = true;
                     }
                     else
                     {
                         anim.SetTrigger("click");
                         AudioManager.instance.playSound("remote sound turn on");
                         OldTv.instance.closeTv();
-                        tvOn = false;
+                        OldTv.instance.TvOn = false;
                     }
                 }
             }

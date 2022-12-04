@@ -254,6 +254,11 @@ public class Computer : MonoBehaviour
 
                 if (currentDesk != null && !alertMode)
                 {
+                    if (currentDesk.firstInsertion)
+                    {
+                        Enemy.instanse.canChick = false;
+                    }
+                    
                     fadeAnim.instance.startFadeAnim();
                     yield return new WaitForSeconds(fadeAnim.instance.TimeBetweenFades / 2);
 
@@ -304,6 +309,7 @@ public class Computer : MonoBehaviour
             InventoryManager.Instance.addItem(itemInHand);
         }    
         itemHolder.gameObject.SetActive(true);
+        currentDesk = null;
         computerOn = false;
         
     }
@@ -462,6 +468,10 @@ public class Computer : MonoBehaviour
 
     public void takeOutCurrentFloppyDisk()
     {
+        if(GameManager.Instance.level == 2)
+        {
+            GameManager.Instance.level++;
+        }
         Debug.Log(currentDesk);
         currentDesk.isFinished = true;
         currentDesk = null;

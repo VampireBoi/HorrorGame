@@ -5,25 +5,29 @@ using UnityEngine;
 public class OldTv : MonoBehaviour
 {
     public static OldTv instance;
+    [HideInInspector] public bool CanCloseTv;
+    [HideInInspector] public bool CanOpenTv;
+    [HideInInspector] public bool TvOn;
     void Start()
     {
         instance = this;
+        CanCloseTv = true;
+        CanOpenTv = true;
     }
-
-    
-    void Update()
-    {
-        
-    }
-
 
     public void openTv()
     {
-        Enemy.instanse.CreateDistraction();
+        if (CanOpenTv)
+        {
+            Enemy.instanse.CreateDistraction();
+        }
     }
 
     public void closeTv()
     {
-        Enemy.instanse.stopDistraction();
+        if (CanCloseTv)
+        {
+            Enemy.instanse.stopDistraction();
+        }
     }
 }

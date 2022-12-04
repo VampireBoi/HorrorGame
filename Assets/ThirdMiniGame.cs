@@ -129,6 +129,7 @@ public class ThirdMiniGame : MonoBehaviour
                 //AudioManager.instance.playSound("timer sound");
                 //StartCoroutine(timerGiltching());
                 //countTime = true;
+                Enemy.instanse.canChick = true;
                 Computer.instance.currentDesk.firstInsertion = false;
             }
 
@@ -197,6 +198,7 @@ public class ThirdMiniGame : MonoBehaviour
 
         if (Computer.instance.currentDesk.firstInsertion)
         {
+           
             Invoke("startFirstDialouge", 2f);
             m.GetComponent<ThirdMiniGamePlayer>().canMove = false;
 
