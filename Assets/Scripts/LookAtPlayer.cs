@@ -21,8 +21,8 @@ public class LookAtPlayer : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.Log("lookatPlayer: " + lookatPlayer);
-        Debug.Log("lookatTheRoom: " + LookatTheRoom);
+        //Debug.Log("lookatPlayer: " + lookatPlayer);
+        //Debug.Log("lookatTheRoom: " + LookatTheRoom);
 
         if (lookatPlayer)
         {

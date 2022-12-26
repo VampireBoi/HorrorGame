@@ -50,7 +50,7 @@ MonoBehaviour:
   timeToChick: 1
   checkingTime: 2
   coolDownTime: 4
-  timeToFinishTheGame: 30
+  timeToFinishTheGame: 35
   gameIsActive: 0
   levelCounter: 0
-  levelsToWin: 2
+  levelsToWin: 5

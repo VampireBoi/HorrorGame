@@ -44,7 +44,7 @@ public class KeyPadPuzzle : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(inKeyPadMode && Input.GetKeyDown(KeyCode.G) && canIntract){
+        if(inKeyPadMode && Input.GetKeyDown(KeyCode.Mouse2) && canIntract){
             ExitkeyPadMode();
         }
 

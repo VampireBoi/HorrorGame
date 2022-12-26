@@ -102,7 +102,7 @@ public class Computer : MonoBehaviour
         //Debug.Log("in alert mode: " + inAlertMode);
 
         
-        if (Input.GetKeyDown(KeyCode.G) && isUsingComputer && !inAlertMode && !dialogue.dialogueOn)
+        if (Input.GetKeyDown(KeyCode.Mouse2) && isUsingComputer && !inAlertMode && !dialogue.dialogueOn)
         {
             leaveComputer();
         }

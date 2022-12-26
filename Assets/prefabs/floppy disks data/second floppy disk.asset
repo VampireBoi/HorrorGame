@@ -19,13 +19,14 @@ MonoBehaviour:
   - 'good you found the the game '
   - 'this game is really simple '
   - all you gotta do is block the fireballs
+  - face my shield to the fireball by pressing one of wasd keys
   - 'don'' t let me burn or i''ll scream '
   - 'goodluck '
   LastDialogue:
-  - look
-  - 'under '
-  - 'the counter '
-  - 
+  - 'congrats '
+  - 'you '
+  - 'won at the game '
+  - 'you finisihed all the content in this bulid '
   isFinished: 0
   miniGame: {fileID: 6485754523395704912, guid: dac2029b4eea4e845a48b87f8ca3c9af, type: 3}
-  firstInsertion: 0
+  firstInsertion: 1

@@ -16,13 +16,17 @@ MonoBehaviour:
   gameTitleScreenColor: {r: 1, g: 0.38321838, b: 0.3443396, a: 1}
   screenLightColor: {r: 0.108757555, g: 0.12921159, b: 0.49056602, a: 1}
   firstDialogue:
-  - 'this is the final game '
-  - 'its green ligth red light '
-  - 'try and reach the door before the timer runs out '
-  - 'don''t move unless you sure she is not looking '
+  - hi
+  - 'so this game is so simple '
+  - try and reach the other side of the ketchin by holding A
+  - 'or left arrow '
+  - 'don''t '
+  - 'move '
+  - 'when she''s looking at me '
+  - 'she will murder me if she saw me moving '
   LastDialogue:
-  - 'goodjob you won '
-  - 
+  - 'thank you for letting me escape this bitch '
+  - 'too bad, i wish i actully escaped from her in my real story '
   isFinished: 0
   miniGame: {fileID: 4887269028537810328, guid: 81236bd7274303d4c97434910376e6a0, type: 3}
-  firstInsertion: 0
+  firstInsertion: 1

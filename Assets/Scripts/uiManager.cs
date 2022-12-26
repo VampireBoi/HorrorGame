@@ -17,7 +17,7 @@ public class uiManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.I) && !Interact.isSetting)
+        if (Input.GetKeyDown(KeyCode.Tab) && !Interact.isSetting)
         {
             inventoryIsOpen = true;
             InventoryManager.Instance.listItems();

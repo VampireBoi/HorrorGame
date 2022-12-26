@@ -152,9 +152,9 @@ MonoBehaviour:
   projectileSpeedLimit: 8
   timeTospwan: 2
   timeToSpownLimit: 0.31
-  roundsToWin: 2
-  timeToSpawnDecreasedPerRound: 0.42
-  projectileSpeedIncreasedPerRound: 0.4
+  roundsToWin: 5
+  timeToSpawnDecreasedPerRound: 0.38
+  projectileSpeedIncreasedPerRound: 0.36
 --- !u!1 &6485754524190287599
 GameObject:
   m_ObjectHideFlags: 0

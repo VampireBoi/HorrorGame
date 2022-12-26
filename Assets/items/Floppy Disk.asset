@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Floppy Disk
   m_EditorClassIdentifier: 
   id: 7
-  displayName: Floppy Disk
-  icon: {fileID: 21300000, guid: 26ca1607a6b90d74f961bbbc614bb9bb, type: 3}
+  displayName: 'mini game '
+  icon: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
   prefab: {fileID: 1888443388077136624, guid: 272de5a038a879241af1074ebd97a3ec, type: 3}

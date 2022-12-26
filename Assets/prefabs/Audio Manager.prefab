@@ -1,0 +1,278 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &6566069124814597689
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6566069124814597695}
+  - component: {fileID: 6566069124814597688}
+  m_Layer: 0
+  m_Name: Audio Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6566069124814597695
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6566069124814597689}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6566069124814597688
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6566069124814597689}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2134b8d4b3d247a4f8098f0ee5dad3bf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sounds:
+  - name: computer sound
+    clip: {fileID: 8300000, guid: 1c677ae3e32493144ba98b046a25b8b7, type: 3}
+    volume: 0.2
+    pitch: 1
+    Object: {fileID: 0}
+    source: {fileID: 0}
+    loop: 0
+    allowOverlaping: 0
+  - name: glitch sound
+    clip: {fileID: 8300000, guid: 51d85c1aae22d224f95e4e83041ef01d, type: 3}
+    volume: 0.5
+    pitch: 1
+    Object: {fileID: 0}
+    source: {fileID: 0}
+    loop: 0
+    allowOverlaping: 0
+  - name: timer sound
+    clip: {fileID: 8300000, guid: 27633b4dfcfee2242925c55f529fd34a, type: 3}
+    volume: 0.86
+    pitch: 0.5
+    Object: {fileID: 0}
+    source: {fileID: 0}
+    loop: 1
+    allowOverlaping: 0
+  - name: 'mini game background music '
+    clip: {fileID: 8300000, guid: b0ad414f260e4b247b5762a290f3c5e1, type: 3}
+    volume: 0.3
+    pitch: 1
+    Object: {fileID: 0}
+    source: {fileID: 0}
+    loop: 1
+    allowOverlaping: 0
+  - name: key pickup
+    clip: {fileID: 8300000, guid: 0d9a51ee471130444a5454a690fd0a97, type: 3}
+    volume: 0.25
+    pitch: 0.6
+    Object: {fileID: 0}
+    source: {fileID: 0}
+    loop: 0
+    allowOverlaping: 0
+  - name: jump scare sound
+    clip: {fileID: 8300000, guid: 492c205d6890db24c8ae0b88902716bb, type: 3}
+    volume: 1
+    pitch: 1.2
+    Object: {fileID: 0}
+    source: {fileID: 0}
+    loop: 0
+    allowOverlaping: 0
+  - name: enemy foot steps
+    clip: {fileID: 8300000, guid: e96b19a6f104b994998326b2d88ff217, type: 3}
+    volume: 0.5
+    pitch: 0.8
+    Object: {fileID: 0}
+    source: {fileID: 0}
+    loop: 1
+    allowOverlaping: 0
+  - name: beep sound
+    clip: {fileID: 8300000, guid: 66e3d58347cc4e34f86ec9649e7446f5, type: 3}
+    volume: 0.1
+    pitch: 1
+    Object: {fileID: 0}
+    source: {fileID: 0}
+    loop: 0
+    allowOverlaping: 1
+  - name: door is opened
+    clip: {fileID: 8300000, guid: bfc1e193a92d32249b3baca2185d32df, type: 3}
+    volume: 0.6
+    pitch: 1.2
+    Object: {fileID: 0}
+    source: {fileID: 0}
+    loop: 0
+    allowOverlaping: 0
+  - name: door is closed
+    clip: {fileID: 8300000, guid: e998c52d2a53c5a469b766f85ee59a24, type: 3}
+    volume: 0.5
+    pitch: 1
+    Object: {fileID: 0}
+    source: {fileID: 0}
+    loop: 0
+    allowOverlaping: 1
+  - name: horror ambience
+    clip: {fileID: 8300000, guid: bb5b5c9762f3cd94ca904d2097ea4005, type: 3}
+    volume: 0.218
+    pitch: 1
+    Object: {fileID: 0}
+    source: {fileID: 0}
+    loop: 0
+    allowOverlaping: 0
+  - name: alert sound
+    clip: {fileID: 8300000, guid: 34f4a44b786912c46bd34ea3e41a4b82, type: 3}
+    volume: 0.8
+    pitch: 1.031
+    Object: {fileID: 0}
+    source: {fileID: 0}
+    loop: 1
+    allowOverlaping: 0
+  - name: open door
+    clip: {fileID: 8300000, guid: fa93a0a64fd74834faed3abd6048aa98, type: 3}
+    volume: 0.8
+    pitch: 1.5
+    Object: {fileID: 0}
+    source: {fileID: 0}
+    loop: 0
+    allowOverlaping: 0
+  - name: close door
+    clip: {fileID: 8300000, guid: e3f95bc8a01fcfe438ab2a470f22a9b7, type: 3}
+    volume: 0.7
+    pitch: 1
+    Object: {fileID: 0}
+    source: {fileID: 0}
+    loop: 0
+    allowOverlaping: 0
+  - name: game timer
+    clip: {fileID: 8300000, guid: 966f9dadd88c9474e99661fbac070110, type: 3}
+    volume: 0.3
+    pitch: 1
+    Object: {fileID: 0}
+    source: {fileID: 0}
+    loop: 1
+    allowOverlaping: 0
+  - name: time out jumpscare sound
+    clip: {fileID: 8300000, guid: 27b8674afffe26d4aa45732c0a194f0e, type: 3}
+    volume: 1
+    pitch: 0.8
+    Object: {fileID: 0}
+    source: {fileID: 0}
+    loop: 0
+    allowOverlaping: 0
+  - name: fireball shoot
+    clip: {fileID: 8300000, guid: 62044e06ecf0f724d81a70460f966cd6, type: 3}
+    volume: 0.25
+    pitch: 0.8
+    Object: {fileID: 0}
+    source: {fileID: 0}
+    loop: 0
+    allowOverlaping: 1
+  - name: fireball blocked
+    clip: {fileID: 8300000, guid: 4974d560ac8911840ac9106165abbbed, type: 3}
+    volume: 0.25
+    pitch: 0.8
+    Object: {fileID: 0}
+    source: {fileID: 0}
+    loop: 0
+    allowOverlaping: 1
+  - name: player hit
+    clip: {fileID: 8300000, guid: 9424e13fb5342434f8fe18f3480494c9, type: 3}
+    volume: 0.25
+    pitch: 0.8
+    Object: {fileID: 0}
+    source: {fileID: 0}
+    loop: 0
+    allowOverlaping: 0
+  - name: second game background music
+    clip: {fileID: 8300000, guid: 721b32642af7c674faa3d361108f961e, type: 3}
+    volume: 0.35
+    pitch: 1
+    Object: {fileID: 0}
+    source: {fileID: 0}
+    loop: 1
+    allowOverlaping: 0
+  - name: second game round progress
+    clip: {fileID: 8300000, guid: f22a9e22f3ccce8478a0d8321b68d978, type: 3}
+    volume: 0.821
+    pitch: 1
+    Object: {fileID: 0}
+    source: {fileID: 0}
+    loop: 0
+    allowOverlaping: 0
+  - name: third game music
+    clip: {fileID: 8300000, guid: fbf2eb70cc3316d45a82d49badc221f4, type: 3}
+    volume: 0.7
+    pitch: 1
+    Object: {fileID: 0}
+    source: {fileID: 0}
+    loop: 0
+    allowOverlaping: 0
+  - name: power on
+    clip: {fileID: 8300000, guid: 55dc84f22229b49409f47940287e64d0, type: 3}
+    volume: 1
+    pitch: 1
+    Object: {fileID: 0}
+    source: {fileID: 0}
+    loop: 0
+    allowOverlaping: 0
+  - name: power off
+    clip: {fileID: 8300000, guid: 97a9ff65770411f40bf952d1b562a7c4, type: 3}
+    volume: 1
+    pitch: 1
+    Object: {fileID: 0}
+    source: {fileID: 0}
+    loop: 0
+    allowOverlaping: 0
+  - name: remote sound turn on
+    clip: {fileID: 8300000, guid: c14ae1c238823084b9b6e2c985825f94, type: 3}
+    volume: 1
+    pitch: 1
+    Object: {fileID: 0}
+    source: {fileID: 0}
+    loop: 0
+    allowOverlaping: 1
+  - name: tv sound
+    clip: {fileID: 8300000, guid: 37bc2ce294195fb4581fe6b28bc15cb5, type: 3}
+    volume: 0.8
+    pitch: 1
+    Object: {fileID: 0}
+    source: {fileID: 0}
+    loop: 0
+    allowOverlaping: 0
+  - name: remote sound turn off
+    clip: {fileID: 8300000, guid: 014849fb4f61c77429837c6cab6299d9, type: 3}
+    volume: 0.8
+    pitch: 1
+    Object: {fileID: 0}
+    source: {fileID: 0}
+    loop: 0
+    allowOverlaping: 1
+  - name: tv sound last
+    clip: {fileID: 8300000, guid: e3b5f4f251820784a85b0f80b7c8fbfc, type: 3}
+    volume: 0.8
+    pitch: 1
+    Object: {fileID: 0}
+    source: {fileID: 0}
+    loop: 0
+    allowOverlaping: 0
+  - name: enemy heard somthing
+    clip: {fileID: 8300000, guid: 5deceb9ed413ee547af0156279508317, type: 3}
+    volume: 0.8
+    pitch: 1
+    Object: {fileID: 0}
+    source: {fileID: 0}
+    loop: 0
+    allowOverlaping: 0

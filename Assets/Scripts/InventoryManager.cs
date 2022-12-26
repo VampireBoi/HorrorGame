@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
+
 
 public class InventoryManager : MonoBehaviour
 {
@@ -44,10 +46,14 @@ public class InventoryManager : MonoBehaviour
             GameObject obj = Instantiate(itemPrefab, itemContent);
             var itemName = obj.transform.Find("item name").GetComponent<Text>();
             var itemimage = obj.transform.Find("Image").GetComponent<Image>();
+            var itemDes = obj.transform.Find("description").GetChild(0).GetComponent<TextMeshProUGUI>();
             ItemController itemController = obj.GetComponent<ItemController>();
             itemController.Item = item;
             itemimage.sprite = item.icon;
             itemName.text = item.displayName;
+            itemDes.text = item.description;
+            itemDes.fontSize = 7;
+            itemDes. color = Color.black;
         }
     }
 }

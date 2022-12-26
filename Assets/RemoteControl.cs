@@ -27,15 +27,13 @@ public class RemoteControl : MonoBehaviour
                     {
                         anim.SetTrigger("click");
                         AudioManager.instance.playSound("remote sound turn on");
-                        OldTv.instance.openTv();
-                        OldTv.instance.TvOn = true;
+                        OldTv.instance.openTv();                        
                     }
                     else
                     {
                         anim.SetTrigger("click");
                         AudioManager.instance.playSound("remote sound turn on");
                         OldTv.instance.closeTv();
-                        OldTv.instance.TvOn = false;
                     }
                 }
             }

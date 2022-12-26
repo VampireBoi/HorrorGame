@@ -14,5 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 35841
   displayName: 'tv remote '
+  description: the remote to the tv in the living room
   icon: {fileID: 21300000, guid: 20a57deb880dfb740ba838d6bb783c7f, type: 3}
   prefab: {fileID: 6181028681609432157, guid: a2c0f1054beb3f440a630a62f65a7a5e, type: 3}

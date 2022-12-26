@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+
 using UnityEngine.AI;
 using UnityEditor;
 
@@ -51,12 +53,12 @@ public class Enemy : MonoBehaviour
     public float timeBetweenRotations;
     #endregion
     
-    bool isCheckingNoise = false;
+    [HideInInspector]public bool isCheckingNoise = false;
     bool isCheckingForEvent = false;
     bool isChecking = false;
     bool isAttacking = false;
     bool isPatrolling = false;
-    bool isDistracted = false;
+    [HideInInspector] public bool isDistracted = false;
 
     [HideInInspector]public bool cantGetDistracted;
 
@@ -100,9 +102,13 @@ public class Enemy : MonoBehaviour
     void Update()
     {
         //isChecking and isPatrolling and isAttacking !! only one has to be true at a spesicfic time
-        
-        
-        if(count == true)
+
+
+        Debug.Log("is checking: " + isChecking);
+        Debug.Log("is checkingNoise: " + isCheckingNoise);
+
+
+        if (count == true)
         {
             timer -= Time.deltaTime;      
         }
@@ -114,12 +120,9 @@ public class Enemy : MonoBehaviour
             timer = 30f;
         }
         
-        if (Computer.instance.alertMode && exexute == 0)
+        if (Computer.instance.inAlertMode && exexute == 0)
         {
-            exexute = 1;
-            isCheckingNoise = true;
-            isPatrolling=false;
-            isChecking = false;
+            Invoke("startChickingNoise", 1.5f);
         }
 
         if (!Computer.instance.dialogue.dialogueOn && !isDistracted)
@@ -163,6 +166,7 @@ public class Enemy : MonoBehaviour
                 }
             }
         }
+        
 
         
     }
@@ -228,7 +232,7 @@ public class Enemy : MonoBehaviour
             animator.SetBool("isMoving", false);
             head.lookAtPlayer();
            
-            if (!Computer.instance.alertMode && Interact.isSetting && !Computer.instance.computerOn && numberOfWarnigs > 0)
+            if (!Computer.instance.inAlertMode && Interact.isSetting && !Computer.instance.computerOn && numberOfWarnigs > 0)
             {
                 // here is ehn the enemy hear the alert but the player manages to turn off every thing and go to bed 
                 // here you can put the warnings, and the checking method,  
@@ -274,22 +278,39 @@ public class Enemy : MonoBehaviour
         }
         else
         {
+            if (isDistracted)
+            {
+                stopDistraction();
+            }
             AudioManager.instance.changePitch("enemy foot steps", 1.6f);
-            Agent.speed = enemyAttackSpeed;
+            Agent.speed = enemyChickSpeed;
             Agent.SetDestination(DoorPoint.transform.position);
             
             //here it should be the run animation
             animator.SetBool("isMoving", true);
             
             if (playSound)
-            {
-                AudioManager.instance.playSound("beep sound");
+            {               
                 AudioManager.instance.playSound("enemy foot steps");
                 playSound = false;
             }
         }
     }
 
+    public void startChickingNoise()
+    {
+        playSound = true;
+        if (isDistracted)
+        {
+            stopDistraction();
+        }
+        isCheckingNoise = true;
+        isChecking = false;
+        isPatrolling = false;
+
+        Debug.Log("ho oh oh");
+        exexute = 1;
+    }
     void checkRoomForEvent()
     {
         if (Vector3.Distance(transform.position, DoorPoint.transform.position) < 1.2f)
@@ -476,18 +497,22 @@ public class Enemy : MonoBehaviour
     void JumpScare()
     {
         jumpScare.SetActive(true);
-        AudioManager.instance.stopAllSounds();
-        AudioManager.instance.playSound("jump scare sound");
-        //StartCoroutine(playjumpScareSound());
+        //AudioManager.instance.stopAllSounds();
+        //AudioManager.instance.playSound("jump scare sound");
+        StartCoroutine(playjumpScareSound());
     }
+
 
     IEnumerator playjumpScareSound()
     {
         AudioManager.instance.stopAllSounds();
         AudioManager.instance.playSound("jump scare sound");
-        yield return new WaitForSeconds(4);
-        Debug.Log("gameover");
+        yield return new WaitForSeconds(5);
+        Debug.Log("gameover");     
         Debug.Log("return to main menu");
+        Cursor.lockState = CursorLockMode.Confined;
+        Cursor.visible = true;
+        SceneManager.LoadScene("menu");
     }
 
 
@@ -520,7 +545,7 @@ public class Enemy : MonoBehaviour
     {
         yield return new WaitForSeconds(0.3f);
         
-        if(GameManager.Instance.level > 2)
+        if(OldTv.instance.numberOfUse <= 0)
         {
             OldTv.instance.CanCloseTv = false;
             AudioManager.instance.playSound("tv sound last");
@@ -540,6 +565,9 @@ public class Enemy : MonoBehaviour
                 Agent.isStopped = false;
                 Agent.SetDestination(DistractionPoint);
                 OldTv.instance.CanOpenTv = false;
+                yield return new WaitForSeconds(90f);
+                StartCoroutine(resetCheck());
+
             }
         }
         else
@@ -573,13 +601,14 @@ public class Enemy : MonoBehaviour
         AudioManager.instance.playSound("remote sound turn off");
         AudioManager.instance.stopSound("tv sound");
 
-        Agent.isStopped = false;
-        isDistracted = false;
+        Agent.isStopped = false;       
         isChecking = false;
         isPatrolling = true;
         isCheckingNoise = false;
-        isAttacking = false;
-        isAttacking = false;
+        isAttacking = false;    
+        canChick = true;
+        isDistracted = false;
+        AudioManager.instance.playSound("tv turning off sound");
     }
 
 

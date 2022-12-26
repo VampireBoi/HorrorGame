@@ -28,7 +28,7 @@ MonoBehaviour:
   LastDialogue:
   - that was totally fun and not stressful right ?
   - now go to the other room behind you
-  - '7 9 1 5 9 '
+  - 
   isFinished: 0
   miniGame: {fileID: 6814572721301530243, guid: 1f9d84ea46c7e3e469abb2519cfe43cb, type: 3}
-  firstInsertion: 0
+  firstInsertion: 1

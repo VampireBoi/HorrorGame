@@ -43,6 +43,10 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.O)){
+            level++;
+        }
+
         //Debug.Log("game level: " + level);
         if (!gameDialogues[0].dialogueOn && !gameDialogues[1].dialogueOn)
         {
@@ -102,7 +106,7 @@ public class GameManager : MonoBehaviour
         {
             if (Computer.instance.isUsingComputer)
             {
-                if (Enemy.instanse.canChick)
+                if (Enemy.instanse.canChick && !Enemy.instanse.isCheckingNoise)
                 {
                     Enemy.instanse.gocheckTheRoom();                   
                 }
