@@ -85,7 +85,7 @@ Material:
     - _Glossiness: 0.5
     - _GlossyReflections: 1
     - _Height: 70
-    - _Intensity: 0.7
+    - _Intensity: 0.5
     - _Lcd: 0
     - _Metallic: 0
     - _Mode: 0
@@ -104,7 +104,7 @@ Material:
     - _SrcBlend: 1
     - _UVSec: 0
     - _VariableRes: 0
-    - _Width: 120
+    - _Width: 100
     - _ZWrite: 1
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}

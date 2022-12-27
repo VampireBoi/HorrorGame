@@ -9,6 +9,7 @@ public class KeyPadPuzzle : MonoBehaviour
     bool puzzlesolved;
     
     public Camera camera;
+    public Camera cameraray;
     public Door door;
     [HideInInspector]public bool inKeyPadMode;
     [HideInInspector] public int[] numberCombination = new int[5];
@@ -50,7 +51,9 @@ public class KeyPadPuzzle : MonoBehaviour
 
         if (inKeyPadMode)
         {
-            ray = camera.ScreenPointToRay(Input.mousePosition);
+           
+
+            ray = cameraray.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(ray, out hit))
             {
                 if(hit.transform.tag == "keypad Buttons")

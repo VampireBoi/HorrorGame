@@ -26,7 +26,7 @@ MonoBehaviour:
   - 'she will murder me if she saw me moving '
   LastDialogue:
   - 'thank you for letting me escape this bitch '
-  - 'too bad, i wish i actully escaped from her in my real story '
+  - 
   isFinished: 0
   miniGame: {fileID: 4887269028537810328, guid: 81236bd7274303d4c97434910376e6a0, type: 3}
   firstInsertion: 1

@@ -26,7 +26,7 @@ MonoBehaviour:
   - 'congrats '
   - 'you '
   - 'won at the game '
-  - 'you finisihed all the content in this bulid '
+  - '9 8 3 6 6 '
   isFinished: 0
   miniGame: {fileID: 6485754523395704912, guid: dac2029b4eea4e845a48b87f8ca3c9af, type: 3}
   firstInsertion: 1
