@@ -17,6 +17,8 @@ TagManager:
   - KeyPad
   - keypad Buttons
   - Door
+  - generatorPlace
+  - generator
   layers:
   - Default
   - TransparentFX

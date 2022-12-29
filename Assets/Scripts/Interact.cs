@@ -31,6 +31,24 @@ public class Interact : MonoBehaviour
 
             //FirstPersonController.Instance.crosshairObject.gameObject.SetActive(true);
 
+            
+            if(hit.transform.tag == "generatorPlace" && ItemHolder.instance.transform.GetChild(0).name == "generator item(Clone)")
+            {
+                GeneratorPlace.instance.showHighLight = true;
+                if(Input.GetKeyDown(KeyCode.Mouse0) && !isSetting)
+                {
+                    GeneratorPlace.instance.spownGenerator();
+                }
+            }
+            else
+            {
+                Debug.Log("dsdsdsd");
+                GeneratorPlace.instance.showHighLight = false;
+            }
+
+
+
+
             if (!TheFirstPerson.FPSController.instance.movementEnabled)
             {
                 fpsUI.transform.GetChild(0).gameObject.SetActive(false);
@@ -106,12 +124,24 @@ public class Interact : MonoBehaviour
                     }
                 }
 
+                if(hit.transform.name == "cranck")
+                {
+                    hit.transform.GetComponent<GeneratorCranck>().AddPowerToGenerator();
+                }
+
             }
 
 
         }
         // there's no intaractable object ahed, deactivate the hand icon 
         else {
+
+         
+            Debug.Log("dsdsdsd");
+            GeneratorPlace.instance.showHighLight = false;
+            
+
+
             if (Computer.instance.isUsingComputer)
             {
                 fpsUI.transform.GetChild(0).gameObject.SetActive(false);

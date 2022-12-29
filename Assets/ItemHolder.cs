@@ -49,6 +49,7 @@ public class ItemHolder : MonoBehaviour
         destroyItemInHand();
         InventoryManager.Instance.items.Remove(ItemInHand);
         ItemInHand = null;
+
     }
 
     public void destroyItemInHand()
@@ -56,6 +57,7 @@ public class ItemHolder : MonoBehaviour
         if (transform.childCount != 0)
         {
             Destroy(transform.GetChild(0).gameObject);
+            
         }
     }
 

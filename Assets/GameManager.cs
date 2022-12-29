@@ -48,6 +48,11 @@ public class GameManager : MonoBehaviour
         //}
 
         //Debug.Log("game level: " + level);
+        
+        
+      
+        
+        
         if (!gameDialogues[0].dialogueOn && !gameDialogues[1].dialogueOn)
         {
 
