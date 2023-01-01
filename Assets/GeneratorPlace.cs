@@ -56,6 +56,8 @@ public class GeneratorPlace : MonoBehaviour
         g.transform.position = transform.GetChild(0).transform.position;
         g.transform.rotation = transform.GetChild(0).transform.rotation;
 
+        g.transform.Find("cranck").GetComponent<BoxCollider>().enabled = true; 
+
 
 
     }

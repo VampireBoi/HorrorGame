@@ -14,7 +14,7 @@ OcclusionCullingSettings:
 RenderSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 9
-  m_Fog: 1
+  m_Fog: 0
   m_FogColor: {r: 0.019607844, g: 0.019607844, b: 0.019607844, a: 1}
   m_FogMode: 1
   m_FogDensity: 0.01
@@ -3334,7 +3334,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1688238655728231145, guid: 050660497fa0a94419c04ce79a380f90, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.307
+      value: -1.413
       objectReference: {fileID: 0}
     - target: {fileID: 1688238655728231145, guid: 050660497fa0a94419c04ce79a380f90, type: 3}
       propertyPath: m_LocalPosition.y
@@ -3342,7 +3342,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1688238655728231145, guid: 050660497fa0a94419c04ce79a380f90, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 8.334
+      value: 5.884
       objectReference: {fileID: 0}
     - target: {fileID: 1688238655728231145, guid: 050660497fa0a94419c04ce79a380f90, type: 3}
       propertyPath: m_LocalRotation.w
@@ -4573,8 +4573,8 @@ Light:
   m_Type: 2
   m_Shape: 0
   m_Color: {r: 0.63529414, g: 0.48235294, b: 0.36078432, a: 1}
-  m_Intensity: 1.8
-  m_Range: 4
+  m_Intensity: 1.6
+  m_Range: 5.5
   m_SpotAngle: 136.2755
   m_InnerSpotAngle: 128.07756
   m_CookieSize: 10
@@ -4585,7 +4585,7 @@ Light:
     m_Strength: 1
     m_Bias: 0.02
     m_NormalBias: 0.1
-    m_NearPlane: 0.04
+    m_NearPlane: 0.0634
     m_CullingMatrixOverride:
       e00: 1
       e01: 0
@@ -4631,7 +4631,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 415454505}
   m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0.705, y: 2.7689998, z: 3.16}
+  m_LocalPosition: {x: -1.419, y: 2.898, z: 3.555}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -8357,7 +8357,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh377976
+  m_Name: pb_Mesh-1652
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -10350,7 +10350,7 @@ GameObject:
   m_Layer: 3
   m_Name: 'generator place '
   m_TagString: generatorPlace
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: -1412012063857583412, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -11718,7 +11718,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   outlineMode: 1
   outlineColor: {r: 0, g: 0, b: 0, a: 1}
-  outlineWidth: 6
+  outlineWidth: 8
   precomputeOutline: 0
   bakeKeys: []
   bakeValues: []
@@ -12149,6 +12149,10 @@ PrefabInstance:
     - target: {fileID: 7122552787615771120, guid: 5ae5ccd8d1c0b59459a598c6f18817a4, type: 3}
       propertyPath: m_Dithering
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7122552787615771120, guid: 5ae5ccd8d1c0b59459a598c6f18817a4, type: 3}
+      propertyPath: m_Antialiasing
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7122552787615771120, guid: 5ae5ccd8d1c0b59459a598c6f18817a4, type: 3}
       propertyPath: m_RenderShadows
@@ -13867,8 +13871,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.015149383, y: 0.0069999993, z: 0.0089973165}
-  m_Center: {x: -0.1000309, y: -0.032827713, z: 0.0074988613}
+  m_Size: {x: 0.015149383, y: 0.0070000007, z: 0.009116339}
+  m_Center: {x: -0.1000309, y: -0.032827757, z: 0.007558376}
 --- !u!1 &1187000914 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7189787541494623939, guid: 3ef14ca160899c047a73c0306b58c3cc, type: 3}
@@ -13888,7 +13892,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   outlineMode: 1
   outlineColor: {r: 0, g: 0, b: 0, a: 1}
-  outlineWidth: 3
+  outlineWidth: 7
   precomputeOutline: 0
   bakeKeys: []
   bakeValues: []

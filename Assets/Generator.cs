@@ -12,7 +12,7 @@ public class Generator : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        power = 1;
+        power = 0;
     }
 
     // Update is called once per frame
