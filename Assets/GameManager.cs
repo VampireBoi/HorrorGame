@@ -13,7 +13,7 @@ public class GameManager : MonoBehaviour
 
     public int level;
 
-
+    bool thereIsPower;
     bool gameOver;
     [Header("all the items that are going to be disabeld when the timer runs out")]
     public GameObject[] gameObjects;
@@ -34,6 +34,7 @@ public class GameManager : MonoBehaviour
         
         level = 1;
         Instance = this;
+        thereIsPower = true;
         gameOver = false;
         timer = time;
         Invoke("startClockSound", 0.1f);   
@@ -43,9 +44,10 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //if (Input.GetKeyDown(KeyCode.O)){
-            //level++;
-        //}
+        if (Input.GetKeyDown(KeyCode.O)){
+            level++;
+            Debug.Log(level);
+        }
 
         //Debug.Log("game level: " + level);
         
@@ -79,10 +81,7 @@ public class GameManager : MonoBehaviour
                     {
                         Computer.instance.turnOffComputer();
                     }
-                    foreach (GameObject go in gameObjects)
-                    {
-                        go.SetActive(false);
-                    }
+                    blackOut();
                     AudioManager.instance.stopAllSounds();
                     AudioManager.instance.playSound("time out jumpscare sound");
                     AudioManager.instance.stopSound("game timer");
@@ -118,6 +117,61 @@ public class GameManager : MonoBehaviour
             }
         }
 
+        if(level == 3)
+        {
+
+            if (thereIsPower)
+            {
+                blackOut();
+                thereIsPower = false;
+            }
+            
+            
+            if (GeneratorPlace.instance.thereIsGenerator)
+            {
+                if (Computer.instance.computerOn)
+                {
+                    if (GeneratorPlace.instance.generatorInstance.power <= 0.05f)
+                    {
+
+                        if (Computer.instance.alertMode)
+                        {
+
+                            AudioManager.instance.stopSound("alert sound");
+                            Computer.instance.inAlertMode = false;
+                            Computer.instance.alertMode = false;
+                        }
+
+                        Debug.Log("out of power");
+                        Computer.instance.exitComputerMode(0f);
+                        Enemy.instanse.exexute = 0;
+                        Computer.instance.StopAllCoroutines();
+                        Computer.instance.computerOn = false;
+                    }
+                }
+            }
+            else
+            {
+                if (Computer.instance.computerOn)
+                {
+                    if (Computer.instance.alertMode)
+                    {
+
+                        AudioManager.instance.stopSound("alert sound");
+                        Computer.instance.inAlertMode = false;
+                        Computer.instance.alertMode = false;
+                    }
+
+
+                    Computer.instance.exitComputerMode(0f);
+                    Enemy.instanse.exexute = 0;
+                    Computer.instance.StopAllCoroutines();
+                    Computer.instance.computerOn = false;
+                }
+            }
+                
+        }
+
 
 
         
@@ -138,6 +192,7 @@ public class GameManager : MonoBehaviour
     }
 
 
+
     public void resetChecking()
     {
         StartCoroutine(resetCheck());
@@ -146,5 +201,14 @@ public class GameManager : MonoBehaviour
     {
         yield return new WaitForSeconds(15f);
         canChickOnPlayer = true;
+    }
+
+
+    void blackOut()
+    {
+        foreach (GameObject go in gameObjects)
+        {
+            go.SetActive(false);
+        }
     }
 }

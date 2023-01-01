@@ -27,7 +27,11 @@ public class Computer : MonoBehaviour
     float timerGiltchingFreq;
 
     public GameObject computerScreen;
-
+    public float screenBrigtness;
+    float originalScreenBrigtness;
+    public float screenBrightnessEffectSpeed;
+    bool screenBrightnessEffect;
+    
     bool startgame;
    
     public GameObject MiniGameCam;
@@ -67,7 +71,7 @@ public class Computer : MonoBehaviour
 
     bool isLoading = false;
 
-    bool playSound;
+   
 
     //when the timer runs out and the computer makes the beb sound
     [HideInInspector] public bool alertMode;
@@ -76,6 +80,8 @@ public class Computer : MonoBehaviour
 
     //the light coming from the screen when the game is running "change later but works for now" 
     public GameObject tvLight;
+    float OriginalTvLightIntensity;
+    
     public GameObject tvloadingScreen;
 
     private void Start()
@@ -85,6 +91,13 @@ public class Computer : MonoBehaviour
         startgame = false;
         scoreUI = ui.transform.Find("score background").gameObject;
         //timerUI = ui.transform.Find("Timer").gameObject;
+        
+        originalScreenBrigtness = screenBrigtness;
+        screenBrightnessEffect = true;
+
+        OriginalTvLightIntensity = tvLight.GetComponent<Light>().intensity;
+
+
         playDialogue = true;
         computerView.SetActive(false);
         MiniGameCam.SetActive(false);
@@ -92,7 +105,7 @@ public class Computer : MonoBehaviour
         instance = this;
         tvLight.SetActive(false);
         tvloadingScreen.SetActive(false);
-        playSound = true;
+   
     }
 
 
@@ -101,7 +114,12 @@ public class Computer : MonoBehaviour
         //Debug.Log("is using the coumputer: " + isUsingComputer);
         //Debug.Log("in alert mode: " + inAlertMode);
 
-        
+        if (Input.GetKeyDown(KeyCode.Comma))
+        {
+            powerLow();
+        }
+ 
+
         if (Input.GetKeyDown(KeyCode.Mouse2) && isUsingComputer && !inAlertMode && !dialogue.dialogueOn)
         {
             leaveComputer();
@@ -165,39 +183,59 @@ public class Computer : MonoBehaviour
         }
 
 
-        if (!plugedIn)
-        {           
-            if (alertMode)
-            {
-            
-                AudioManager.instance.stopSound("alert sound");
-                inAlertMode = false;        
-                playSound = true;
-                alertMode = false;
-                
+        if(GameManager.Instance.level == 3)
+        {
 
-            }
             if (computerOn)
             {
-                exitComputerMode(0f);
-                Enemy.instanse.exexute = 0;
-                StopAllCoroutines();
-                computerOn = false;
+                if (GeneratorPlace.instance.generatorInstance.power < 0.3f)
+                {
+                    powerLow();
+                }
             }
-            
-
-        }
-        else
-        {
             if (alertMode)
-            {
-                alertMode = true;
+            {              
                 computerView.SetActive(false);
                 TheFirstPerson.FPSController.instance.movementEnabled = true;
                 itemHolder.gameObject.SetActive(true);
                 isUsingComputer = false;
             }
         }
+        else
+        {
+            if (!plugedIn)
+            {
+                if (alertMode)
+                {
+
+                    AudioManager.instance.stopSound("alert sound");
+                    inAlertMode = false;             
+                    alertMode = false;
+
+
+                }
+                if (computerOn)
+                {
+                    exitComputerMode(0f);
+                    Enemy.instanse.exexute = 0;
+                    StopAllCoroutines();
+                    computerOn = false;
+                }
+
+
+            }
+            else
+            {
+                if (alertMode)
+                {
+                    computerView.SetActive(false);
+                    TheFirstPerson.FPSController.instance.movementEnabled = true;
+                    itemHolder.gameObject.SetActive(true);
+                    isUsingComputer = false;
+                }
+            }
+        }
+        
 
         
 
@@ -270,7 +308,7 @@ public class Computer : MonoBehaviour
                     computerScreen.GetComponent<MeshRenderer>().material = crtMat;
                     AudioManager.instance.playSound("computer sound");
                     enterComputerMode();
-
+                    
                     //this if statement id for showing the first dialogue only once, the first time he puts the disk in the computer 
 
                 }
@@ -346,7 +384,11 @@ public class Computer : MonoBehaviour
         isLoading = true;             
         MiniGameCam.SetActive(true);
         computerView.SetActive(true); 
-        tvLight.SetActive(true);          
+        
+        tvLight.SetActive(true);
+        screenBrightnessEffect = true;
+        tvLight.GetComponent<Light>().intensity = OriginalTvLightIntensity;
+        
         TheFirstPerson.FPSController.instance.movementEnabled = false;
         itemHolder.gameObject.SetActive(false);
 
@@ -396,7 +438,7 @@ public class Computer : MonoBehaviour
     }
 
  
-    void exitComputerMode(float time)
+    public void exitComputerMode(float time)
     {    
         // to destroy a mini game if there's any 
         if(currentGame != null)
@@ -533,6 +575,70 @@ public class Computer : MonoBehaviour
         computerScreen.GetComponent<MeshRenderer>().material = crtMat;
         yield break;
     }
+
+
+    public void powerLow()
+    {
+        if (screenBrightnessEffect)
+        {
+            StartCoroutine(lowerBrigtness());
+            screenBrightnessEffect = false;
+        }
+        
+    }
+    IEnumerator lowerBrigtness()
+    {
+        float L = tvLight.GetComponent<Light>().intensity;
+        while (true)
+        {           
+            yield return new WaitForEndOfFrame();
+            if (screenBrigtness <= 0.05f)
+            {
+                yield return new WaitForSeconds(Random.Range(0.1f, 1f));
+                StartCoroutine(HigherBrigtness(L));
+                break;
+            }
+
+            if (tvLight.GetComponent<Light>().intensity <= 0.01f)
+            {
+                tvLight.GetComponent<Light>().intensity = 0.01f;
+            }
+            else
+            {
+                tvLight.GetComponent<Light>().intensity -= Time.deltaTime * screenBrightnessEffectSpeed;
+            }
+            screenBrigtness -= Time.deltaTime * screenBrightnessEffectSpeed;
+            computerScreen.GetComponent<MeshRenderer>().material.SetFloat("_Intensity", screenBrigtness);
+
+        }
+    }
+
+    IEnumerator HigherBrigtness(float lightIntensity)
+    {
+        while (true)
+        {
+            yield return new WaitForEndOfFrame();
+            if (screenBrigtness >= originalScreenBrigtness)
+            {
+                screenBrigtness = originalScreenBrigtness;
+                computerScreen.GetComponent<MeshRenderer>().material.SetFloat("_Intensity", screenBrigtness);
+                screenBrightnessEffect = true;
+                break;
+            }
+            if(tvLight.GetComponent<Light>().intensity >= lightIntensity)
+            {
+                tvLight.GetComponent<Light>().intensity = lightIntensity;
+            }
+            else
+            {
+                tvLight.GetComponent<Light>().intensity += Time.deltaTime * screenBrightnessEffectSpeed * 2;
+            }
+            screenBrigtness += Time.deltaTime * screenBrightnessEffectSpeed * 2;
+            computerScreen.GetComponent<MeshRenderer>().material.SetFloat("_Intensity", screenBrigtness);
+
+        }
+    }
+
 
 
 

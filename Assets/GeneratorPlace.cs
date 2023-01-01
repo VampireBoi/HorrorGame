@@ -5,11 +5,15 @@ using UnityEngine;
 public class GeneratorPlace : MonoBehaviour
 {
     public GameObject generator;
+    public Generator generatorInstance;
     public static GeneratorPlace instance;
     public bool hideBoxColider;
     public GameObject generatorHighlight;
     public bool showHighLight;
+    public bool thereIsGenerator;
+
     BoxCollider boxCollider;
+
 
     // Start is called before the first frame update
     void Start()
@@ -18,6 +22,7 @@ public class GeneratorPlace : MonoBehaviour
         boxCollider.enabled = false;
         instance = this;
         showHighLight = false;
+        thereIsGenerator = false;
         generatorHighlight.SetActive(false);
     }
 
@@ -25,7 +30,7 @@ public class GeneratorPlace : MonoBehaviour
     void Update()
     {
 
-        
+
         if (ItemHolder.instance.transform.childCount > 0 && ItemHolder.instance.transform.GetChild(0).name == "generator item(Clone)")
         {
             boxCollider.enabled = true;
@@ -34,6 +39,7 @@ public class GeneratorPlace : MonoBehaviour
         {
             boxCollider.enabled = false;
         }
+
 
 
         if (showHighLight)
@@ -55,8 +61,9 @@ public class GeneratorPlace : MonoBehaviour
         GameObject g = Instantiate(generator);
         g.transform.position = transform.GetChild(0).transform.position;
         g.transform.rotation = transform.GetChild(0).transform.rotation;
-
-        g.transform.Find("cranck").GetComponent<BoxCollider>().enabled = true; 
+        thereIsGenerator = true;
+        g.transform.Find("cranck").GetComponent<BoxCollider>().enabled = true;
+        generatorInstance = g.GetComponent<Generator>();
 
 
 

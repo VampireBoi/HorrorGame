@@ -42,7 +42,7 @@ public class Interact : MonoBehaviour
             }
             else
             {
-                Debug.Log("dsdsdsd");
+                //Debug.Log("dsdsdsd");
                 GeneratorPlace.instance.showHighLight = false;
             }
 
@@ -78,19 +78,47 @@ public class Interact : MonoBehaviour
                 // if the player is looking at an item
                 if (hit.transform.tag == "item")
                 {
+                   if(hit.transform.name == "generator item(Clone)")
+                    {
+                        if (GeneratorPlace.instance.thereIsGenerator)
+                        {
+                            GeneratorPlace.instance.thereIsGenerator = false;
+                        }
+                    }
                     hit.transform.GetComponent<ItemPickup>().pickup();
                 }
                 if (hit.transform.tag == "computer" && !Computer.instance.alertMode)
                 {
-                    if (Computer.instance.plugedIn)
+                    
+                    if(GameManager.Instance.level == 3)
                     {
-                        Computer.instance.openComputer();                
+                        if (GeneratorPlace.instance.thereIsGenerator)
+                        {
+                            if (GeneratorPlace.instance.generatorInstance.power > 0.05f)
+                            {
+                                Computer.instance.openComputer();
+                            }
+                            else { Debug.Log("there is no power in the generator"); }
+                        }
+                        else
+                        {
+                            Debug.Log("there is no power");
+                        }
+                        
                     }
                     else
                     {
-                        Debug.Log("computer not pluged in");
+                        if (Computer.instance.plugedIn)
+                        {
+                            Computer.instance.openComputer();
+                        }
+                        else
+                        {
+                            Debug.Log("computer not pluged in");
+                        }
                     }
                     
+                                  
                 }
 
                 if (hit.transform.tag == "Plug")
@@ -137,7 +165,7 @@ public class Interact : MonoBehaviour
         else {
 
          
-            Debug.Log("dsdsdsd");
+            //Debug.Log("dsdsdsd");
             GeneratorPlace.instance.showHighLight = false;
             
 

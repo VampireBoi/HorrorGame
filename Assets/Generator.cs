@@ -7,7 +7,7 @@ public class Generator : MonoBehaviour
 {
     public float powerDrainSpeed;
     public float AmountOfPowerAdded;
-    float power;
+    public float power;
     public Slider powerUi;
     // Start is called before the first frame update
     void Start()

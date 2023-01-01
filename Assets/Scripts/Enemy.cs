@@ -104,8 +104,8 @@ public class Enemy : MonoBehaviour
         //isChecking and isPatrolling and isAttacking !! only one has to be true at a spesicfic time
 
 
-        Debug.Log("is checking: " + isChecking);
-        Debug.Log("is checkingNoise: " + isCheckingNoise);
+        //Debug.Log("is checking: " + isChecking);
+        //Debug.Log("is checkingNoise: " + isCheckingNoise);
 
 
         if (count == true)
