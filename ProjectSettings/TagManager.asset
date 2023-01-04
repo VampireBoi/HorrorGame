@@ -19,6 +19,8 @@ TagManager:
   - Door
   - generatorPlace
   - generator
+  - Ladder
+  - LadderDoor
   layers:
   - Default
   - TransparentFX

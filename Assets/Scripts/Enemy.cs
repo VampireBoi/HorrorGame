@@ -19,13 +19,18 @@ public class Enemy : MonoBehaviour
     public GameObject jumpScare;
 
 
-    public string[] firstEventDialouge;
+    public dialogueText[] EventsDialouge;
     public string[] firstWarning;
     public string[] lastWarning;
  
-
     public Dialogue dialogue;
 
+    //for starting the dialouge if needed ()
+    bool inDialouge;
+    
+    // for starting the dialouge once 
+    bool playDialogue = false;
+    
     public float enemyNormalSpeed; 
     public float enemyAttackSpeed;
     public float enemyChickSpeed;
@@ -64,7 +69,7 @@ public class Enemy : MonoBehaviour
 
 
     public Vector3 DistractionPoint;
-    bool playDialogue = false;
+
     public Vector3 walkPoint;
     bool walkPointSet;
     public float walkPointRange;
@@ -74,6 +79,8 @@ public class Enemy : MonoBehaviour
 
     [HideInInspector]public int exexute;
 
+
+    public Door storageDoor;
 
 
  
@@ -96,6 +103,7 @@ public class Enemy : MonoBehaviour
         timer = checkingTime;
         count = true;
         canChick = true;
+        inDialouge = false;
     }
 
     // Update is called once per frame
@@ -315,44 +323,20 @@ public class Enemy : MonoBehaviour
     {
         if (Vector3.Distance(transform.position, DoorPoint.transform.position) < 1.2f)
         {
-            animator.SetBool("isMoving" , false);
-            head.lookAtPlayer();
+            animator.SetBool("isMoving" , false);          
            
-            if (Interact.isSetting && !Computer.instance.computerOn)
+            if (Interact.isSetting && !Computer.instance.isUsingComputer)
             {
 
-                if (playDialogue)
+                AudioManager.instance.stopSound("enemy foot steps");
+                
+                if (canLook)
                 {
-                    AudioManager.instance.stopSound("enemy foot steps");
-                    dialogue.startDialogue(firstEventDialouge);
-                    playDialogue = false;
+                    StartCoroutine(Look(true));
+                    canLook = false;
                 }
-                if (!dialogue.dialogueOn)
-                {       
-                    isPatrolling = true;
-                    isCheckingNoise = false;
-                    isAttacking = false;
-                    Agent.speed = enemyNormalSpeed;
-                    AudioManager.instance.changePitch("enemy foot steps", 1f);
-                    AudioManager.instance.playSound("enemy foot steps");
-                    isCheckingForEvent = false;
-                    playDialogue = true;
-                    head.restRotation();
-                    if(GameManager.Instance.level == 2)
-                    {
-                        GameManager.Instance.resetChecking();
-                    }
-                }
+                
                     
-            }
-            else if (Computer.instance.isUsingComputer)
-            {
-
-                playDialogue = true;
-                isChecking = false;
-                isAttacking = true;
-                // this statment happens when the player is using the computer and the enemy reach the door and see her 
-                Debug.Log("the computer jumpscare");
             }
             else
             {
@@ -387,25 +371,18 @@ public class Enemy : MonoBehaviour
             animator.SetBool("isMoving", false);
             //head.lookAtPlayer();
 
-            if (Interact.isSetting && !Computer.instance.computerOn)
+            if (Interact.isSetting && !Computer.instance.isUsingComputer)
             {
 
                 if (canLook)
                 {
-                    StartCoroutine(Look());
+                    StartCoroutine(Look(false));
                     canLook = false;
                 }
                 
 
             }
-            else if (Computer.instance.isUsingComputer)
-            {
-                playDialogue = true;
-                isChecking = false;
-                isAttacking = true;
-                // this statment happens when the player is using the computer and the enemy reach the door and see her 
-                Debug.Log("the computer jumpscare");
-            }
+            
             else
             {
                 playDialogue = true;
@@ -423,7 +400,7 @@ public class Enemy : MonoBehaviour
             animator.SetBool("isMoving", true);
             if (playSound)
             {
-                Agent.speed = enemyChickSpeed;
+                Agent.speed = enemyNormalSpeed;
                 //AudioManager.instance.playSound("beep sound");
                 AudioManager.instance.changePitch("enemy foot steps", 1.2f);
                 AudioManager.instance.playSound("enemy foot steps");
@@ -433,27 +410,97 @@ public class Enemy : MonoBehaviour
 
     }
 
-    IEnumerator Look()
+    IEnumerator Look(bool playTheEventDialogue)
     {
         AudioManager.instance.stopSound("enemy foot steps");
         head.lookAtPlayer();
         yield return new WaitForSeconds(1f);
         head.LookAtTheRoom();
 
-        yield return new WaitForSeconds(10f);      
 
-        isPatrolling = true;
-        isCheckingNoise = false;
-        isAttacking = false;
-        Agent.speed = enemyNormalSpeed;
-        AudioManager.instance.changePitch("enemy foot steps", 1f);
-        AudioManager.instance.playSound("enemy foot steps");
-        isChecking = false;
-        playDialogue = true;
-        head.restRotation();
+        //chick if the computer is on 
+        yield return new WaitForSeconds(2f);       
+        if (Computer.instance.computerOn)
+        {
+            playDialogue = true;
+            isChecking = false;
+            isAttacking = true;
+            // this statment happens when the player is using the computer and the enemy reach the door and see her 
+            Debug.Log("the computer jumpscare");
+            yield return null;
+        }
+
+        
+        //to chick if the storage door or the attic ladder is opend 
+        yield return new WaitForSeconds(4f);
+        if (storageDoor.isOpen || LadderDoor.doorIsOpen)
+        {
+            playDialogue = true;
+            isChecking = false;
+            isAttacking = true;
+            // this statment happens when the player is using the computer and the enemy reach the door and see her 
+            Debug.Log("storage door jumpscare");
+            yield return null;
+        }
+
+
+        //chick if the door to the attic or the password door is opened
+        
+
+
+        yield return new WaitForSeconds(3f);      
+
+
+        
         if (GameManager.Instance.level == 2)
         {
             StartCoroutine(resetCheck());
+        }
+
+        head.restRotation();
+        if (playTheEventDialogue)
+        {          
+            dialogue.startDialogue(EventsDialouge[GameManager.Instance.level - 1].Text);
+            head.lookAtPlayer();
+            inDialouge = true;
+
+            while (true)
+            {
+                yield return new WaitForEndOfFrame();
+                if (!dialogue.dialogueOn)
+                {
+                    Debug.Log("beebebbebebebebbbe");
+                    isPatrolling = true;
+                    isCheckingNoise = false;
+                    isChecking = false;
+                    isAttacking = false;
+                    Agent.speed = enemyNormalSpeed;
+                    AudioManager.instance.changePitch("enemy foot steps", 1f);
+                    AudioManager.instance.playSound("enemy foot steps");
+                    isCheckingForEvent = false;
+                    playDialogue = true;
+                    head.restRotation();
+                    if (GameManager.Instance.level == 2)
+                    {
+                        GameManager.Instance.resetChecking();
+                    }
+                    inDialouge = false;
+
+                    break;
+                }
+            }
+        }
+        else
+        {
+            isPatrolling = true;
+            isCheckingNoise = false;
+            isAttacking = false;
+            Agent.speed = enemyNormalSpeed;
+            AudioManager.instance.changePitch("enemy foot steps", 1f);
+            AudioManager.instance.playSound("enemy foot steps");
+            isChecking = false;
+            playDialogue = true;
+            
         }
         canLook = true;
     }

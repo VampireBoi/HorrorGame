@@ -151,6 +151,15 @@ public class Interact : MonoBehaviour
                         hit.transform.GetComponent<Door>().tryOpenTheDoor();
                     }
                 }
+                if(hit.transform.tag == "Ladder")
+                {
+                    hit.transform.GetComponent<Ladder>().useLadder();
+                }
+
+                if(hit.transform.tag == "LadderDoor")
+                {
+                    hit.transform.GetComponent<LadderDoor>().intract();
+                }
 
                 if(hit.transform.name == "cranck")
                 {
