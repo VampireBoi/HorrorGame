@@ -9,6 +9,8 @@ public class Generator : MonoBehaviour
     public float AmountOfPowerAdded;
     public float power;
     public Slider powerUi;
+    
+    public Animator generatorAnimator;
     // Start is called before the first frame update
     void Start()
     {
@@ -21,7 +23,16 @@ public class Generator : MonoBehaviour
         power = Mathf.Clamp(power, 0f, 1f);
         powerUi.value = power;
 
+        if(power > 0.05f)
+        {
+            generatorAnimator.SetBool("thereIsPower", true);
+            AudioManager.instance.playSound("generator Sound");
+        } else
+        {
+            generatorAnimator.SetBool("thereIsPower", false);
+            AudioManager.instance.stopSound("generator Sound");
 
+        }
 
         power -= Time.deltaTime * powerDrainSpeed;
     }

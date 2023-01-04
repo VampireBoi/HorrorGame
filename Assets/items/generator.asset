@@ -16,4 +16,4 @@ MonoBehaviour:
   displayName: 'genrator '
   description: 'to power the computer '
   icon: {fileID: 21300000, guid: b1706ddc0f3b13a46abfec9486014c5d, type: 3}
-  prefab: {fileID: 460850742673255389, guid: e2328b55e6692af46a9a7e0df69073dd, type: 3}
+  prefab: {fileID: 346900330413156767, guid: 61937e14f19c8e145b5620fe5f57f83b, type: 3}
